@@ -1,29 +1,33 @@
 # Remaining Work
 
 ## Critical
-- [ ] Receive and document specific user project requirements for "Tempo"
+- [ ] Await user review and authorization to proceed to Phase 1.2
 
 ## High Priority
-- [ ] Define project architecture and stack once requirements are provided
+- [ ] Implement TaskFlow in-memory client state management / event bus (Phase 1.2)
+- [ ] Define Task and Project data models and schemas (Phase 1.2 / Phase 2)
 
 ## Normal
-- [ ] Set up base project structure and dependency management
-- [ ] Establish automated testing framework
+- [ ] Build task creation, editing, and completion UI components (Phase 2)
+- [ ] Implement list and board view toggles (Phase 2)
+- [ ] Add client-side search and filtering logic (Phase 2)
+- [ ] Backend API setup with Node.js + Express (Phase 3/4)
+- [ ] MySQL database schema and persistence layer (Phase 4)
 
 ## Optional
-- [ ] Configure git hooks / linting configurations
+- [ ] Keyboard shortcut manager expansion
+- [ ] Dark theme toggle support (via CSS custom property overrides)
 
 ## Blocked
-- [ ] Implementation blocked until user supplies the application domain and specific feature requirements for Tempo
+- [ ] Phase 1.2 onward is paused per user directive ("Stop after completing this task. Do not proceed to Phase 1.2")
 
 ## Verification Remaining
-- [ ] Verify test suite once test framework is established
-- [ ] Verify build once build system is defined
+- [ ] Live browser rendering inspection with user
+- [ ] Cross-browser responsive verification
 
 ## Definition of Done
-- [ ] User requirements satisfied
-- [ ] Tests passing
-- [ ] Build passing
-- [ ] No known critical errors
-- [ ] Documentation updated
-- [ ] Final diff reviewed
+- [x] Frontend shell structure created and connected
+- [x] Responsive layout with light minimal theme implemented
+- [x] Automated integrity tests passing
+- [x] Documentation updated (DEVELOPMENT_LOG.md, STATE.md, PHASE.md, REMAINING.md, DECISIONS.md)
+- [ ] Final project delivery (End of Phase 5)
