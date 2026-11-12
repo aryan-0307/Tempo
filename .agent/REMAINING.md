@@ -4,7 +4,6 @@
 - [ ] Receive and document specific user project requirements for "Tempo"
 
 ## High Priority
-- [ ] Complete `.agent/` initialization (DECISIONS.md, VERIFICATION.md, HANDOFF.md, ERRORS.md, CHANGELOG.md, CHECKLIST.md)
 - [ ] Define project architecture and stack once requirements are provided
 
 ## Normal
@@ -18,8 +17,8 @@
 - [ ] Implementation blocked until user supplies the application domain and specific feature requirements for Tempo
 
 ## Verification Remaining
-- [ ] Verify integrity and syntax of all `.agent/` files
-- [ ] Verify git status tracking
+- [ ] Verify test suite once test framework is established
+- [ ] Verify build once build system is defined
 
 ## Definition of Done
 - [ ] User requirements satisfied
