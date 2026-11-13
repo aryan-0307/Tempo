@@ -3,187 +3,390 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="TaskFlow - Modern, clean, minimal productivity application">
-  <title>TaskFlow</title>
+  <meta name="description" content="Tempo - Modern, clean, minimal productivity application">
+  <title>Tempo - Minimal Productivity Workspace</title>
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
-  <div class="app-container">
-    <!-- Application Header -->
-    <header class="app-header">
-      <div class="header-left">
-        <button id="sidebar-toggle-btn" class="btn-icon" aria-label="Toggle Navigation Sidebar">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line>
-          </svg>
-        </button>
-        <div class="brand">
+  <div class="app-layout">
+    <!-- 1. Sidebar -->
+    <aside id="app-sidebar" class="app-sidebar" aria-label="Main Navigation">
+      <!-- Tempo logo and branding -->
+      <div class="sidebar-brand">
+        <a href="#dashboard" class="brand-wrapper" aria-label="Tempo Home">
           <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
           </svg>
-          <span>TaskFlow</span>
-        </div>
+          <span class="brand-name">Tempo</span>
+        </a>
       </div>
 
-      <div class="header-center">
-        <div class="search-wrapper">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input type="search" id="global-search-input" class="search-input" placeholder="Search tasks, projects, tags..." autocomplete="off">
-          <span class="search-shortcut">Ctrl K</span>
-        </div>
-      </div>
-
-      <div class="header-right">
-        <button class="btn btn-primary" title="New Task (Coming in Phase 2)">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="12" y1="5" x2="12" y2="19"></line>
-            <line x1="5" y1="12" x2="19" y2="12"></line>
-          </svg>
-          <span>New Task</span>
-        </button>
-        <button class="btn-icon" aria-label="Notifications">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-          </svg>
-        </button>
-        <div class="avatar" title="Current User">
-          <span>TF</span>
-        </div>
-      </div>
-    </header>
-
-    <!-- Application Body -->
-    <div class="app-body">
-      <!-- Backdrop for mobile sidebar drawer -->
-      <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
-
-      <!-- Navigation Sidebar -->
-      <aside id="app-sidebar" class="app-sidebar">
-        <div>
-          <nav class="sidebar-nav">
-            <span class="nav-section-title">Views</span>
-            <a class="nav-item active" data-view="overview" href="#overview">
-              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="3" width="7" height="7"></rect>
-                <rect x="14" y="3" width="7" height="7"></rect>
-                <rect x="14" y="14" width="7" height="7"></rect>
-                <rect x="3" y="14" width="7" height="7"></rect>
-              </svg>
-              <span class="nav-label">Overview</span>
-              <span class="nav-count">0</span>
-            </a>
-            <a class="nav-item" data-view="today" href="#today">
-              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                <line x1="16" y1="2" x2="16" y2="6"></line>
-                <line x1="8" y1="2" x2="8" y2="6"></line>
-                <line x1="3" y1="10" x2="21" y2="10"></line>
-              </svg>
-              <span class="nav-label">Today</span>
-              <span class="nav-count">0</span>
-            </a>
-            <a class="nav-item" data-view="upcoming" href="#upcoming">
-              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-              <span class="nav-label">Upcoming</span>
-              <span class="nav-count">0</span>
-            </a>
-            <a class="nav-item" data-view="completed" href="#completed">
-              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-              </svg>
-              <span class="nav-label">Completed</span>
-              <span class="nav-count">0</span>
-            </a>
-
-            <span class="nav-section-title">Projects</span>
-            <a class="nav-item" data-view="project-work" href="#project-work">
-              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-              </svg>
-              <span class="nav-label">Work</span>
-            </a>
-            <a class="nav-item" data-view="project-personal" href="#project-personal">
-              <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
-              </svg>
-              <span class="nav-label">Personal</span>
-            </a>
-          </nav>
+      <!-- Navigation links -->
+      <nav class="sidebar-nav">
+        <!-- Main Navigation Section -->
+        <div class="nav-section">
+          <span class="nav-section-title">Menu</span>
+          <button type="button" class="nav-item active" data-view="dashboard" id="nav-dashboard">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="3" width="7" height="7"></rect>
+              <rect x="14" y="3" width="7" height="7"></rect>
+              <rect x="14" y="14" width="7" height="7"></rect>
+              <rect x="3" y="14" width="7" height="7"></rect>
+            </svg>
+            <span class="nav-label">Dashboard</span>
+            <span class="nav-count" id="count-dashboard">6</span>
+          </button>
+          <button type="button" class="nav-item" data-view="my-tasks" id="nav-my-tasks">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 11l3 3L22 4"></path>
+              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+            </svg>
+            <span class="nav-label">My Tasks</span>
+            <span class="nav-count" id="count-my-tasks">4</span>
+          </button>
+          <button type="button" class="nav-item" data-view="upcoming" id="nav-upcoming">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span class="nav-label">Upcoming</span>
+            <span class="nav-count" id="count-upcoming">1</span>
+          </button>
+          <button type="button" class="nav-item" data-view="completed" id="nav-completed">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+              <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            <span class="nav-label">Completed</span>
+            <span class="nav-count" id="count-completed">2</span>
+          </button>
         </div>
 
-        <div class="sidebar-footer">
-          <a class="nav-item" data-view="settings" href="#settings">
-            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Projects Section -->
+        <div class="nav-section">
+          <span class="nav-section-title">Projects</span>
+          <button type="button" class="nav-item" data-view="project-work" id="nav-project-work">
+            <span class="project-dot dot-work"></span>
+            <span class="nav-label">Work</span>
+            <span class="nav-count" id="count-project-work">3</span>
+          </button>
+          <button type="button" class="nav-item" data-view="project-personal" id="nav-project-personal">
+            <span class="project-dot dot-personal"></span>
+            <span class="nav-label">Personal</span>
+            <span class="nav-count" id="count-project-personal">2</span>
+          </button>
+          <button type="button" class="nav-item" data-view="project-design" id="nav-project-design">
+            <span class="project-dot dot-design"></span>
+            <span class="nav-label">Design System</span>
+            <span class="nav-count" id="count-project-design">1</span>
+          </button>
+        </div>
+
+        <!-- Settings Section -->
+        <div class="nav-section">
+          <span class="nav-section-title">Preferences</span>
+          <button type="button" class="nav-item" data-view="settings" id="nav-settings">
+            <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="12" cy="12" r="3"></circle>
               <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
             </svg>
             <span class="nav-label">Settings</span>
-          </a>
+          </button>
         </div>
-      </aside>
+      </nav>
+
+      <!-- User profile section at the bottom -->
+      <div class="sidebar-user-profile">
+        <div class="user-avatar-wrapper">
+          <div class="user-avatar" aria-hidden="true">AM</div>
+          <span class="user-status-dot" title="Active"></span>
+        </div>
+        <div class="user-details">
+          <span class="user-name">Alex Morgan</span>
+          <span class="user-role">alex@tempo.dev</span>
+        </div>
+        <button type="button" class="btn-icon user-more-btn" aria-label="Account Settings" title="Account Settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="1"></circle>
+            <circle cx="19" cy="12" r="1"></circle>
+            <circle cx="5" cy="12" r="1"></circle>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Mobile sidebar backdrop overlay -->
+    <div id="sidebar-backdrop" class="sidebar-backdrop"></div>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+      <!-- 2. Main content header / Topbar -->
+      <header class="app-topbar">
+        <div class="topbar-left">
+          <button id="sidebar-toggle-btn" class="btn-icon sidebar-toggle-btn" aria-label="Toggle Navigation Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="topbar-brand-mobile">
+            <svg class="brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"></path>
+            </svg>
+            <span>Tempo</span>
+          </div>
+        </div>
+
+        <!-- Search bar -->
+        <div class="topbar-center">
+          <div class="search-wrapper">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input type="search" id="global-search-input" class="search-input" placeholder="Search tasks, projects, priority..." autocomplete="off" aria-label="Search tasks">
+            <kbd class="search-shortcut">Ctrl K</kbd>
+          </div>
+        </div>
+
+        <div class="topbar-right">
+          <!-- Notification icon -->
+          <div class="notifications-wrapper">
+            <button type="button" id="notifications-btn" class="btn-icon" aria-label="View notifications" aria-expanded="false" title="Notifications">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+              </svg>
+              <span class="notification-badge" id="notification-badge-dot"></span>
+            </button>
+
+            <!-- Notifications Dropdown Popover -->
+            <div id="notifications-dropdown" class="notifications-dropdown" hidden>
+              <div class="notifications-header">
+                <span class="notifications-title">Notifications</span>
+                <span class="badge badge-primary">2 Active</span>
+              </div>
+              <ul class="notifications-list">
+                <li class="notification-item unread">
+                  <span class="notification-dot danger"></span>
+                  <div class="notification-content">
+                    <p class="notification-text"><strong>Overdue Task:</strong> Submit Q4 department budget proposal</p>
+                    <span class="notification-time">2 days ago</span>
+                  </div>
+                </li>
+                <li class="notification-item unread">
+                  <span class="notification-dot warning"></span>
+                  <div class="notification-content">
+                    <p class="notification-text"><strong>Upcoming:</strong> Review design tokens documentation</p>
+                    <span class="notification-time">Due tomorrow</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Create Task button -->
+          <button type="button" id="open-create-task-modal-btn" class="btn btn-primary" aria-label="Create Task">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            <span>Create Task</span>
+          </button>
+        </div>
+      </header>
 
       <!-- Main Content Area -->
-      <main class="app-main">
+      <main class="app-main" id="main-content">
         <div class="main-content">
-          <!-- Content Header -->
-          <header class="content-header">
-            <div class="content-title-group">
-              <h1 id="current-view-title">Overview</h1>
-              <p class="content-subtitle">Welcome to TaskFlow — structured productivity workspace</p>
+          <!-- Welcome message & Current date -->
+          <section class="welcome-section" aria-labelledby="welcome-message">
+            <div class="welcome-text-group">
+              <h1 id="welcome-message" class="welcome-title">Good morning, Alex 👋</h1>
+              <p id="current-date-display" class="current-date">Thursday, November 12, 2026</p>
             </div>
-            <div class="content-actions">
-              <span class="badge badge-primary">Phase 1: Shell Active</span>
-            </div>
-          </header>
-
-          <!-- Shell Status Banner -->
-          <section class="shell-banner">
-            <div class="shell-banner-content">
-              <h2>Application Shell Initialized</h2>
-              <p>
-                The foundational responsive shell is active. Built cleanly with semantic HTML5, modular CSS3 variables, and vanilla ES6+ components. Task management and workflow engine modules will be introduced in Phase 2.
-              </p>
+            <div class="welcome-meta">
+              <span class="badge badge-surface" id="current-view-badge">Dashboard View</span>
             </div>
           </section>
 
-          <!-- Empty State Container -->
-          <section class="empty-state">
-            <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-              <polyline points="14 2 14 8 20 8"></polyline>
-              <line x1="16" y1="13" x2="8" y2="13"></line>
-              <line x1="16" y1="17" x2="8" y2="17"></line>
-              <polyline points="10 9 9 9 8 9"></polyline>
-            </svg>
-            <h3 class="empty-state-title">No tasks active</h3>
-            <p class="empty-state-description">
-              The application foundation is ready. Task creation, categorization, and state persistence will be connected in the upcoming phase.
-            </p>
+          <!-- 3. Dashboard overview section -->
+          <section class="overview-section" aria-labelledby="overview-heading">
+            <div class="section-header">
+              <h2 id="overview-heading" class="section-title">Overview</h2>
+              <span class="section-subtitle">Real-time productivity metrics</span>
+            </div>
+            <div class="stats-grid">
+              <!-- Total tasks -->
+              <div class="stat-card" data-stat="total">
+                <div class="stat-icon-wrapper total" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+                  </svg>
+                </div>
+                <div class="stat-details">
+                  <span class="stat-label">Total Tasks</span>
+                  <span id="stat-total-tasks" class="stat-value">6</span>
+                  <span class="stat-hint">Across all projects</span>
+                </div>
+              </div>
+
+              <!-- Completed tasks -->
+              <div class="stat-card" data-stat="completed">
+                <div class="stat-icon-wrapper completed" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  </svg>
+                </div>
+                <div class="stat-details">
+                  <span class="stat-label">Completed Tasks</span>
+                  <span id="stat-completed-tasks" class="stat-value">2</span>
+                  <span class="stat-hint" id="stat-completed-rate">33% completed</span>
+                </div>
+              </div>
+
+              <!-- Pending tasks -->
+              <div class="stat-card" data-stat="pending">
+                <div class="stat-icon-wrapper pending" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                </div>
+                <div class="stat-details">
+                  <span class="stat-label">Pending Tasks</span>
+                  <span id="stat-pending-tasks" class="stat-value">3</span>
+                  <span class="stat-hint">In active progress</span>
+                </div>
+              </div>
+
+              <!-- Overdue tasks -->
+              <div class="stat-card" data-stat="overdue">
+                <div class="stat-icon-wrapper overdue" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  </svg>
+                </div>
+                <div class="stat-details">
+                  <span class="stat-label">Overdue Tasks</span>
+                  <span id="stat-overdue-tasks" class="stat-value">1</span>
+                  <span class="stat-hint text-danger">Requires attention</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- 4. Task section -->
+          <section class="tasks-section" aria-labelledby="tasks-heading">
+            <div class="tasks-section-header">
+              <div class="tasks-title-wrapper">
+                <h2 id="tasks-heading" class="section-title">Today's Tasks</h2>
+                <span id="tasks-count-badge" class="badge badge-primary">4 tasks</span>
+              </div>
+              <div class="tasks-controls-wrapper">
+                <!-- Sorting dropdown -->
+                <div class="tasks-sort-wrapper">
+                  <select id="tasks-sort-select" class="tasks-sort-select" aria-label="Sort tasks">
+                    <option value="default">Default Order</option>
+                    <option value="due-date">Due Date</option>
+                    <option value="priority">Priority</option>
+                    <option value="title">Title (A-Z)</option>
+                  </select>
+                </div>
+                <!-- Status filter tabs -->
+                <div class="tasks-filter-group" role="tablist" aria-label="Task Status Filters">
+                  <button type="button" class="filter-tab active" data-filter="all" role="tab" aria-selected="true">All</button>
+                  <button type="button" class="filter-tab" data-filter="pending" role="tab" aria-selected="false">Pending</button>
+                  <button type="button" class="filter-tab" data-filter="completed" role="tab" aria-selected="false">Completed</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Task List container rendered by JavaScript -->
+            <ul id="tasks-list" class="tasks-list" role="list">
+              <!-- Dynamically populated by tasks.js -->
+            </ul>
+
+            <!-- Empty State container -->
+            <div id="tasks-empty-state" class="empty-state" hidden>
+              <svg class="empty-state-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              <h3 class="empty-state-title" id="empty-state-title">No tasks found</h3>
+              <p class="empty-state-description" id="empty-state-desc">You're all caught up! Create a new task to organize your work.</p>
+              <button type="button" class="btn btn-secondary" id="empty-state-create-btn">Create Task</button>
+            </div>
           </section>
         </div>
       </main>
+
+      <!-- Application Status Bar -->
+      <footer class="app-statusbar">
+        <div class="status-indicator">
+          <span class="status-dot"></span>
+          <span id="system-status-text">Tempo Ready &bull; In-Memory Store Active</span>
+        </div>
+        <div>
+          <span>Tempo v0.3.0 &bull; Vanilla Architecture</span>
+        </div>
+      </footer>
     </div>
 
-    <!-- Application Status Bar -->
-    <footer class="app-statusbar">
-      <div class="status-indicator">
-        <span class="status-dot"></span>
-        <span id="system-status-text">Initializing...</span>
+    <!-- Create Task Modal Dialog -->
+    <div id="create-task-modal" class="modal-backdrop" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+        <div class="modal-header">
+          <h3 id="modal-title" class="modal-title">Create New Task</h3>
+          <button type="button" id="modal-close-btn" class="btn-icon" aria-label="Close dialog">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <form id="create-task-form" class="modal-form">
+          <div class="form-group">
+            <label for="task-title-input" class="form-label">Task Title <span class="required">*</span></label>
+            <input type="text" id="task-title-input" class="form-input" placeholder="e.g., Update sprint presentation slides" required>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="task-priority-input" class="form-label">Priority</label>
+              <select id="task-priority-input" class="form-select">
+                <option value="low">Low</option>
+                <option value="medium" selected>Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="task-project-input" class="form-label">Project</label>
+              <select id="task-project-input" class="form-select">
+                <option value="Work" selected>Work</option>
+                <option value="Personal">Personal</option>
+                <option value="Design System">Design System</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="task-due-date-input" class="form-label">Due Date <span class="required">*</span></label>
+            <input type="date" id="task-due-date-input" class="form-input" required>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="modal-cancel-btn" class="btn btn-secondary">Cancel</button>
+            <button type="submit" id="modal-submit-btn" class="btn btn-primary">Create Task</button>
+          </div>
+        </form>
       </div>
-      <div>
-        <span>TaskFlow v0.1.0 &bull; Vanilla Architecture</span>
-      </div>
-    </footer>
+    </div>
   </div>
 
   <script type="module" src="js/app.js"></script>

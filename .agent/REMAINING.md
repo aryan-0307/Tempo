@@ -1,33 +1,50 @@
-# Remaining Work
+# Remaining Work — Learning-Focused Roadmap
 
-## Critical
-- [ ] Await user review and authorization to proceed to Phase 1.2
+## Current Milestone (Review Gate)
+- [ ] User review of **Phase 0 (Planning & Architecture)** and **Phase 1 (Frontend Foundations)**.
+- [ ] User approval to initiate **Phase 2 (JavaScript Functionality)**.
 
-## High Priority
-- [ ] Implement TaskFlow in-memory client state management / event bus (Phase 1.2)
-- [ ] Define Task and Project data models and schemas (Phase 1.2 / Phase 2)
+---
 
-## Normal
-- [ ] Build task creation, editing, and completion UI components (Phase 2)
-- [ ] Implement list and board view toggles (Phase 2)
-- [ ] Add client-side search and filtering logic (Phase 2)
-- [ ] Backend API setup with Node.js + Express (Phase 3/4)
-- [ ] MySQL database schema and persistence layer (Phase 4)
+## Phase 2: JavaScript Functionality (Next Up)
+- [ ] Events: Event delegation on task list, form events, keyboard shortcuts (`Ctrl+K`, `N`, `Escape`).
+- [ ] Modules: Complete ES6 modular structure connecting state and components.
+- [ ] State Management: Observer pattern with reactive listener registration and localStorage synchronization.
+- [ ] CRUD:
+  - [x] Create (Modal dialog task creation)
+  - [x] Read (Dynamic task rendering and overview stats)
+  - [ ] Update (Inline editing of task title, priority, due date + toggle completion)
+  - [x] Delete (Task removal)
+- [ ] Filtering: Status filter tabs (All, Pending, Completed), navigation view filtering, real-time search query.
+- [ ] Sorting: Sort dropdown (Due Date, Priority, Alphabetical, Date Created).
+- [ ] Drag-and-Drop: Native HTML5 drag-and-drop task reordering.
 
-## Optional
-- [ ] Keyboard shortcut manager expansion
-- [ ] Dark theme toggle support (via CSS custom property overrides)
+---
 
-## Blocked
-- [ ] Phase 1.2 onward is paused per user directive ("Stop after completing this task. Do not proceed to Phase 1.2")
+## Phase 3: Backend Development
+- [ ] Node.js & Express server initialization.
+- [ ] REST API endpoints for tasks, projects, and dashboard analytics.
+- [ ] HTTP status codes, headers, and Fetch API communication layer.
+- [ ] Centralized error handling and request validation.
 
-## Verification Remaining
-- [ ] Live browser rendering inspection with user
-- [ ] Cross-browser responsive verification
+---
 
-## Definition of Done
-- [x] Frontend shell structure created and connected
-- [x] Responsive layout with light minimal theme implemented
-- [x] Automated integrity tests passing
-- [x] Documentation updated (DEVELOPMENT_LOG.md, STATE.md, PHASE.md, REMAINING.md, DECISIONS.md)
-- [ ] Final project delivery (End of Phase 5)
+## Phase 4: Database
+- [ ] MySQL relational schema design (`tasks`, `projects`, `users`, `tags`).
+- [ ] Foreign keys, cascading constraints, and indexes.
+- [ ] SQL query authoring with parameterized statements.
+
+---
+
+## Phase 5: Authentication and Security
+- [ ] User registration and login forms and endpoints.
+- [ ] Secure password hashing (bcrypt).
+- [ ] Session / JWT token management.
+- [ ] Route authorization and data ownership enforcement.
+
+---
+
+## Phase 6: Testing and Deployment
+- [ ] API integration tests.
+- [ ] Frontend automated test suite extension.
+- [ ] Production build configuration and deployment runbook.

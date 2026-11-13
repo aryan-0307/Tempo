@@ -15,8 +15,14 @@ files = [
     'css/layout.css',
     'css/components.css',
     'js/app.js',
+    'js/state.js',
     'js/components/sidebar.js',
     'js/components/header.js',
+    'js/components/overview.js',
+    'js/components/tasks.js',
+    'js/components/modal.js',
+    'js/components/toast.js',
+    'js/services/api.js',
     'js/utils/dom.js',
     'assets/README.md'
 ]
@@ -51,7 +57,18 @@ for imp in css_imports:
     print(f"  [OK] @import ./{imp} -> {imp_path} ({os.path.getsize(imp_path)} bytes)")
 
 print("\n--- 4. Verifying JS ES Module Import Resolution ---")
-js_files = ['js/app.js', 'js/components/sidebar.js', 'js/components/header.js', 'js/utils/dom.js']
+js_files = [
+    'js/app.js',
+    'js/state.js',
+    'js/components/sidebar.js',
+    'js/components/header.js',
+    'js/components/overview.js',
+    'js/components/tasks.js',
+    'js/components/modal.js',
+    'js/components/toast.js',
+    'js/services/api.js',
+    'js/utils/dom.js'
+]
 for js_file in js_files:
     with open(js_file, 'r', encoding='utf-8') as f:
         content = f.read()

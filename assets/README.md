@@ -1,5 +1,5 @@
-# TaskFlow Static Assets
+# Tempo Static Assets
 
-This directory contains static assets for TaskFlow:
+This directory contains static assets for Tempo:
 - `icons/`: Custom vector and raster iconography.
 - `images/`: Brand graphics and illustrations.
