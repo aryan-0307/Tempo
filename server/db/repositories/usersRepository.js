@@ -63,7 +63,7 @@ export const usersRepository = {
   /**
    * Creates a new user account with hashed password
    */
-  async create({ username, email, passwordHash, fullName, avatarColor = '#84B3CE' }) {
+  async create({ username, email, passwordHash, fullName, avatarColor = '#6BAFA4' }) {
     const insertSql = `
       INSERT INTO users (username, email, password_hash, full_name, avatar_color)
       VALUES (?, ?, ?, ?, ?)
@@ -89,9 +89,9 @@ export const usersRepository = {
    */
   async createDefaultProjects(userId) {
     const defaultProjects = [
-      { key: `proj-work-${userId}`, name: 'Work', color: '#16587B' },
-      { key: `proj-personal-${userId}`, name: 'Personal', color: '#84B3CE' },
-      { key: `proj-design-${userId}`, name: 'Design System', color: '#16587B' }
+      { key: `proj-work-${userId}`, name: 'Work', color: '#6BAFA4' },
+      { key: `proj-personal-${userId}`, name: 'Personal', color: '#80B9A0' },
+      { key: `proj-design-${userId}`, name: 'Design System', color: '#88AFC2' }
     ];
 
     for (const p of defaultProjects) {

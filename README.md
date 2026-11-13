@@ -6,10 +6,11 @@ A clean, high-performance, minimalist task and productivity workspace engineered
 
 ## 🎨 Design System
 
-Tempo strictly implements the **Venice Blue, Rock Blue & Crisp White** design system (zero brown tones):
-- **Crisp White (`#FFFFFF`)**: Clean application canvas, cards, modal dialogs, and topbar.
-- **Rock Blue (`#84B3CE`)**: Active state indicator pills, brand accent, avatars, medium priority badges.
-- **Venice Blue (`#16587B`)**: Sidebar navigation background, primary typography, action buttons, strong structural borders.
+Tempo strictly implements the **Carbon & Sage Teal** design system — a sophisticated, minimal, dark aesthetic inspired by Linear, Slack, and Notion:
+- **Soft Carbon & Graphite (`#151719`, `#202426`, `#303739`)**: Main canvas, sidebar navigation, topbar, and cards.
+- **Sage Teal (`#6BAFA4`, `#A2D2C9`, `#83C3B7`)**: Primary buttons, active indicators, focus rings, brand accents.
+- **High-Legibility Typography (`#E7EAE9`, `#A3ACAA`, `#84918E`)**: Primary headings, secondary metadata, and muted timestamps.
+- **Subtle Borders & Status Colors (`#3B4444`, `#80B9A0`, `#D2AD70`, `#D98B83`, `#88AFC2`)**.
 
 Specification: [DESIGN.md](DESIGN.md)
 

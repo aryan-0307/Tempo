@@ -32,7 +32,7 @@ TEST_SUITES = [
         'file': 'tests/test_backend_api.py'
     },
     {
-        'name': 'Venice Blue, Rock Blue & Crisp White Palette Compliance',
+        'name': 'Carbon & Sage Teal Palette Compliance',
         'file': 'tests/test_color_palette.py'
     },
     {

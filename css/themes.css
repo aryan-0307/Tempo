@@ -1,0 +1,281 @@
+/**
+ * Tempo Handcrafted Themes
+ * 10 Multi-Theme Presets (Carbon & Sage Teal, Midnight Navy, Obsidian Amber,
+ * Forest Emerald, Nordic Frost, Sunset Crimson, Cyberpunk Violet, Monochrome Slate,
+ * Warm Sepia, and Paper Light)
+ */
+
+/* ==========================================================================
+   1. Carbon & Sage Teal (Default Theme)
+   ========================================================================== */
+[data-theme="carbon-teal"],
+:root:not([data-theme]) {
+  --bg-main: #151719;
+  --bg-sidebar: #202426;
+  --bg-header: #202426;
+  --bg-card: #303739;
+  --bg-elevated: #373F40;
+  --bg-hover: #303A39;
+  --text-primary: #E7EAE9;
+  --text-secondary: #A3ACAA;
+  --text-muted: #84918E;
+  --accent-primary: #6BAFA4;
+  --accent-light: #A2D2C9;
+  --accent-hover: #83C3B7;
+  --accent-subtle: #344A46;
+  --border-default: #3B4444;
+  --border-focus: #6BAFA4;
+  --btn-primary-text: #14211E;
+}
+
+/* ==========================================================================
+   2. Midnight Navy
+   ========================================================================== */
+[data-theme="midnight-navy"] {
+  --bg-main: #0B132B;
+  --bg-sidebar: #1C2541;
+  --bg-header: #1C2541;
+  --bg-card: #222E50;
+  --bg-elevated: #2A3862;
+  --bg-hover: #233157;
+  --text-primary: #E0E7FF;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --accent-primary: #38BDF8;
+  --accent-light: #7DD3FC;
+  --accent-hover: #0EA5E9;
+  --accent-subtle: #1E3A5F;
+  --border-default: #2E3E64;
+  --border-focus: #38BDF8;
+  --btn-primary-text: #082F49;
+}
+
+/* ==========================================================================
+   3. Obsidian Amber
+   ========================================================================== */
+[data-theme="obsidian-amber"] {
+  --bg-main: #121214;
+  --bg-sidebar: #1A1A1E;
+  --bg-header: #1A1A1E;
+  --bg-card: #24242A;
+  --bg-elevated: #2E2E36;
+  --bg-hover: #282830;
+  --text-primary: #F4F4F5;
+  --text-secondary: #A1A1AA;
+  --text-muted: #71717A;
+  --accent-primary: #F59E0B;
+  --accent-light: #FCD34D;
+  --accent-hover: #D97706;
+  --accent-subtle: #452D12;
+  --border-default: #33333D;
+  --border-focus: #F59E0B;
+  --btn-primary-text: #451A03;
+}
+
+/* ==========================================================================
+   4. Forest Emerald
+   ========================================================================== */
+[data-theme="forest-emerald"] {
+  --bg-main: #0E1A16;
+  --bg-sidebar: #162621;
+  --bg-header: #162621;
+  --bg-card: #1E332D;
+  --bg-elevated: #28443C;
+  --bg-hover: #223B33;
+  --text-primary: #ECFDF5;
+  --text-secondary: #A7F3D0;
+  --text-muted: #6EE7B7;
+  --accent-primary: #10B981;
+  --accent-light: #34D399;
+  --accent-hover: #059669;
+  --accent-subtle: #133D30;
+  --border-default: #2A483E;
+  --border-focus: #10B981;
+  --btn-primary-text: #064E3B;
+}
+
+/* ==========================================================================
+   5. Nordic Frost
+   ========================================================================== */
+[data-theme="nordic-frost"] {
+  --bg-main: #10161A;
+  --bg-sidebar: #182228;
+  --bg-header: #182228;
+  --bg-card: #202D36;
+  --bg-elevated: #283944;
+  --bg-hover: #24343F;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-muted: #64748B;
+  --accent-primary: #60A5FA;
+  --accent-light: #93C5FD;
+  --accent-hover: #3B82F6;
+  --accent-subtle: #1E334D;
+  --border-default: #2F414E;
+  --border-focus: #60A5FA;
+  --btn-primary-text: #0F172A;
+}
+
+/* ==========================================================================
+   6. Sunset Crimson
+   ========================================================================== */
+[data-theme="sunset-crimson"] {
+  --bg-main: #181116;
+  --bg-sidebar: #241A21;
+  --bg-header: #241A21;
+  --bg-card: #31232D;
+  --bg-elevated: #3E2D3A;
+  --bg-hover: #372833;
+  --text-primary: #FDF2F8;
+  --text-secondary: #F472B6;
+  --text-muted: #BE185D;
+  --accent-primary: #FB7185;
+  --accent-light: #FDA4AF;
+  --accent-hover: #F43F5E;
+  --accent-subtle: #4C1D32;
+  --border-default: #473241;
+  --border-focus: #FB7185;
+  --btn-primary-text: #4C0519;
+}
+
+/* ==========================================================================
+   7. Cyberpunk Violet
+   ========================================================================== */
+[data-theme="cyberpunk-violet"] {
+  --bg-main: #13111C;
+  --bg-sidebar: #1C1929;
+  --bg-header: #1C1929;
+  --bg-card: #27233A;
+  --bg-elevated: #322D4B;
+  --bg-hover: #2C2842;
+  --text-primary: #F5F3FF;
+  --text-secondary: #C4B5FD;
+  --text-muted: #8B5CF6;
+  --accent-primary: #A855F7;
+  --accent-light: #C084FC;
+  --accent-hover: #9333EA;
+  --accent-subtle: #3B2063;
+  --border-default: #3D365A;
+  --border-focus: #A855F7;
+  --btn-primary-text: #2E1065;
+}
+
+/* ==========================================================================
+   8. Monochrome Slate
+   ========================================================================== */
+[data-theme="monochrome-slate"] {
+  --bg-main: #18181B;
+  --bg-sidebar: #222226;
+  --bg-header: #222226;
+  --bg-card: #2C2C32;
+  --bg-elevated: #383840;
+  --bg-hover: #323238;
+  --text-primary: #FAFAFA;
+  --text-secondary: #D4D4D8;
+  --text-muted: #A1A1AA;
+  --accent-primary: #E4E4E7;
+  --accent-light: #FFFFFF;
+  --accent-hover: #D4D4D8;
+  --accent-subtle: #3F3F46;
+  --border-default: #43434C;
+  --border-focus: #E4E4E7;
+  --btn-primary-text: #18181B;
+}
+
+/* ==========================================================================
+   9. Warm Sepia
+   ========================================================================== */
+[data-theme="warm-sepia"] {
+  --bg-main: #1A1614;
+  --bg-sidebar: #26201D;
+  --bg-header: #26201D;
+  --bg-card: #342C28;
+  --bg-elevated: #423833;
+  --bg-hover: #3B322D;
+  --text-primary: #FBF8F5;
+  --text-secondary: #D6C7BC;
+  --text-muted: #A8978B;
+  --accent-primary: #D97706;
+  --accent-light: #FBBF24;
+  --accent-hover: #B45309;
+  --accent-subtle: #4A3525;
+  --border-default: #4A3F39;
+  --border-focus: #D97706;
+  --btn-primary-text: #2A1706;
+}
+
+/* ==========================================================================
+   10. Paper Light
+   ========================================================================== */
+[data-theme="paper-light"] {
+  --bg-main: #F8FAFC;
+  --bg-sidebar: #F1F5F9;
+  --bg-header: #F1F5F9;
+  --bg-card: #FFFFFF;
+  --bg-elevated: #E2E8F0;
+  --bg-hover: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-muted: #64748B;
+  --accent-primary: #0EA5E9;
+  --accent-light: #0284C7;
+  --accent-hover: #0369A1;
+  --accent-subtle: #E0F2FE;
+  --border-default: #CBD5E1;
+  --border-focus: #0EA5E9;
+  --btn-primary-text: #FFFFFF;
+}
+
+/* ==========================================================================
+   Swatch Preview Dots for Theme Cards
+   ========================================================================== */
+.theme-swatches[data-theme-preview="carbon-teal"] .swatch-1 { background-color: #151719; }
+.theme-swatches[data-theme-preview="carbon-teal"] .swatch-2 { background-color: #202426; }
+.theme-swatches[data-theme-preview="carbon-teal"] .swatch-3 { background-color: #303739; }
+.theme-swatches[data-theme-preview="carbon-teal"] .swatch-4 { background-color: #6BAFA4; }
+
+.theme-swatches[data-theme-preview="midnight-navy"] .swatch-1 { background-color: #0B132B; }
+.theme-swatches[data-theme-preview="midnight-navy"] .swatch-2 { background-color: #1C2541; }
+.theme-swatches[data-theme-preview="midnight-navy"] .swatch-3 { background-color: #222E50; }
+.theme-swatches[data-theme-preview="midnight-navy"] .swatch-4 { background-color: #38BDF8; }
+
+.theme-swatches[data-theme-preview="obsidian-amber"] .swatch-1 { background-color: #121214; }
+.theme-swatches[data-theme-preview="obsidian-amber"] .swatch-2 { background-color: #1A1A1E; }
+.theme-swatches[data-theme-preview="obsidian-amber"] .swatch-3 { background-color: #24242A; }
+.theme-swatches[data-theme-preview="obsidian-amber"] .swatch-4 { background-color: #F59E0B; }
+
+.theme-swatches[data-theme-preview="forest-emerald"] .swatch-1 { background-color: #0E1A16; }
+.theme-swatches[data-theme-preview="forest-emerald"] .swatch-2 { background-color: #162621; }
+.theme-swatches[data-theme-preview="forest-emerald"] .swatch-3 { background-color: #1E332D; }
+.theme-swatches[data-theme-preview="forest-emerald"] .swatch-4 { background-color: #10B981; }
+
+.theme-swatches[data-theme-preview="nordic-frost"] .swatch-1 { background-color: #10161A; }
+.theme-swatches[data-theme-preview="nordic-frost"] .swatch-2 { background-color: #182228; }
+.theme-swatches[data-theme-preview="nordic-frost"] .swatch-3 { background-color: #202D36; }
+.theme-swatches[data-theme-preview="nordic-frost"] .swatch-4 { background-color: #60A5FA; }
+
+.theme-swatches[data-theme-preview="sunset-crimson"] .swatch-1 { background-color: #181116; }
+.theme-swatches[data-theme-preview="sunset-crimson"] .swatch-2 { background-color: #241A21; }
+.theme-swatches[data-theme-preview="sunset-crimson"] .swatch-3 { background-color: #31232D; }
+.theme-swatches[data-theme-preview="sunset-crimson"] .swatch-4 { background-color: #FB7185; }
+
+.theme-swatches[data-theme-preview="cyberpunk-violet"] .swatch-1 { background-color: #13111C; }
+.theme-swatches[data-theme-preview="cyberpunk-violet"] .swatch-2 { background-color: #1C1929; }
+.theme-swatches[data-theme-preview="cyberpunk-violet"] .swatch-3 { background-color: #27233A; }
+.theme-swatches[data-theme-preview="cyberpunk-violet"] .swatch-4 { background-color: #A855F7; }
+
+.theme-swatches[data-theme-preview="monochrome-slate"] .swatch-1 { background-color: #18181B; }
+.theme-swatches[data-theme-preview="monochrome-slate"] .swatch-2 { background-color: #222226; }
+.theme-swatches[data-theme-preview="monochrome-slate"] .swatch-3 { background-color: #2C2C32; }
+.theme-swatches[data-theme-preview="monochrome-slate"] .swatch-4 { background-color: #E4E4E7; }
+
+.theme-swatches[data-theme-preview="warm-sepia"] .swatch-1 { background-color: #1A1614; }
+.theme-swatches[data-theme-preview="warm-sepia"] .swatch-2 { background-color: #26201D; }
+.theme-swatches[data-theme-preview="warm-sepia"] .swatch-3 { background-color: #342C28; }
+.theme-swatches[data-theme-preview="warm-sepia"] .swatch-4 { background-color: #D97706; }
+
+.theme-swatches[data-theme-preview="paper-light"] .swatch-1 { background-color: #F8FAFC; }
+.theme-swatches[data-theme-preview="paper-light"] .swatch-2 { background-color: #F1F5F9; }
+.theme-swatches[data-theme-preview="paper-light"] .swatch-3 { background-color: #FFFFFF; }
+.theme-swatches[data-theme-preview="paper-light"] .swatch-4 { background-color: #0EA5E9; }
+

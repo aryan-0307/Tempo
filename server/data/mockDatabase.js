@@ -13,9 +13,9 @@ function getISODateOffset(dayOffset = 0) {
 }
 
 const SEED_PROJECTS = [
-  { id: 'proj-1', name: 'Work', color: '#16587B' },
-  { id: 'proj-2', name: 'Personal', color: '#84B3CE' },
-  { id: 'proj-3', name: 'Design System', color: '#16587B' }
+  { id: 'proj-1', name: 'Work', color: '#6BAFA4' },
+  { id: 'proj-2', name: 'Personal', color: '#80B9A0' },
+  { id: 'proj-3', name: 'Design System', color: '#88AFC2' }
 ];
 
 const SEED_TASKS = [
@@ -117,7 +117,7 @@ class MockDatabase {
     // 3. Filter by Search Keyword
     if (search) {
       const q = search.trim().toLowerCase();
-      results = results.filter(t => 
+      results = results.filter(t =>
         t.title.toLowerCase().includes(q) ||
         t.project.toLowerCase().includes(q) ||
         t.priority.toLowerCase().includes(q)

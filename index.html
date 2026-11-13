@@ -326,6 +326,103 @@
               <button type="button" class="btn btn-secondary" id="empty-state-create-btn">Create Task</button>
             </div>
           </section>
+
+          <!-- 5. Settings & Profile Section -->
+          <section class="settings-section" id="settings-section" hidden aria-labelledby="settings-heading">
+            <div class="settings-header">
+              <div class="settings-title-group">
+                <h2 id="settings-heading" class="section-title">Settings &amp; Workspace Preferences</h2>
+                <span class="section-subtitle">Manage your personal profile, account credentials, and visual workspace theme</span>
+              </div>
+            </div>
+
+            <div class="settings-grid">
+              <!-- Profile Details Form Card -->
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="settings-card-title">User Profile</h3>
+                    <p class="settings-card-desc">Personal details and workspace public identity</p>
+                  </div>
+                </div>
+
+                <form id="settings-profile-form" class="settings-form">
+                  <div class="settings-profile-preview">
+                    <div class="settings-avatar-preview" id="settings-avatar-preview">AM</div>
+                    <div class="settings-avatar-meta">
+                      <span class="settings-avatar-name" id="settings-avatar-name">Alex Morgan</span>
+                      <span class="settings-avatar-email" id="settings-avatar-email">alex@tempo.dev</span>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="settings-fullname-input" class="form-label">Full Name <span class="required">*</span></label>
+                      <input type="text" id="settings-fullname-input" class="form-input" value="Alex Morgan" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="settings-username-input" class="form-label">Username <span class="required">*</span></label>
+                      <input type="text" id="settings-username-input" class="form-input" value="alexmorgan" required>
+                    </div>
+                  </div>
+
+                  <div class="form-row">
+                    <div class="form-group">
+                      <label for="settings-email-input" class="form-label">Email Address <span class="required">*</span></label>
+                      <input type="email" id="settings-email-input" class="form-input" value="alex@tempo.dev" required>
+                    </div>
+                    <div class="form-group">
+                      <label for="settings-title-input" class="form-label">Job Title / Role</label>
+                      <input type="text" id="settings-title-input" class="form-input" placeholder="e.g. Lead Designer &amp; Engineer" value="Product Designer">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="settings-bio-input" class="form-label">About / Bio</label>
+                    <textarea id="settings-bio-input" class="form-textarea" rows="3" placeholder="Tell us a bit about your work and workflow...">Focusing on minimal productivity interfaces and design systems.</textarea>
+                  </div>
+
+                  <div class="settings-form-actions">
+                    <button type="button" id="settings-profile-reset-btn" class="btn btn-secondary">Discard</button>
+                    <button type="submit" id="settings-profile-save-btn" class="btn btn-primary">Save Profile</button>
+                  </div>
+                </form>
+              </div>
+
+              <!-- Workspace Theme Selector Card -->
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <circle cx="12" cy="12" r="5"></circle>
+                      <line x1="12" y1="1" x2="12" y2="3"></line>
+                      <line x1="12" y1="21" x2="12" y2="23"></line>
+                      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                      <line x1="1" y1="12" x2="3" y2="12"></line>
+                      <line x1="21" y1="12" x2="23" y2="12"></line>
+                      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="settings-card-title">Theme &amp; Appearance</h3>
+                    <p class="settings-card-desc">Choose from 10 handcrafted productivity themes</p>
+                  </div>
+                </div>
+
+                <div class="theme-selector-grid" id="theme-selector-grid" role="radiogroup" aria-label="Theme Selection">
+                  <!-- Dynamically populated by settings.js -->
+                </div>
+              </div>
+            </div>
+          </section>
         </div>
       </main>
 

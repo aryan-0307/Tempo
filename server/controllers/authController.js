@@ -68,7 +68,7 @@ export const authController = {
         email,
         passwordHash,
         fullName,
-        avatarColor: avatarColor || '#84B3CE'
+        avatarColor: avatarColor || '#6BAFA4'
       });
 
       // 4. Generate Authentication Token

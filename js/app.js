@@ -9,6 +9,7 @@ import { Header } from './components/header.js';
 import { Overview } from './components/overview.js';
 import { Tasks } from './components/tasks.js';
 import { Modal, AuthModal } from './components/modal.js';
+import { Settings } from './components/settings.js';
 import { api } from './services/api.js';
 
 class TempoApp {
@@ -20,6 +21,7 @@ class TempoApp {
     this.tasks = null;
     this.modal = null;
     this.authModal = null;
+    this.settings = null;
   }
 
   init() {
@@ -47,6 +49,10 @@ class TempoApp {
     // 5. Initialize Tasks Section (CRUD, sorting, filtering, drag-and-drop)
     this.tasks = new Tasks(this.state, this.modal);
     this.tasks.init();
+
+    // 6. Initialize Settings & Theme Manager (10 Handcrafted Themes)
+    this.settings = new Settings(this.state);
+    this.settings.init();
 
     // 6. Global Keyboard Shortcuts
     this.bindGlobalShortcuts();

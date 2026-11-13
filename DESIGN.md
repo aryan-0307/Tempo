@@ -1,105 +1,165 @@
 # Tempo Design System Specification
 
-## Theme: Venice Blue, Rock Blue & Crisp White (Zero Brown Tones)
+## Theme: Carbon & Sage Teal
 
-### 1. Palette Overview
-The design system exclusively uses the 3-color palette shown below. All brown, beige, tan, cream, and legacy tones have been completely eliminated from the entire site. The application features a rich, professional Venice Blue sidebar with a crisp, minimal white workspace and Rock Blue active highlights.
+### 1. Overview & Aesthetic
+Tempo uses the **Carbon & Sage Teal** design system — a modern, minimal, sophisticated dark theme inspired by the clean, focused interfaces of Linear, Slack, and Notion.
 
-| Swatch | Color Name | Hex Code | RGB | Role in Tempo |
-| :--- | :--- | :--- | :--- | :--- |
-| <span style="display:inline-block;width:14px;height:14px;background-color:#FFFFFF;vertical-align:middle;border-radius:2px;border:1px solid #ccc;"></span> | **Crisp White** | `#FFFFFF` | `rgb(255, 255, 255)` | Main canvas background, card surfaces, topbar, modal dialogs, and inverse typography |
-| <span style="display:inline-block;width:14px;height:14px;background-color:#84B3CE;vertical-align:middle;border-radius:2px;"></span> | **Rock Blue** | `#84B3CE` | `rgb(132, 179, 206)` | Active sidebar indicator pills, brand icon accent, avatar fill, medium priority badges, hover tints |
-| <span style="display:inline-block;width:14px;height:14px;background-color:#16587B;vertical-align:middle;border-radius:2px;"></span> | **Venice Blue** | `#16587B` | `rgb(22, 88, 123)` | Sidebar background, primary typography, action buttons, active navigation, strong borders, dark accents |
+The interface emphasizes:
+- Soft carbon and graphite surfaces
+- Muted sage-teal accents
+- Minimal visual clutter
+- Clear task and project hierarchy
+- Comfortable contrast for extended working sessions
+- Subtle interactions and animations (150ms–200ms)
 
----
-
-### 2. Strict Deviation & Zero-Brown Policy
-- **Zero Brown / Beige / Cream**: All warm sand, beige, cream, or brownish tones (such as legacy Merino beige, Ivory cream, and Morning mist) are strictly forbidden.
-- **Zero Foreign Hues**: No unapproved colors (reds, greens, purples, oranges, or foreign blues) are permitted.
-- **Allowed Variations**: Every style across the entire application must be derived strictly from the three approved colors or their exact alpha channel opacities:
-  - `rgba(255, 255, 255, <alpha>)` — White opacities (sidebar text, overlays, subtle borders)
-  - `rgba(132, 179, 206, <alpha>)` — Rock Blue opacities (card hover surfaces, focus rings, tag fills, stat icon tints)
-  - `rgba(22, 88, 123, <alpha>)` — Venice Blue opacities (borders, shadows, dark overlays)
+Avoid saturated blue, neon cyan, pure black (`#000000`), and large pure-white surfaces.
 
 ---
 
-### 3. Design Tokens & Functional Mappings
+### 2. Core Color Palette
 
-#### 3.1 Backgrounds & Surfaces
-- **App Canvas (`--color-bg-app`)**: `#FFFFFF` (Crisp White) provides an ultra-clean, modern, minimalist workspace with zero dingy tint.
-- **Card Surfaces (`--color-bg-surface`)**: `#FFFFFF` for main cards, stat widgets, task items, topbar, and modal cards.
-- **Subtle Surface (`--color-bg-subtle`)**: `rgba(132, 179, 206, 0.12)` (light Rock Blue tint) for search bar, tag containers, and table headers.
-- **Hover Surface (`--color-bg-hover`)**: `rgba(132, 179, 206, 0.2)` for task item hover and secondary button hover.
-- **Active Surface (`--color-bg-active`)**: `rgba(22, 88, 123, 0.1)`.
+| UI Element | Hex Code | Role in Tempo |
+| :--- | :--- | :--- |
+| **Main background** | `#151719` | Main application canvas and outer workspace |
+| **Sidebar background** | `#202426` | Soft carbon-grey sidebar and sticky topbar |
+| **Card background** | `#303739` | Dashboard cards, task cards, search bar, modals |
+| **Elevated surfaces** | `#373F40` | Hover states, secondary buttons, toast container |
+| **Primary sage teal** | `#6BAFA4` | Primary buttons, active checkmarks, focus rings |
+| **Light sage teal** | `#A2D2C9` | Active navigation labels, icon accents, stat indicators |
+| **Primary text** | `#E7EAE9` | Headings, card metric values, task titles |
+| **Secondary text** | `#A3ACAA` | Subtitles, supporting labels, form labels, search placeholder |
+| **Muted text** | `#84918E` | Completed task text, timestamps, status bar |
+| **Borders** | `#3B4444` | Subtle graphite borders on cards, inputs, and dividers |
+| **Active navigation** | `#344A46` | Active navigation background pill |
+| **Hover background** | `#303A39` | Navigation item hover, subtle tag backgrounds |
 
-#### 3.2 Sidebar Tokens (Rich Venice Blue)
-- **Sidebar Background (`--color-sidebar-bg`)**: `#16587B` (Venice Blue).
-- **Sidebar Text (`--color-sidebar-text`)**: `#FFFFFF`.
-- **Sidebar Text Muted (`--color-sidebar-text-muted`)**: `rgba(255, 255, 255, 0.7)`.
-- **Sidebar Hover (`--color-sidebar-hover`)**: `rgba(255, 255, 255, 0.1)`.
-- **Sidebar Active Indicator (`--color-sidebar-active`)**: `#84B3CE` (Rock Blue).
-- **Sidebar Active Text (`--color-sidebar-active-text`)**: `#16587B` (Venice Blue).
-- **Sidebar Border (`--color-sidebar-border`)**: `rgba(255, 255, 255, 0.12)`.
+#### Status & Semantic Accents
+| Accent | Hex Code | Role |
+| :--- | :--- | :--- |
+| **Status Success** | `#80B9A0` | Completed status, online dot, Personal project dot |
+| **Status Warning** | `#D2AD70` | Warning notifications, medium indicators |
+| **Status Danger** | `#D98B83` | Overdue indicators, delete action hover |
+| **Status Info** | `#88AFC2` | Pending indicators, Design System project dot |
+| **Primary Button Text** | `#14211E` | High-contrast dark text on sage-teal buttons |
 
-#### 3.3 Borders & Dividers
-- **Standard Border (`--color-border`)**: `rgba(22, 88, 123, 0.18)` provides clean architectural framing without harshness.
-- **Subtle Border (`--color-border-subtle`)**: `rgba(22, 88, 123, 0.1)`.
-- **Focus Border (`--color-border-focus`)**: `#16587B` (Venice Blue).
-- **Strong Border (`--color-border-strong`)**: `#16587B` (Venice Blue).
-
-#### 3.4 Typography
-- **Primary Text (`--color-text-primary`)**: `#16587B` (Venice Blue). 7.5:1 contrast on white canvas (WCAG AAA Pass).
-- **Secondary Text (`--color-text-secondary`)**: `rgba(22, 88, 123, 0.8)`. Used for subtitles, descriptions, and metadata.
-- **Muted Text (`--color-text-muted`)**: `rgba(22, 88, 123, 0.6)`. Used for timestamps, shortcuts, and counters.
-- **Inverse Text (`--color-text-inverse`)**: `#FFFFFF` on dark buttons, badges, and the Venice Blue sidebar.
-
-#### 3.5 Buttons & Controls
-- **Primary Button**:
-  - Background: `#16587B` (Venice Blue)
-  - Text: `#FFFFFF`
-  - Hover: `#16587B` with subtle elevation
-- **Secondary Button**:
-  - Background: `#FFFFFF`
-  - Border: `rgba(22, 88, 123, 0.25)`
-  - Text: `#16587B`
-  - Hover: `rgba(132, 179, 206, 0.15)` with `#84B3CE` border
-- **Icon Button**:
-  - Color: `#16587B`
-  - Hover Background: `rgba(132, 179, 206, 0.2)`
-
-#### 3.6 Priority Indicators
-- **High Priority**: Solid `#16587B` (Venice Blue) background with `#FFFFFF` text.
-- **Medium Priority**: `#84B3CE` (Rock Blue) background with `#16587B` (Venice Blue) text and `rgba(22, 88, 123, 0.3)` border.
-- **Low Priority**: `rgba(132, 179, 206, 0.2)` background with `#16587B` (Venice Blue) text and `rgba(22, 88, 123, 0.2)` border.
-
-#### 3.7 Project Categorization
-- **Work**: `#84B3CE` (Rock Blue) dot.
-- **Personal**: `#FFFFFF` (Crisp White) dot.
-- **Design System**: `rgba(255, 255, 255, 0.5)` dot.
-
-#### 3.8 Stat Metric Cards
-- **Total Tasks**: `#16587B` icon on `rgba(22, 88, 123, 0.12)` background.
-- **Completed Tasks**: `#16587B` icon on `rgba(132, 179, 206, 0.3)` background.
-- **Pending Tasks**: `#16587B` icon on `rgba(132, 179, 206, 0.2)` background.
-- **Overdue Tasks**: `#16587B` icon on `rgba(22, 88, 123, 0.18)` background.
-
-#### 3.9 Checkbox & Interactive Indicators
-- **Unchecked**: Border `rgba(22, 88, 123, 0.35)`, Background `#FFFFFF`.
-- **Hover**: Border `#16587B`.
-- **Checked**: Background `#16587B`, Border `#16587B`, Checkmark `#FFFFFF`.
-- **Focus Ring**: `box-shadow: 0 0 0 3px rgba(22, 88, 123, 0.2)`.
-
-#### 3.10 Modals & Overlays
-- **Backdrop**: `rgba(22, 88, 123, 0.45)` with `backdrop-filter: blur(2px)`.
-- **Card**: `#FFFFFF` background, `rgba(22, 88, 123, 0.2)` border, `#16587B` text.
-- **Inputs**: `#FFFFFF` background, `rgba(22, 88, 123, 0.2)` border, `#16587B` text.
+#### Priority Badges
+| Priority | Text | Background | Border |
+| :--- | :--- | :--- | :--- |
+| **High** | `#E5A49D` | `#513A39` | `#3B4444` |
+| **Medium** | `#E0BC80` | `#514638` | `#3B4444` |
+| **Low** | `#A5C4D0` | `#35464C` | `#3B4444` |
 
 ---
 
-### 4. Accessibility & Contrast Compliance
+### 3. Global CSS Variables
 
-| Pairing | Text / Foreground | Background Surface | Contrast Ratio | Rating |
-| :--- | :--- | :--- | :--- | :--- |
-| Venice Blue on White | `#16587B` | `#FFFFFF` | **7.5 : 1** | **AAA Pass** |
-| White on Venice Blue | `#FFFFFF` | `#16587B` | **7.5 : 1** | **AAA Pass** |
-| Venice Blue on Rock Blue | `#16587B` | `#84B3CE` | **4.5 : 1** | **AA Pass** |
+```css
+:root {
+  /* Backgrounds */
+  --bg-main: #151719;
+  --bg-sidebar: #202426;
+  --bg-header: #202426;
+  --bg-card: #303739;
+  --bg-elevated: #373F40;
+  --bg-hover: #303A39;
+
+  /* Typography */
+  --text-primary: #E7EAE9;
+  --text-secondary: #A3ACAA;
+  --text-muted: #84918E;
+
+  /* Sage Teal */
+  --accent-primary: #6BAFA4;
+  --accent-light: #A2D2C9;
+  --accent-hover: #83C3B7;
+  --accent-subtle: #344A46;
+
+  /* Borders */
+  --border-default: #3B4444;
+  --border-focus: #6BAFA4;
+
+  /* Status */
+  --status-success: #80B9A0;
+  --status-warning: #D2AD70;
+  --status-danger: #D98B83;
+  --status-info: #88AFC2;
+
+  /* Priority Badges */
+  --priority-high-text: #E5A49D;
+  --priority-high-bg: #513A39;
+  --priority-med-text: #E0BC80;
+  --priority-med-bg: #514638;
+  --priority-low-text: #A5C4D0;
+  --priority-low-bg: #35464C;
+
+  /* Shadows */
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.10);
+
+  /* Motion */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+}
+```
+
+---
+
+### 4. Component Guidelines
+
+#### 4.1 Sidebar
+- Background: `#202426`
+- Primary text: `#E7EAE9`, Secondary text & icons: `#A3ACAA`
+- Active nav item: Background `#344A46`, text `#A2D2C9`
+- Hover state: Background `#303A39`
+- Dividers: `#3B4444`
+
+#### 4.2 Topbar & Header
+- Background: `#202426`, Bottom border: `#3B4444`
+- Search bar: Background `#303739`, Border `#3B4444`, Text `#E7EAE9`, Focus border `#6BAFA4`
+- Icons: `#A3ACAA`, Icon hover: `#A2D2C9`
+
+#### 4.3 Dashboard Metric Cards
+- Background: `#303739`, Border: `1px solid #3B4444`, Radius: `12px`
+- Numbers: `#E7EAE9`, Labels: `#A3ACAA`, Icons: `#A2D2C9`
+
+#### 4.4 Task Cards & Lists
+- Background: `#303739`, Hover: `#373F40`, Border: `#3B4444`
+- Title: `#E7EAE9`, Metadata: `#A3ACAA`
+- Completed task text: `#84918E` (with strike-through)
+- Checkbox accent: `#6BAFA4` (checked with `#14211E` mark)
+
+#### 4.5 Buttons & Forms
+- Primary button: Background `#6BAFA4`, Text `#14211E`, Hover `#83C3B7`, Radius `8px`
+- Secondary button: Background `#303739`, Text `#E7EAE9`, Border `#3B4444`, Hover `#373F40`
+- Form inputs: Background `#151719`, Border `#3B4444`, Text `#E7EAE9`, Focus `#6BAFA4`
+
+#### 4.6 Modals, Dialogs & Overlays
+- Backdrop: `rgba(21, 23, 25, 0.75)` with `backdrop-filter: blur(4px)`
+- Card: Background `#303739`, Border `#3B4444`, Radius `12px`
+
+---
+
+### 5. Accessibility & Motion
+- All text meets **WCAG AA** contrast requirements on their respective surfaces.
+- Focus outlines remain distinct and accessible (`--border-focus: #6BAFA4`).
+- All transitions are subtle (150ms–200ms) with `prefers-reduced-motion` support.
+
+---
+
+### 6. Handcrafted Multi-Theme Architecture (10 Presets)
+
+Tempo includes a built-in theme engine enabling users to select their preferred appearance from the **Settings & Preferences** page. Selection is applied instantly via `[data-theme="..."]` and persisted to `localStorage ('tempo_theme')`.
+
+| Theme ID | Theme Name | Primary Aesthetic | Dominant Accents |
+| :--- | :--- | :--- | :--- |
+| `carbon-teal` | **Carbon & Sage Teal** (Default) | Graphite dark theme | Soft Sage Teal (`#6BAFA4`) |
+| `midnight-navy` | **Midnight Navy** | Deep oceanic slate | Electric Cyan (`#38BDF8`) |
+| `obsidian-amber` | **Obsidian Amber** | Dark charcoal canvas | Warm Radiant Amber (`#F59E0B`) |
+| `forest-emerald` | **Forest Emerald** | Botanical moss surfaces | Vibrant Emerald (`#10B981`) |
+| `nordic-frost` | **Nordic Frost** | Cool arctic slate | Ice Glacier Blue (`#60A5FA`) |
+| `sunset-crimson` | **Sunset Crimson** | Deep plum & graphite | Coral Rose & Crimson (`#FB7185`) |
+| `cyberpunk-violet` | **Cyberpunk Violet** | Ultra-deep violet canvas | Electric Purple (`#A855F7`) |
+| `monochrome-slate` | **Monochrome Slate** | Minimal high-contrast graphite | Platinum Silver (`#E4E4E7`) |
+| `warm-sepia` | **Warm Sepia** | Roasted espresso & caramel | Warm Caramel (`#D97706`) |
+| `paper-light` | **Paper Light** | Architectural clean light mode | Precision Sky Blue (`#0EA5E9`) |
+

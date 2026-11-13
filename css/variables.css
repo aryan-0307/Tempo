@@ -1,88 +1,135 @@
 /**
  * Tempo Design System Variables
- * Theme: Venice Blue, Rock Blue & Crisp White (Zero Brown Tones)
- * Palette: #FFFFFF, #84B3CE, #16587B
+ * Theme: Carbon & Sage Teal (Dark Graphite & Muted Sage Accents)
+ * Modern, minimal, sophisticated, professional
  */
 
 :root {
-  /* Core Palette Tokens */
-  --color-white: #FFFFFF;
-  --color-rock-blue: #84B3CE;
-  --color-venice-blue: #16587B;
+  /* ==========================================================================
+     Core Theme Tokens (Carbon & Sage Teal)
+     ========================================================================== */
 
-  /* Color Palette - Neutrals & Surfaces */
-  --color-bg-app: #FFFFFF;
-  --color-bg-surface: #FFFFFF;
-  --color-bg-subtle: rgba(132, 179, 206, 0.12);
-  --color-bg-hover: rgba(132, 179, 206, 0.2);
-  --color-bg-active: rgba(22, 88, 123, 0.1);
-
-  /* Sidebar Tokens (Rich Venice Blue) */
-  --color-sidebar-bg: var(--color-venice-blue);
-  --color-sidebar-text: #FFFFFF;
-  --color-sidebar-text-muted: rgba(255, 255, 255, 0.7);
-  --color-sidebar-hover: rgba(255, 255, 255, 0.1);
-  --color-sidebar-active: var(--color-rock-blue);
-  --color-sidebar-active-text: var(--color-venice-blue);
-  --color-sidebar-border: rgba(255, 255, 255, 0.12);
-
-  /* Color Palette - Borders & Dividers */
-  --color-border-subtle: rgba(22, 88, 123, 0.1);
-  --color-border: rgba(22, 88, 123, 0.18);
-  --color-border-focus: var(--color-venice-blue);
-  --color-border-strong: var(--color-venice-blue);
-
-  /* Color Palette - Typography */
-  --color-text-primary: var(--color-venice-blue);
-  --color-text-secondary: rgba(22, 88, 123, 0.8);
-  --color-text-muted: rgba(22, 88, 123, 0.6);
-  --color-text-inverse: #FFFFFF;
-
-  /* Color Palette - Brand & Accents */
-  --color-primary: var(--color-venice-blue);
-  --color-primary-hover: var(--color-venice-blue);
-  --color-primary-subtle: rgba(132, 179, 206, 0.25);
-  --color-accent: var(--color-rock-blue);
-
-  /* Status Colors */
-  --color-success: var(--color-venice-blue);
-  --color-warning: var(--color-venice-blue);
-  --color-danger: var(--color-venice-blue);
-
-  /* Priority Badges */
-  --color-priority-high-bg: var(--color-venice-blue);
-  --color-priority-high-text: #FFFFFF;
-  --color-priority-high-border: var(--color-venice-blue);
-
-  --color-priority-medium-bg: var(--color-rock-blue);
-  --color-priority-medium-text: var(--color-venice-blue);
-  --color-priority-medium-border: rgba(22, 88, 123, 0.3);
-
-  --color-priority-low-bg: rgba(132, 179, 206, 0.2);
-  --color-priority-low-text: var(--color-venice-blue);
-  --color-priority-low-border: rgba(22, 88, 123, 0.2);
-
-  /* Project Badges */
-  --color-project-work: var(--color-rock-blue);
-  --color-project-personal: #FFFFFF;
-  --color-project-design: rgba(255, 255, 255, 0.5);
+  /* Backgrounds */
+  --bg-main: #151719;
+  --bg-sidebar: #202426;
+  --bg-header: #202426;
+  --bg-card: #303739;
+  --bg-elevated: #373F40;
+  --bg-hover: #303A39;
 
   /* Typography */
+  --text-primary: #E7EAE9;
+  --text-secondary: #A3ACAA;
+  --text-muted: #84918E;
+
+  /* Sage Teal */
+  --accent-primary: #6BAFA4;
+  --accent-light: #A2D2C9;
+  --accent-hover: #83C3B7;
+  --accent-subtle: #344A46;
+
+  /* Borders */
+  --border-default: #3B4444;
+  --border-focus: #6BAFA4;
+
+  /* Status */
+  --status-success: #80B9A0;
+  --status-warning: #D2AD70;
+  --status-danger: #D98B83;
+  --status-info: #88AFC2;
+
+  /* Priority Badges */
+  --priority-high-text: #E5A49D;
+  --priority-high-bg: #513A39;
+  --priority-med-text: #E0BC80;
+  --priority-med-bg: #514638;
+  --priority-low-text: #A5C4D0;
+  --priority-low-bg: #35464C;
+
+  /* Button Text */
+  --btn-primary-text: #14211E;
+
+  /* Project Badges */
+  --color-project-work: #6BAFA4;
+  --color-project-personal: #80B9A0;
+  --color-project-design: #88AFC2;
+
+  /* Shadows */
+  --shadow-card: 0 2px 10px rgba(0, 0, 0, 0.10);
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.20);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.30);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.40);
+
+  /* Motion */
+  --transition-fast: 150ms ease;
+  --transition-normal: 200ms ease;
+
+  /* ==========================================================================
+     Compatibility & Semantic Aliases
+     ========================================================================== */
+  --color-bg-app: var(--bg-main);
+  --color-bg-surface: var(--bg-card);
+  --color-bg-subtle: var(--bg-hover);
+  --color-bg-hover: var(--bg-elevated);
+  --color-bg-active: var(--accent-subtle);
+
+  /* Sidebar Tokens (Soft Carbon-Grey) */
+  --color-sidebar-bg: var(--bg-sidebar);
+  --color-sidebar-text: var(--text-primary);
+  --color-sidebar-text-muted: var(--text-secondary);
+  --color-sidebar-hover: var(--bg-hover);
+  --color-sidebar-active: var(--accent-subtle);
+  --color-sidebar-active-text: var(--accent-light);
+  --color-sidebar-border: var(--border-default);
+
+  /* Borders & Dividers */
+  --color-border-subtle: var(--border-default);
+  --color-border: var(--border-default);
+  --color-border-focus: var(--border-focus);
+  --color-border-strong: var(--border-focus);
+
+  /* Typography */
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-inverse: var(--btn-primary-text);
+
+  /* Brand & Accents */
+  --color-primary: var(--accent-primary);
+  --color-primary-hover: var(--accent-hover);
+  --color-primary-subtle: var(--accent-subtle);
+  --color-accent: var(--accent-light);
+
+  /* Status Colors */
+  --color-success: var(--status-success);
+  --color-warning: var(--status-warning);
+  --color-danger: var(--status-danger);
+  --color-info: var(--status-info);
+
+  /* Priority Badges */
+  --color-priority-high-bg: var(--priority-high-bg);
+  --color-priority-high-text: var(--priority-high-text);
+  --color-priority-high-border: var(--border-default);
+
+  --color-priority-medium-bg: var(--priority-med-bg);
+  --color-priority-medium-text: var(--priority-med-text);
+  --color-priority-medium-border: var(--border-default);
+
+  --color-priority-low-bg: var(--priority-low-bg);
+  --color-priority-low-text: var(--priority-low-text);
+  --color-priority-low-border: var(--border-default);
+
+  /* Typography Stacks & Scale */
   --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-family-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --font-size-xs: 0.75rem;
-  /* 12px */
-  --font-size-sm: 0.875rem;
-  /* 14px */
-  --font-size-base: 1rem;
-  /* 16px */
-  --font-size-lg: 1.125rem;
-  /* 18px */
-  --font-size-xl: 1.25rem;
-  /* 20px */
-  --font-size-2xl: 1.5rem;
-  /* 24px */
+  --font-size-xs: 0.75rem;    /* 12px */
+  --font-size-sm: 0.875rem;   /* 14px */
+  --font-size-base: 1rem;     /* 16px */
+  --font-size-lg: 1.125rem;   /* 18px */
+  --font-size-xl: 1.25rem;    /* 20px */
+  --font-size-2xl: 1.5rem;    /* 24px */
 
   --font-weight-normal: 400;
   --font-weight-medium: 500;
@@ -94,26 +141,16 @@
   --line-height-relaxed: 1.625;
 
   /* Spacing Scale */
-  --spacing-1: 0.25rem;
-  /* 4px */
-  --spacing-2: 0.5rem;
-  /* 8px */
-  --spacing-3: 0.75rem;
-  /* 12px */
-  --spacing-4: 1rem;
-  /* 16px */
-  --spacing-5: 1.25rem;
-  /* 20px */
-  --spacing-6: 1.5rem;
-  /* 24px */
-  --spacing-8: 2rem;
-  /* 32px */
-  --spacing-9: 2.25rem;
-  /* 36px */
-  --spacing-10: 2.5rem;
-  /* 40px */
-  --spacing-12: 3rem;
-  /* 48px */
+  --spacing-1: 0.25rem;       /* 4px */
+  --spacing-2: 0.5rem;        /* 8px */
+  --spacing-3: 0.75rem;       /* 12px */
+  --spacing-4: 1rem;          /* 16px */
+  --spacing-5: 1.25rem;       /* 20px */
+  --spacing-6: 1.5rem;        /* 24px */
+  --spacing-8: 2rem;          /* 32px */
+  --spacing-9: 2.25rem;       /* 36px */
+  --spacing-10: 2.5rem;       /* 40px */
+  --spacing-12: 3rem;         /* 48px */
 
   /* Layout Dimensions */
   --header-height: 56px;
@@ -127,16 +164,6 @@
   --radius-lg: 8px;
   --radius-xl: 12px;
   --radius-full: 9999px;
-
-  /* Subtle Shadows tinted with Venice Blue */
-  --shadow-xs: 0 1px 2px 0 rgba(22, 88, 123, 0.05);
-  --shadow-sm: 0 1px 3px 0 rgba(22, 88, 123, 0.08), 0 1px 2px -1px rgba(22, 88, 123, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(22, 88, 123, 0.08), 0 2px 4px -2px rgba(22, 88, 123, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(22, 88, 123, 0.12), 0 4px 6px -4px rgba(22, 88, 123, 0.08);
-
-  /* Transitions */
-  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-  --transition-normal: 200ms cubic-bezier(0.4, 0, 0.2, 1);
 
   /* Z-index layers */
   --z-base: 1;

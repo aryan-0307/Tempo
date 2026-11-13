@@ -491,3 +491,99 @@ Executed Phase 6 of the curriculum. Hardened the Express application for product
   9. Interactive JavaScript Functionality & State Store: PASS (0.05s)
 - Total Suites: 9 | Passed: 9 | Failed: 0 | Regressions: 0
 - Version: `1.0.0` Production Ready.
+
+---
+
+## 2026-11-13 — Visual Overhaul: Carbon & Sage Teal Design System Adoption
+
+### Context & Objective
+Redesigned Tempo's visual styling from the previous Venice Blue & White palette to the premium **Carbon & Sage Teal** design system. Delivered a modern, minimal, dark graphite aesthetic inspired by Linear, Slack, and Notion with soft carbon surfaces, muted sage-teal accents, and comfortable extended-session contrast. Strictly preserved all existing functionality, APIs, state management, and backend code.
+
+### Changes Implemented
+1. **Global CSS Variables & Theme Architecture (`css/variables.css`)**:
+   - Implemented core palette tokens:
+     - Main Background: `#151719` (`--bg-main`)
+     - Sidebar & Header: `#202426` (`--bg-sidebar`, `--bg-header`)
+     - Cards & Modals: `#303739` (`--bg-card`)
+     - Elevated & Hover: `#373F40` (`--bg-elevated`), `#303A39` (`--bg-hover`)
+     - Primary Sage Teal: `#6BAFA4` (`--accent-primary`)
+     - Light Sage Teal: `#A2D2C9` (`--accent-light`), Hover: `#83C3B7` (`--accent-hover`)
+     - Active Navigation: `#344A46` (`--accent-subtle`)
+     - Typography: `#E7EAE9` (primary), `#A3ACAA` (secondary), `#84918E` (muted)
+     - Borders: `#3B4444` (`--border-default`)
+     - Status: `#80B9A0` (success), `#D2AD70` (warning), `#D98B83` (danger), `#88AFC2` (info)
+     - Priority Badges: High (`#E5A49D` / `#513A39`), Medium (`#E0BC80` / `#514638`), Low (`#A5C4D0` / `#35464C`)
+     - Primary Button Text: `#14211E`
+   - Maintained semantic backward-compatibility aliases across all design tokens.
+2. **Layout & Shell Styling (`css/layout.css`)**:
+   - Styled sidebar with `#202426` carbon background, `#344A46` active pills, and `#A2D2C9` active text.
+   - Styled topbar with `#202426` background, `#3B4444` bottom border, and sage teal icon accents.
+   - Restyled mobile drawer backdrop with dark `rgba(21, 23, 25, 0.75)` backdrop blur.
+   - Updated status bar to `#202426` with `#3B4444` border and `#80B9A0` status dot.
+3. **Component System Styling (`css/components.css`)**:
+   - Stat cards: `#303739` background, `12px` border radius, `#3B4444` border, `#A2D2C9` icons.
+   - Task rows: `#303739` card background, `#373F40` hover surface, `#6BAFA4` checkbox accent, `#84918E` strike-through text for completed items.
+   - Buttons: Primary buttons with `#6BAFA4` background, `#14211E` high-contrast text, `#83C3B7` hover; Secondary buttons with `#303739` background, `#E7EAE9` text, `#3B4444` border.
+   - Search bar: `#303739` background, `#A3ACAA` placeholder, `#E7EAE9` input text, `#6BAFA4` focus ring.
+   - Modals: `#303739` card with `#151719` input backgrounds and `#3B4444` graphite dividers.
+   - Toast container: `#373F40` surface with `#6BAFA4` action button.
+4. **Documentation & Verification (`DESIGN.md`, `tests/test_color_palette.py`, `tests/run_all_tests.py`)**:
+   - Updated `DESIGN.md` with complete specifications and hex codes.
+   - Updated `tests/test_color_palette.py` to enforce the 24 Carbon & Sage Teal colors and eliminated deprecated blue tones.
+   - Updated `tests/run_all_tests.py` suite name to "Carbon & Sage Teal Palette Compliance".
+
+### Verification Results
+- `python tests/run_all_tests.py`: **PASS (9/9 suites passing in 8.20s)**:
+  1. Database Configuration & Environment Setup: PASS (0.35s)
+  2. MySQL Schema Migrations & Tracking: PASS (0.29s)
+  3. MySQL Persistence & Transactional Reordering: PASS (2.53s)
+  4. Authentication, Bcrypt & Multi-Tenant Security: PASS (3.40s)
+  5. Express REST API Contract Verification: PASS (1.36s)
+  6. Carbon & Sage Teal Palette Compliance: PASS (0.11s)
+  7. Frontend Shell Linkage & ES Import Resolution: PASS (0.05s)
+  8. Semantic HTML Layout, Drawer & Responsive Rules: PASS (0.05s)
+  9. Interactive JavaScript Functionality & State Store: PASS (0.05s)
+- Total Suites: 9 | Passed: 9 | Failed: 0 | Regressions: 0
+
+---
+
+## 2026-11-13 — Feature Addition: Settings & Profile Page with 10 Multi-Theme Presets
+
+### Context & Objective
+Added a dedicated Settings and Profile management view enabling users to customize their personal profile information (Full Name, Username, Email, Title, Bio) and dynamically switch the website's theme between 10 handcrafted productivity presets with automatic persistence across reloads.
+
+### Changes Implemented
+1. **Multi-Theme Engine (`css/themes.css`)**:
+   - Engineered 10 themes with dedicated surface, typography, accent, and border variables:
+     1. `carbon-teal`: Carbon & Sage Teal (Default graphite & sage)
+     2. `midnight-navy`: Midnight Navy (Deep slate navy with electric cyan)
+     3. `obsidian-amber`: Obsidian Amber (Dark charcoal with radiant gold/amber)
+     4. `forest-emerald`: Forest Emerald (Botanical moss with vibrant emerald)
+     5. `nordic-frost`: Nordic Frost (Cool arctic slate with glacier blue)
+     6. `sunset-crimson`: Sunset Crimson (Deep plum with coral rose & crimson)
+     7. `cyberpunk-violet`: Cyberpunk Violet (Deep violet with neon electric purple)
+     8. `monochrome-slate`: Monochrome Slate (Minimalist dark graphite with platinum silver)
+     9. `warm-sepia`: Warm Sepia (Roasted espresso with warm caramel & cream)
+     10. `paper-light`: Paper Light (Architectural clean light mode with precision sky blue)
+   - Built zero-inline-style swatch preview dot classes for every theme.
+2. **Settings Component (`js/components/settings.js`)**:
+   - Created `Settings` class that orchestrates:
+     - Profile form submission and live typing avatar preview.
+     - Saving profile state to `localStorage` and synchronizing with the sidebar.
+     - Rendering the 10-theme selector grid with active indicators and color swatches.
+     - Instant dynamic theme switching via `document.documentElement.setAttribute('data-theme', themeId)`.
+     - Reactive view switching: showing `#settings-section` and hiding overview/task sections when `data-view="settings"` is active.
+3. **Application Shell & HTML Markup (`index.html`)**:
+   - Added `#settings-section` container with Profile Details card, form controls, and `#theme-selector-grid`.
+4. **Component Styling (`css/components.css`)**:
+   - Styled `.settings-grid`, `.settings-card`, `.settings-profile-preview`, `.form-textarea`, `.theme-selector-grid`, `.theme-card`, `.theme-swatches`, and `.theme-badge`.
+5. **App Bootstrapping (`js/app.js`)**:
+   - Instantiated `Settings` module and restored saved theme preference on page load.
+6. **Documentation & Verification (`DESIGN.md`, `tests/test_color_palette.py`, `tests/test_frontend_shell.py`)**:
+   - Documented the 10 presets in `DESIGN.md`.
+   - Updated `test_color_palette.py` to register all theme tokens with 100% compliance across 45 files.
+   - Updated `test_frontend_shell.py` to verify `css/themes.css` and `js/components/settings.js`.
+
+### Verification Results
+- `python tests/run_all_tests.py`: **PASS (9/9 suites passing in 8.42s)**
+- All 10 themes verified, profile customization verified, zero regressions.
