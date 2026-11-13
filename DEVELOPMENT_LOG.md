@@ -450,3 +450,44 @@ Executed Phase 5 of the learning-focused curriculum. Implemented secure user reg
 - `python tests/test_phase4_1_setup.py`: **PASS** (100% config passing).
 - `python tests/test_color_palette.py`: **PASS** (Zero deviations across 37 files).
 - `python tests/test_frontend_shell.py`, `tests/test_main_layout.py`, `tests/test_phase2_functionality.py`: **PASS** (Zero regressions).
+
+---
+
+## 2026-11-13 — Phase 6: Testing, Production Hardening & Deployment Orchestration
+
+### Context & Objective
+Executed Phase 6 of the curriculum. Hardened the Express application for production workloads, added HTTP security headers with Helmet, enabled gzip/deflate response compression, configured tiered rate-limiting against brute force attacks, implemented graceful process shutdown handlers for connection cleanup, orchestrated PM2 cluster and Docker configurations, authored `DEPLOYMENT.md`, and built the unified master test runner (`tests/run_all_tests.py`).
+
+### Changes Implemented
+1. **Production Security & Optimization Middleware (`server/middleware/security.js`)**:
+   - Integrated `helmet` with custom Content Security Policy (CSP) permitting vanilla script execution while blocking unauthorized inline scripts and external data exfiltration.
+   - Integrated `compression` to gzip/deflate responses, reducing bandwidth overhead for API payloads and static assets.
+   - Integrated `express-rate-limit` with two tiers:
+     - General API limiter: 300 requests per 15-minute window per IP.
+     - Authentication limiter: 15 login/registration requests per 15-minute window per IP.
+   - Added `app.set('trust proxy', 1)` in `server/app.js` for reverse proxy compatibility.
+2. **Graceful Process Lifecycle Management (`server/server.js`)**:
+   - Attached `SIGTERM` and `SIGINT` signal listeners to intercept shutdown triggers.
+   - Halts accepting new HTTP requests, drains pending in-flight requests, and gracefully terminates the MySQL connection pool via `pool.end()`.
+3. **Production Process & Container Orchestration**:
+   - `ecosystem.config.cjs`: PM2 cluster mode configuration with CPU core scaling, auto-restart on memory thresholds, and structured logging.
+   - `Dockerfile`: Multi-stage, lightweight Alpine container with isolated non-root user execution (`node:node`).
+   - `docker-compose.yml`: Full-stack service orchestration with MySQL 8.0 health checks, persistent volumes, environment passing, and automatic restart policies.
+   - `DEPLOYMENT.md`: Comprehensive operations guide covering bare-metal/VPS setup, PM2, Docker, Nginx SSL reverse proxy, and MySQL backup/recovery strategies.
+4. **Master Verification Runner (`tests/run_all_tests.py`) & Package Version Bump**:
+   - Created unified test orchestration executing all 9 test suites sequentially with formatted summary matrix.
+   - Updated `package.json` to version `1.0.0` with `"test"` and `"test:all"` running `python tests/run_all_tests.py`.
+
+### Verification Results
+- `python tests/run_all_tests.py`: **PASS (9/9 suites passing in 6.65s)**:
+  1. Database Configuration & Environment Setup: PASS (0.22s)
+  2. MySQL Schema Migrations & Tracking: PASS (0.22s)
+  3. MySQL Persistence & Transactional Reordering: PASS (2.36s)
+  4. Authentication, Bcrypt & Multi-Tenant Security: PASS (2.96s)
+  5. Express REST API Contract Verification: PASS (0.69s)
+  6. Venice Blue, Rock Blue & Crisp White Palette Compliance: PASS (0.07s)
+  7. Frontend Shell Linkage & ES Import Resolution: PASS (0.05s)
+  8. Semantic HTML Layout, Drawer & Responsive Rules: PASS (0.04s)
+  9. Interactive JavaScript Functionality & State Store: PASS (0.05s)
+- Total Suites: 9 | Passed: 9 | Failed: 0 | Regressions: 0
+- Version: `1.0.0` Production Ready.

@@ -6,13 +6,16 @@
 import { $, $$, on } from '../utils/dom.js';
 
 export class Sidebar {
-  constructor(state) {
+  constructor(state, authModal = null) {
     this.state = state;
+    this.authModal = authModal;
     this.sidebarEl = $('#app-sidebar');
     this.toggleBtn = $('#sidebar-toggle-btn');
     this.backdropEl = $('#sidebar-backdrop');
     this.navItems = $$('.sidebar-nav .nav-item');
     this.currentViewBadge = $('#current-view-badge');
+    this.userProfileEl = $('#sidebar-user-profile');
+    this.userMoreBtn = $('#sidebar-user-more-btn');
 
     // Count elements
     this.countDashboard = $('#count-dashboard');
@@ -40,6 +43,30 @@ export class Sidebar {
     // Close on backdrop click
     if (this.backdropEl) {
       on(this.backdropEl, 'click', () => this.close());
+    }
+
+    // Account & User profile click handling
+    if (this.userProfileEl) {
+      on(this.userProfileEl, 'click', () => {
+        if (this.authModal) {
+          this.authModal.open();
+        }
+      });
+      on(this.userProfileEl, 'keydown', (e) => {
+        if ((e.key === 'Enter' || e.key === ' ') && this.authModal) {
+          e.preventDefault();
+          this.authModal.open();
+        }
+      });
+    }
+
+    if (this.userMoreBtn) {
+      on(this.userMoreBtn, 'click', (e) => {
+        e.stopPropagation();
+        if (this.authModal) {
+          this.authModal.open();
+        }
+      });
     }
 
     // Navigation item click handling

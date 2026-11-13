@@ -1,5 +1,5 @@
 /**
- * Express Application Setup (Phase 5: Authentication & Security)
+ * Express Application Setup (Phase 6: Production Hardening & Security)
  */
 
 import express from 'express';
@@ -7,6 +7,7 @@ import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { securityHeaders, responseCompression, apiLimiter, authLimiter } from './middleware/security.js';
 import { requestLogger } from './middleware/logger.js';
 import { notFoundHandler, errorHandler } from './middleware/errorHandler.js';
 import { authenticate } from './middleware/auth.js';
@@ -23,7 +24,9 @@ const projectRoot = path.resolve(__dirname, '..');
 
 const app = express();
 
-// Standard Middlewares
+// Production Security & Compression Middlewares
+app.use(securityHeaders);
+app.use(responseCompression);
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,6 +34,11 @@ app.use(requestLogger);
 
 // Serve Frontend Static Files
 app.use(express.static(projectRoot));
+
+// Rate Limiting
+app.use('/api', apiLimiter);
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
 
 // Public & Protected Auth Routes
 app.use('/api/auth', authRoutes);
@@ -41,13 +49,21 @@ app.use('/api/tasks', tasksRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/api/stats', statsRoutes);
 
-// Health Check Endpoint (Includes MySQL connection status)
+// Enhanced Health Check Endpoint (Includes system uptime, memory, and database status)
 app.get('/api/health', async (req, res) => {
   const dbConnected = await checkDatabaseHealth();
+  const mem = process.memoryUsage();
   res.json({
     status: 'ok',
-    version: '0.5.0',
+    version: '1.0.0',
     database: dbConnected ? 'connected' : 'disconnected',
+    uptime: Math.round(process.uptime()),
+    memoryUsageMB: {
+      rss: Math.round(mem.rss / 1024 / 1024),
+      heapTotal: Math.round(mem.heapTotal / 1024 / 1024),
+      heapUsed: Math.round(mem.heapUsed / 1024 / 1024)
+    },
+    environment: process.env.NODE_ENV || 'development',
     timestamp: new Date().toISOString()
   });
 });

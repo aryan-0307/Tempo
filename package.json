@@ -1,6 +1,6 @@
 {
   "name": "tempo",
-  "version": "0.3.0",
+  "version": "1.0.0",
   "description": "Tempo - Modern, clean, minimal productivity workspace",
   "type": "module",
   "main": "server/server.js",
@@ -10,7 +10,9 @@
     "db:verify": "node tests/verify_mysql_connection.js",
     "db:migrate": "node server/db/migrate.js",
     "db:seed": "node server/db/seed.js",
-    "test": "python tests/test_backend_api.py"
+    "test": "python tests/run_all_tests.py",
+    "test:all": "python tests/run_all_tests.py",
+    "test:api": "python tests/test_backend_api.py"
   },
   "keywords": [
     "task-management",
@@ -23,9 +25,12 @@
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "compression": "^1.8.2",
     "cors": "^2.8.5",
     "dotenv": "^18.0.10",
     "express": "^4.21.2",
+    "express-rate-limit": "^8.7.4",
+    "helmet": "^8.3.0",
     "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.24.6"
   }

@@ -56,9 +56,9 @@ const colNames = taskCols.map(c => c.Field);
 
 // 3. Check record counts
 const [users] = await conn.query('SELECT id, username, email FROM users');
-const [projects] = await conn.query('SELECT id, name, project_key FROM projects');
+const [projects] = await conn.query('SELECT id, name, project_key FROM projects WHERE user_id = 1');
 const [categories] = await conn.query('SELECT id, name, slug FROM categories');
-const [tasks] = await conn.query('SELECT id, title, priority, status, completed, display_order, due_date FROM tasks ORDER BY display_order ASC');
+const [tasks] = await conn.query('SELECT id, title, priority, status, completed, display_order, due_date FROM tasks WHERE user_id = 1 ORDER BY display_order ASC');
 
 await conn.end();
 

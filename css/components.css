@@ -833,8 +833,13 @@
    Keyframe Animations
    ========================================================================== */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
@@ -842,6 +847,7 @@
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -901,4 +907,91 @@
 .toast-action-btn:hover {
   background-color: var(--color-rock-blue);
   color: var(--color-venice-blue);
+}
+
+/* ==========================================================================
+   Account & Authentication Modal
+   ========================================================================== */
+.auth-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--color-border);
+  padding: 0 var(--spacing-6);
+  gap: var(--spacing-2);
+}
+
+.auth-tab {
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: var(--spacing-3) var(--spacing-4);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.auth-tab:hover {
+  color: var(--color-text-primary);
+}
+
+.auth-tab.active {
+  color: var(--color-venice-blue);
+  border-bottom-color: var(--color-venice-blue);
+  font-weight: var(--font-weight-semibold);
+}
+
+.auth-alert {
+  margin: var(--spacing-4) var(--spacing-6) 0;
+  padding: var(--spacing-3) var(--spacing-4);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-xs);
+  border: 1px solid var(--color-rock-blue);
+  background-color: rgba(132, 179, 206, 0.15);
+  color: var(--color-venice-blue);
+}
+
+.auth-alert[hidden] {
+  display: none !important;
+}
+
+.auth-profile-summary {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-4);
+  padding: var(--spacing-2) 0;
+}
+
+.auth-avatar-large {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-venice-blue);
+  color: var(--color-white);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.auth-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.auth-profile-name {
+  margin: 0;
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--color-text-primary);
+}
+
+.auth-profile-email {
+  margin: 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
 }

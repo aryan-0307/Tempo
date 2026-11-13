@@ -5,6 +5,7 @@
 
 import { $, on } from '../utils/dom.js';
 import { toast } from './toast.js';
+import { api } from '../services/api.js';
 
 export class Modal {
   constructor(state) {
@@ -147,3 +148,243 @@ export class Modal {
     this.close();
   }
 }
+
+/**
+ * AuthModal Component Module (Phase 5 & 6 Frontend Integration)
+ * Manages user authentication, registration, session inspection, and account switching.
+ */
+export class AuthModal {
+  constructor(state) {
+    this.state = state;
+    this.modalEl = $('#auth-modal');
+    this.closeBtn = $('#auth-modal-close-btn');
+    this.tabSignIn = $('#auth-tab-signin');
+    this.tabRegister = $('#auth-tab-register');
+    this.alertEl = $('#auth-alert');
+    this.signInForm = $('#auth-signin-form');
+    this.registerForm = $('#auth-register-form');
+    this.profileView = $('#auth-profile-view');
+    this.cancelSignInBtn = $('#auth-signin-cancel-btn');
+    this.cancelRegBtn = $('#auth-register-cancel-btn');
+    this.logoutBtn = $('#auth-logout-btn');
+    this.switchAccountBtn = $('#auth-switch-account-btn');
+
+    this.profileAvatar = $('#auth-profile-avatar');
+    this.profileName = $('#auth-profile-name');
+    this.profileEmail = $('#auth-profile-email');
+
+    this.mode = 'signin';
+  }
+
+  init() {
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    if (this.closeBtn) on(this.closeBtn, 'click', () => this.close());
+    if (this.cancelSignInBtn) on(this.cancelSignInBtn, 'click', () => this.close());
+    if (this.cancelRegBtn) on(this.cancelRegBtn, 'click', () => this.close());
+
+    if (this.tabSignIn) on(this.tabSignIn, 'click', () => this.setMode('signin'));
+    if (this.tabRegister) on(this.tabRegister, 'click', () => this.setMode('register'));
+
+    if (this.switchAccountBtn) on(this.switchAccountBtn, 'click', () => this.setMode('signin'));
+    if (this.logoutBtn) on(this.logoutBtn, 'click', () => this.handleLogout());
+
+    if (this.modalEl) {
+      on(this.modalEl, 'click', (e) => {
+        if (e.target === this.modalEl) this.close();
+      });
+    }
+
+    on(document, 'keydown', (e) => {
+      if (e.key === 'Escape' && this.isOpen()) this.close();
+    });
+
+    if (this.signInForm) {
+      on(this.signInForm, 'submit', (e) => {
+        e.preventDefault();
+        this.handleSignIn();
+      });
+    }
+
+    if (this.registerForm) {
+      on(this.registerForm, 'submit', (e) => {
+        e.preventDefault();
+        this.handleRegister();
+      });
+    }
+  }
+
+  isOpen() {
+    return this.modalEl && !this.modalEl.hasAttribute('hidden');
+  }
+
+  async open() {
+    if (!this.modalEl) return;
+    this.clearAlert();
+    this.modalEl.removeAttribute('hidden');
+
+    try {
+      const user = await api.getMe();
+      if (user) {
+        this.renderProfile(user);
+        this.setMode('profile');
+        return;
+      }
+    } catch {}
+
+    this.setMode('signin');
+  }
+
+  close() {
+    if (this.modalEl) {
+      this.modalEl.setAttribute('hidden', '');
+      this.clearAlert();
+    }
+  }
+
+  showAlert(message) {
+    if (this.alertEl) {
+      this.alertEl.textContent = message;
+      this.alertEl.removeAttribute('hidden');
+    }
+  }
+
+  clearAlert() {
+    if (this.alertEl) {
+      this.alertEl.textContent = '';
+      this.alertEl.setAttribute('hidden', '');
+    }
+  }
+
+  setMode(mode) {
+    this.mode = mode;
+    this.clearAlert();
+
+    const tabsContainer = this.modalEl?.querySelector('.auth-tabs');
+
+    if (mode === 'profile') {
+      if (tabsContainer) tabsContainer.setAttribute('hidden', '');
+      this.signInForm?.setAttribute('hidden', '');
+      this.registerForm?.setAttribute('hidden', '');
+      this.profileView?.removeAttribute('hidden');
+    } else {
+      if (tabsContainer) tabsContainer.removeAttribute('hidden');
+      this.profileView?.setAttribute('hidden', '');
+
+      if (mode === 'signin') {
+        this.tabSignIn?.classList.add('active');
+        this.tabSignIn?.setAttribute('aria-selected', 'true');
+        this.tabRegister?.classList.remove('active');
+        this.tabRegister?.setAttribute('aria-selected', 'false');
+        this.signInForm?.removeAttribute('hidden');
+        this.registerForm?.setAttribute('hidden', '');
+        setTimeout(() => $('#auth-signin-email')?.focus(), 50);
+      } else {
+        this.tabRegister?.classList.add('active');
+        this.tabRegister?.setAttribute('aria-selected', 'true');
+        this.tabSignIn?.classList.remove('active');
+        this.tabSignIn?.setAttribute('aria-selected', 'false');
+        this.registerForm?.removeAttribute('hidden');
+        this.signInForm?.setAttribute('hidden', '');
+        setTimeout(() => $('#auth-reg-name')?.focus(), 50);
+      }
+    }
+  }
+
+  renderProfile(user) {
+    if (this.profileName) this.profileName.textContent = user.fullName || user.username;
+    if (this.profileEmail) this.profileEmail.textContent = user.email;
+    if (this.profileAvatar) {
+      const initials = (user.fullName || user.username || 'U')
+        .split(' ')
+        .map(n => n[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase();
+      this.profileAvatar.textContent = initials;
+    }
+  }
+
+  async handleSignIn() {
+    const email = $('#auth-signin-email')?.value?.trim();
+    const password = $('#auth-signin-password')?.value;
+
+    if (!email || !password) {
+      this.showAlert('Please provide both email and password.');
+      return;
+    }
+
+    try {
+      const data = await api.login({ email, password });
+      toast.show(`Welcome back, ${data.user.fullName}!`);
+      this.updateSidebarUser(data.user);
+      if (this.state) {
+        await this.state.syncWithBackend();
+      }
+      this.close();
+    } catch (err) {
+      this.showAlert(err.message || 'Login failed. Please check credentials.');
+    }
+  }
+
+  async handleRegister() {
+    const fullName = $('#auth-reg-name')?.value?.trim();
+    const username = $('#auth-reg-username')?.value?.trim();
+    const email = $('#auth-reg-email')?.value?.trim();
+    const password = $('#auth-reg-password')?.value;
+
+    if (!fullName || !username || !email || !password) {
+      this.showAlert('All fields are required.');
+      return;
+    }
+
+    try {
+      const data = await api.register({ fullName, username, email, password });
+      toast.show(`Account created! Welcome, ${data.user.fullName}!`);
+      this.updateSidebarUser(data.user);
+      if (this.state) {
+        await this.state.syncWithBackend();
+      }
+      this.close();
+    } catch (err) {
+      this.showAlert(err.message || 'Registration failed.');
+    }
+  }
+
+  async handleLogout() {
+    try {
+      await api.logout();
+    } catch {}
+    api.clearToken();
+    toast.show('Signed out successfully.');
+    this.updateSidebarUser({
+      fullName: 'Alex Morgan',
+      email: 'alex@tempo.dev'
+    });
+    if (this.state) {
+      await this.state.syncWithBackend();
+    }
+    this.close();
+  }
+
+  updateSidebarUser(user) {
+    const nameEl = $('#sidebar-user-name');
+    const roleEl = $('#sidebar-user-role');
+    const avatarEl = $('#sidebar-user-avatar');
+
+    if (nameEl) nameEl.textContent = user.fullName || user.username || 'Tempo User';
+    if (roleEl) roleEl.textContent = user.email || 'user@tempo.dev';
+    if (avatarEl) {
+      const initials = (user.fullName || user.username || 'TM')
+        .split(' ')
+        .map(n => n[0])
+        .slice(0, 2)
+        .join('')
+        .toUpperCase();
+      avatarEl.textContent = initials;
+    }
+  }
+}
+

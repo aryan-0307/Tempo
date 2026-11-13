@@ -225,3 +225,16 @@ finally:
             server_proc.kill()
     print("  [OK] Test server stopped cleanly.")
 
+    # Clean up test users from MySQL
+    try:
+        cleanup_script = """
+        import mysql from 'mysql2/promise';
+        import { dbConfig } from './server/config/db.config.js';
+        const conn = await mysql.createConnection(dbConfig);
+        await conn.query("DELETE FROM users WHERE username LIKE 'usera_%' OR username LIKE 'userb_%'");
+        await conn.end();
+        """
+        subprocess.run([node_bin, '--input-type=module', '-e', cleanup_script], capture_output=True)
+    except Exception:
+        pass
+

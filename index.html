@@ -96,16 +96,16 @@
       </nav>
 
       <!-- User profile section at the bottom -->
-      <div class="sidebar-user-profile">
+      <div class="sidebar-user-profile" id="sidebar-user-profile" role="button" tabindex="0" title="Account & Workspace Settings">
         <div class="user-avatar-wrapper">
-          <div class="user-avatar" aria-hidden="true">AM</div>
+          <div class="user-avatar" id="sidebar-user-avatar" aria-hidden="true">AM</div>
           <span class="user-status-dot" title="Active"></span>
         </div>
         <div class="user-details">
-          <span class="user-name">Alex Morgan</span>
-          <span class="user-role">alex@tempo.dev</span>
+          <span class="user-name" id="sidebar-user-name">Alex Morgan</span>
+          <span class="user-role" id="sidebar-user-role">alex@tempo.dev</span>
         </div>
-        <button type="button" class="btn-icon user-more-btn" aria-label="Account Settings" title="Account Settings">
+        <button type="button" class="btn-icon user-more-btn" id="sidebar-user-more-btn" aria-label="Account Settings" title="Account Settings">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="1"></circle>
             <circle cx="19" cy="12" r="1"></circle>
@@ -336,7 +336,7 @@
           <span id="system-status-text">Tempo Ready &bull; In-Memory Store Active</span>
         </div>
         <div>
-          <span>Tempo v0.3.0 &bull; Vanilla Architecture</span>
+          <span>Tempo v1.0.0 &bull; Production Ready</span>
         </div>
       </footer>
     </div>
@@ -385,6 +385,88 @@
             <button type="submit" id="modal-submit-btn" class="btn btn-primary">Create Task</button>
           </div>
         </form>
+      </div>
+    </div>
+
+    <!-- Account & Authentication Modal Dialog -->
+    <div id="auth-modal" class="modal-backdrop" hidden>
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+        <div class="modal-header">
+          <h3 id="auth-modal-title" class="modal-title">Account &amp; Workspace</h3>
+          <button type="button" id="auth-modal-close-btn" class="btn-icon" aria-label="Close dialog">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <!-- Auth Navigation Tabs -->
+        <div class="auth-tabs" role="tablist">
+          <button type="button" id="auth-tab-signin" class="auth-tab active" role="tab" aria-selected="true">Sign In</button>
+          <button type="button" id="auth-tab-register" class="auth-tab" role="tab" aria-selected="false">Create Account</button>
+        </div>
+
+        <!-- Feedback Alert Box -->
+        <div id="auth-alert" class="auth-alert" hidden></div>
+
+        <!-- Sign In Form -->
+        <form id="auth-signin-form" class="modal-form">
+          <div class="form-group">
+            <label for="auth-signin-email" class="form-label">Email Address <span class="required">*</span></label>
+            <input type="email" id="auth-signin-email" class="form-input" placeholder="alex@tempo.dev" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label for="auth-signin-password" class="form-label">Password <span class="required">*</span></label>
+            <input type="password" id="auth-signin-password" class="form-input" placeholder="••••••••" autocomplete="current-password" required>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="auth-signin-cancel-btn" class="btn btn-secondary">Cancel</button>
+            <button type="submit" id="auth-signin-submit-btn" class="btn btn-primary">Sign In</button>
+          </div>
+        </form>
+
+        <!-- Register Form -->
+        <form id="auth-register-form" class="modal-form" hidden>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="auth-reg-name" class="form-label">Full Name <span class="required">*</span></label>
+              <input type="text" id="auth-reg-name" class="form-input" placeholder="Alex Morgan" required>
+            </div>
+            <div class="form-group">
+              <label for="auth-reg-username" class="form-label">Username <span class="required">*</span></label>
+              <input type="text" id="auth-reg-username" class="form-input" placeholder="alexmorgan" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="auth-reg-email" class="form-label">Email Address <span class="required">*</span></label>
+            <input type="email" id="auth-reg-email" class="form-input" placeholder="alex@tempo.dev" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label for="auth-reg-password" class="form-label">Password (min 8 chars) <span class="required">*</span></label>
+            <input type="password" id="auth-reg-password" class="form-input" placeholder="••••••••" minlength="8" autocomplete="new-password" required>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="auth-register-cancel-btn" class="btn btn-secondary">Cancel</button>
+            <button type="submit" id="auth-register-submit-btn" class="btn btn-primary">Create Account</button>
+          </div>
+        </form>
+
+        <!-- Active User Profile View -->
+        <div id="auth-profile-view" class="modal-form" hidden>
+          <div class="auth-profile-summary">
+            <div class="auth-avatar-large" id="auth-profile-avatar">AM</div>
+            <div class="auth-profile-info">
+              <h4 id="auth-profile-name" class="auth-profile-name">Alex Morgan</h4>
+              <p id="auth-profile-email" class="auth-profile-email">alex@tempo.dev</p>
+              <span class="badge badge-medium" id="auth-profile-badge">Active Session</span>
+            </div>
+          </div>
+          <div class="modal-actions">
+            <button type="button" id="auth-logout-btn" class="btn btn-secondary">Sign Out</button>
+            <button type="button" id="auth-switch-account-btn" class="btn btn-primary">Switch Account</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

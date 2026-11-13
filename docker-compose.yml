@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  # MySQL Database Service
+  db:
+    image: mysql:8.0
+    container_name: tempo_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-tempo_secure_root_password}
+      MYSQL_DATABASE: ${DB_NAME:-tempo_db}
+      MYSQL_USER: ${DB_USER:-tempo_user}
+      MYSQL_PASSWORD: ${DB_PASSWORD:-tempo_secure_password}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Tempo Node.js Application
+  app:
+    build: .
+    container_name: tempo_app
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME:-tempo_db}
+      DB_USER: ${DB_USER:-tempo_user}
+      DB_PASSWORD: ${DB_PASSWORD:-tempo_secure_password}
+      DB_TIMEZONE: Z
+      JWT_SECRET: ${JWT_SECRET:-tempo_production_jwt_secret_key_change_me}
+      JWT_EXPIRES_IN: 7d
+    ports:
+      - "3000:3000"
+
+volumes:
+  mysql_data:
+    driver: local
+

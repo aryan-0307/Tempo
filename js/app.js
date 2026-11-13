@@ -8,7 +8,8 @@ import { Sidebar } from './components/sidebar.js';
 import { Header } from './components/header.js';
 import { Overview } from './components/overview.js';
 import { Tasks } from './components/tasks.js';
-import { Modal } from './components/modal.js';
+import { Modal, AuthModal } from './components/modal.js';
+import { api } from './services/api.js';
 
 class TempoApp {
   constructor() {
@@ -18,26 +19,30 @@ class TempoApp {
     this.overview = null;
     this.tasks = null;
     this.modal = null;
+    this.authModal = null;
   }
 
   init() {
     console.log('[Tempo] Initializing Phase 2 application modules...');
 
-    // 1. Initialize Sidebar (branding, views, mobile drawer, counts)
-    this.sidebar = new Sidebar(this.state);
+    // 1. Initialize Modals
+    this.modal = new Modal(this.state);
+    this.modal.init();
+
+    this.authModal = new AuthModal(this.state);
+    this.authModal.init();
+
+    // 2. Initialize Sidebar (branding, views, mobile drawer, counts, auth trigger)
+    this.sidebar = new Sidebar(this.state, this.authModal);
     this.sidebar.init();
 
-    // 2. Initialize Header (search, notifications, date/greeting)
+    // 3. Initialize Header (search, notifications, date/greeting)
     this.header = new Header(this.state);
     this.header.init();
 
-    // 3. Initialize Dashboard Overview (stat cards)
+    // 4. Initialize Dashboard Overview (stat cards)
     this.overview = new Overview(this.state);
     this.overview.init();
-
-    // 4. Initialize Create/Edit Task Modal
-    this.modal = new Modal(this.state);
-    this.modal.init();
 
     // 5. Initialize Tasks Section (CRUD, sorting, filtering, drag-and-drop)
     this.tasks = new Tasks(this.state, this.modal);
@@ -48,6 +53,13 @@ class TempoApp {
 
     // 7. Sync with Node.js/Express Backend if online
     this.state.syncWithBackend();
+
+    // 8. Hydrate user profile from backend session if available
+    api.getMe().then(user => {
+      if (user && this.authModal) {
+        this.authModal.updateSidebarUser(user);
+      }
+    }).catch(() => {});
 
     this.updateStatus();
     console.log('[Tempo] Phase 3 Frontend-Backend integration active.');

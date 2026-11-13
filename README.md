@@ -103,7 +103,16 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 ## 🧪 Automated Verification Suites
 
-Execute tests via:
+Tempo features a unified test runner covering all 9 test suites across frontend, backend, security, database, and design systems:
+
+```bash
+# Run all 9 verification suites (recommended)
+npm test
+# or
+python tests/run_all_tests.py
+```
+
+Individual test suites:
 ```bash
 # Verify authentication and multi-tenant security
 python tests/test_auth_security.py
@@ -125,6 +134,12 @@ python tests/test_frontend_shell.py
 python tests/test_main_layout.py
 python tests/test_phase2_functionality.py
 ```
+
+---
+
+## 🚢 Deployment & Production Operations
+
+See [DEPLOYMENT.md](DEPLOYMENT.md) for full instructions on PM2 process management, Docker containerization, Nginx reverse proxy configuration, SSL termination, and automated MySQL backups.
 
 ---
 
