@@ -30,7 +30,10 @@ export class Sidebar {
   init() {
     this.bindEvents();
     if (this.state) {
-      this.state.subscribe(() => this.updateCounts());
+      this.state.subscribe(() => {
+        this.updateCounts();
+        this.updateActiveNav();
+      });
     }
   }
 
@@ -80,6 +83,20 @@ export class Sidebar {
           this.state.setViewFilter(view);
         }
 
+        // Immediately reset scroll to top on navigation change
+        const mainContainer = document.getElementById('main-content') || document.querySelector('.app-main');
+        if (mainContainer) {
+          mainContainer.scrollTop = 0;
+        }
+        window.scrollTo(0, 0);
+
+        if (view === 'settings') {
+          const settingsSection = document.getElementById('settings-section');
+          if (settingsSection && typeof settingsSection.scrollIntoView === 'function') {
+            settingsSection.scrollIntoView({ behavior: 'instant', block: 'start' });
+          }
+        }
+
         // On mobile viewports, automatically close drawer after navigation
         if (window.innerWidth <= 768) {
           this.close();
@@ -125,6 +142,22 @@ export class Sidebar {
     if (labelSpan && this.currentViewBadge) {
       this.currentViewBadge.textContent = `${labelSpan.textContent} View`;
     }
+  }
+
+  updateActiveNav() {
+    if (!this.state) return;
+    const currentView = this.state.activeView;
+    this.navItems.forEach(item => {
+      const view = item.getAttribute('data-view');
+      const isActive = view === currentView;
+      item.classList.toggle('active', isActive);
+      if (isActive) {
+        const labelSpan = item.querySelector('.nav-label');
+        if (labelSpan && this.currentViewBadge) {
+          this.currentViewBadge.textContent = `${labelSpan.textContent} View`;
+        }
+      }
+    });
   }
 
   updateCounts() {

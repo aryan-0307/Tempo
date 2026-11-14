@@ -64,8 +64,10 @@ export class Settings {
   constructor(state) {
     this.state = state;
     this.sectionEl = $('#settings-section');
+    this.welcomeSection = $('.welcome-section');
     this.overviewSection = $('.overview-section');
     this.tasksSection = $('.tasks-section');
+    this.mainContainer = document.getElementById('main-content') || $('.app-main');
     this.themeGrid = $('#theme-selector-grid');
     this.profileForm = $('#settings-profile-form');
     this.fullNameInput = $('#settings-fullname-input');
@@ -134,13 +136,29 @@ export class Settings {
     const isSettings = this.state.activeView === 'settings';
 
     if (isSettings) {
+      if (this.welcomeSection) this.welcomeSection.setAttribute('hidden', '');
       if (this.overviewSection) this.overviewSection.setAttribute('hidden', '');
       if (this.tasksSection) this.tasksSection.setAttribute('hidden', '');
       if (this.sectionEl) this.sectionEl.removeAttribute('hidden');
+
+      // Scroll immediately to top so settings appears directly without scrolling
+      if (this.mainContainer) {
+        this.mainContainer.scrollTop = 0;
+      }
+      window.scrollTo(0, 0);
+      if (this.sectionEl && typeof this.sectionEl.scrollIntoView === 'function') {
+        this.sectionEl.scrollIntoView({ behavior: 'instant', block: 'start' });
+      }
     } else {
+      if (this.welcomeSection) this.welcomeSection.removeAttribute('hidden');
       if (this.overviewSection) this.overviewSection.removeAttribute('hidden');
       if (this.tasksSection) this.tasksSection.removeAttribute('hidden');
       if (this.sectionEl) this.sectionEl.setAttribute('hidden', '');
+
+      if (this.mainContainer) {
+        this.mainContainer.scrollTop = 0;
+      }
+      window.scrollTo(0, 0);
     }
   }
 

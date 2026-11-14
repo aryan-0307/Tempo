@@ -1027,7 +1027,10 @@
   animation: fadeIn 150ms ease-out;
 }
 
-.settings-section[hidden] {
+.settings-section[hidden],
+.welcome-section[hidden],
+.overview-section[hidden],
+.tasks-section[hidden] {
   display: none !important;
 }
 

@@ -4,19 +4,19 @@
 Rebuild Tempo as a modern, production-grade productivity workspace using a strict 7-Phase Learning-Focused Engineering Curriculum, featuring the **Carbon & Sage Teal** design system and a **10-Theme Customization Engine**.
 
 ## Active Phase
-Feature Enhancement — Settings & Profile Page with 10 Multi-Theme Presets (COMPLETED — 100% Verified)
+Feature Enhancement — Direct Settings Navigation & Viewport Alignment (COMPLETED — 100% Verified)
 
 ## Curriculum Status
-ALL 7 CURRICULUM PHASES + CARBON & SAGE TEAL REDESIGN + SETTINGS & THEME ENGINE COMPLETED
+ALL 7 CURRICULUM PHASES + CARBON & SAGE TEAL REDESIGN + SETTINGS & THEME ENGINE + DIRECT NAVIGATION COMPLETED
 
 ## Status
 COMPLETED_AND_VERIFIED
 
 ## Current Task
-Implemented a full-featured **Settings & Profile** page with user details customization (Full Name, Username, Email, Job Title, Bio, live avatar preview) and a **10-Theme Multi-Preset Selector** (Carbon & Sage Teal, Midnight Navy, Obsidian Amber, Forest Emerald, Nordic Frost, Sunset Crimson, Cyberpunk Violet, Monochrome Slate, Warm Sepia, Paper Light). Selection updates CSS custom properties dynamically and persists to `localStorage`.
+Resolved the Settings navigation viewport alignment so clicking "Settings" in the navigation immediately opens the Settings & Profile view directly at the top of the viewport with zero scrolling required.
 
 ## Last Completed Task
-Authored `css/themes.css`, `js/components/settings.js`, updated `css/components.css`, `css/main.css`, `index.html`, `js/app.js`, `DESIGN.md`, `tests/test_color_palette.py`, `tests/test_frontend_shell.py`, and verified all 9 test suites passing at 100%.
+Enforced global and component-level `[hidden] { display: none !important; }` rules across `css/reset.css` and `css/components.css` to properly hide `.welcome-section`, `.overview-section`, and `.tasks-section` when Settings is active; added instant scroll-to-top resets (`scrollTop = 0` and `scrollIntoView`) in `js/components/settings.js` and `js/components/sidebar.js`. All 9 test suites verified passing at 100%.
 
 ## Completed Work to Date
 - [x] Phase 0: Planning and Architecture.
