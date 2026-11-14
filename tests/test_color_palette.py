@@ -78,6 +78,7 @@ APPROVED_RGB = {
     (0, 0, 0),          # Shadows / Elevation overlays
     (21, 23, 25),       # #151719 (Main background / Modal backdrop)
     (107, 175, 164),    # #6BAFA4 (Primary sage teal)
+    (162, 210, 201),    # #A2D2C9 (Light sage teal)
     (128, 185, 160),    # #80B9A0 (Success)
     (136, 175, 194),    # #88AFC2 (Info)
     (217, 139, 131),    # #D98B83 (Danger)

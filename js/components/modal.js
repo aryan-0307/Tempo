@@ -157,7 +157,11 @@ export class AuthModal {
   constructor(state) {
     this.state = state;
     this.modalEl = $('#auth-modal');
+    this.modalCard = this.modalEl?.querySelector('.auth-modal-card');
     this.closeBtn = $('#auth-modal-close-btn');
+    this.navContainer = $('.auth-nav-container');
+    this.floatingBubble = $('#auth-floating-bubble');
+    this.authCanvas = $('#auth-canvas');
     this.tabSignIn = $('#auth-tab-signin');
     this.tabRegister = $('#auth-tab-register');
     this.alertEl = $('#auth-alert');
@@ -185,10 +189,10 @@ export class AuthModal {
     if (this.cancelSignInBtn) on(this.cancelSignInBtn, 'click', () => this.close());
     if (this.cancelRegBtn) on(this.cancelRegBtn, 'click', () => this.close());
 
-    if (this.tabSignIn) on(this.tabSignIn, 'click', () => this.setMode('signin'));
-    if (this.tabRegister) on(this.tabRegister, 'click', () => this.setMode('register'));
+    if (this.tabSignIn) on(this.tabSignIn, 'click', () => this.setMode('signin', true));
+    if (this.tabRegister) on(this.tabRegister, 'click', () => this.setMode('register', true));
 
-    if (this.switchAccountBtn) on(this.switchAccountBtn, 'click', () => this.setMode('signin'));
+    if (this.switchAccountBtn) on(this.switchAccountBtn, 'click', () => this.setMode('signin', true));
     if (this.logoutBtn) on(this.logoutBtn, 'click', () => this.handleLogout());
 
     if (this.modalEl) {
@@ -199,6 +203,12 @@ export class AuthModal {
 
     on(document, 'keydown', (e) => {
       if (e.key === 'Escape' && this.isOpen()) this.close();
+    });
+
+    on(window, 'resize', () => {
+      if (this.isOpen() && this.mode !== 'profile') {
+        this.updateBubble(false);
+      }
     });
 
     if (this.signInForm) {
@@ -220,21 +230,24 @@ export class AuthModal {
     return this.modalEl && !this.modalEl.hasAttribute('hidden');
   }
 
-  async open() {
+  open(targetMode = null) {
     if (!this.modalEl) return;
     this.clearAlert();
     this.modalEl.removeAttribute('hidden');
 
-    try {
-      const user = await api.getMe();
-      if (user) {
-        this.renderProfile(user);
-        this.setMode('profile');
-        return;
-      }
-    } catch {}
+    const initialMode = targetMode || 'signin';
+    this.setMode(initialMode, false);
+    requestAnimationFrame(() => {
+      this.updateBubble(false);
+    });
 
-    this.setMode('signin');
+    // Check backend session non-blockingly so dialog opens instantly
+    api.getMe().then(user => {
+      if (user && this.isOpen()) {
+        this.renderProfile(user);
+        this.setMode('profile', false);
+      }
+    }).catch(() => {});
   }
 
   close() {
@@ -258,19 +271,32 @@ export class AuthModal {
     }
   }
 
-  setMode(mode) {
+  updateBubble() {
+    const activeTab = this.mode === 'register' ? this.tabRegister : this.tabSignIn;
+    if (!this.floatingBubble || !activeTab) return;
+
+    const x = activeTab.offsetLeft;
+    const y = activeTab.offsetTop;
+
+    if (activeTab.offsetWidth === 0) return;
+
+    this.floatingBubble.style.transform = `translate3d(${x}px, ${y}px, 0)`;
+    this.floatingBubble.style.opacity = '1';
+  }
+
+  setMode(mode, animated = true) {
     this.mode = mode;
     this.clearAlert();
 
-    const tabsContainer = this.modalEl?.querySelector('.auth-tabs');
+    const navContainer = this.navContainer || this.modalEl?.querySelector('.auth-nav-container') || this.modalEl?.querySelector('.auth-tabs');
 
     if (mode === 'profile') {
-      if (tabsContainer) tabsContainer.setAttribute('hidden', '');
+      if (navContainer) navContainer.setAttribute('hidden', '');
       this.signInForm?.setAttribute('hidden', '');
       this.registerForm?.setAttribute('hidden', '');
       this.profileView?.removeAttribute('hidden');
     } else {
-      if (tabsContainer) tabsContainer.removeAttribute('hidden');
+      if (navContainer) navContainer.removeAttribute('hidden');
       this.profileView?.setAttribute('hidden', '');
 
       if (mode === 'signin') {
@@ -278,18 +304,28 @@ export class AuthModal {
         this.tabSignIn?.setAttribute('aria-selected', 'true');
         this.tabRegister?.classList.remove('active');
         this.tabRegister?.setAttribute('aria-selected', 'false');
+
         this.signInForm?.removeAttribute('hidden');
         this.registerForm?.setAttribute('hidden', '');
-        setTimeout(() => $('#auth-signin-email')?.focus(), 50);
+
+        setTimeout(() => {
+          if (this.isOpen()) $('#auth-signin-email')?.focus({ preventScroll: true });
+        }, 200);
       } else {
         this.tabRegister?.classList.add('active');
         this.tabRegister?.setAttribute('aria-selected', 'true');
         this.tabSignIn?.classList.remove('active');
         this.tabSignIn?.setAttribute('aria-selected', 'false');
+
         this.registerForm?.removeAttribute('hidden');
         this.signInForm?.setAttribute('hidden', '');
-        setTimeout(() => $('#auth-reg-name')?.focus(), 50);
+
+        setTimeout(() => {
+          if (this.isOpen()) $('#auth-reg-name')?.focus({ preventScroll: true });
+        }, 200);
       }
+
+      this.updateBubble(animated);
     }
   }
 

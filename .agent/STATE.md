@@ -4,19 +4,24 @@
 Rebuild Tempo as a modern, production-grade productivity workspace using a strict 7-Phase Learning-Focused Engineering Curriculum, featuring the **Carbon & Sage Teal** design system and a **10-Theme Customization Engine**.
 
 ## Active Phase
-Feature Enhancement — Direct Settings Navigation & Viewport Alignment (COMPLETED — 100% Verified)
+Feature Enhancement — Butter-Smooth Jitter-Free Auth Modal Transitions (COMPLETED — 100% Verified)
 
 ## Curriculum Status
-ALL 7 CURRICULUM PHASES + CARBON & SAGE TEAL REDESIGN + SETTINGS & THEME ENGINE + DIRECT NAVIGATION COMPLETED
+ALL 7 CURRICULUM PHASES + CARBON & SAGE TEAL REDESIGN + SETTINGS ENGINE + MINIMAL AUTH MODAL COMPLETED
 
 ## Status
 COMPLETED_AND_VERIFIED
 
 ## Current Task
-Resolved the Settings navigation viewport alignment so clicking "Settings" in the navigation immediately opens the Settings & Profile view directly at the top of the viewport with zero scrolling required.
+Diagnosed and eliminated the underlying causes of lag, jank, and jitter in the Sign In / Create Account window:
+- **Zero Dialog Resizing / Jumping**: Discovered that `auth-register-form` was ~80px taller than `auth-signin-form`, causing the entire centered modal card to jump 40px vertically on every toggle. Locked `.auth-canvas` and `.auth-form-details` to a stable `min-height: 380px` with `margin-top: auto` on `.modal-actions`, keeping the entire window and both action button rows completely stationary.
+- **Unobstructed Pill Glide**: Discovered that `.auth-pill-btn` had an opaque `background-color: var(--bg-card)` at `z-index: 2` which hid the active indicator at `z-index: 1`. Set `background-color: transparent !important;` on `.auth-pill-btn`, allowing the indicator to glide in full view with zero clipping or background flashing.
+- **Pure Opacity Crossfade**: Replaced `translateY(4px)` with pure `opacity 180ms ease` in `@keyframes authFormFadeIn`, eliminating GPU transform churn.
+- **Eliminated Scroll/Focus Jank**: Deferred form field focus until animation completion (200ms) with `{ preventScroll: true }`, preventing browser viewport jumping.
+- All 9 test suites pass 100% with 0 errors.
 
 ## Last Completed Task
-Enforced global and component-level `[hidden] { display: none !important; }` rules across `css/reset.css` and `css/components.css` to properly hide `.welcome-section`, `.overview-section`, and `.tasks-section` when Settings is active; added instant scroll-to-top resets (`scrollTop = 0` and `scrollIntoView`) in `js/components/settings.js` and `js/components/sidebar.js`. All 9 test suites verified passing at 100%.
+Updated `css/components.css`, `js/components/modal.js`, verified all 9 test suites with `python tests/run_all_tests.py` passing in 6.64s.
 
 ## Completed Work to Date
 - [x] Phase 0: Planning and Architecture.

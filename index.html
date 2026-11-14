@@ -346,10 +346,11 @@
                       <circle cx="12" cy="7" r="4"></circle>
                     </svg>
                   </div>
-                  <div>
+                  <div class="settings-header-text">
                     <h3 class="settings-card-title">User Profile</h3>
                     <p class="settings-card-desc">Personal details and workspace public identity</p>
                   </div>
+                  <button type="button" id="settings-open-auth-btn" class="btn btn-secondary btn-sm" aria-label="Open Account Authentication Dialog">Account</button>
                 </div>
 
                 <form id="settings-profile-form" class="settings-form">
@@ -486,82 +487,102 @@
     </div>
 
     <!-- Account & Authentication Modal Dialog -->
-    <div id="auth-modal" class="modal-backdrop" hidden>
-      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
-        <div class="modal-header">
-          <h3 id="auth-modal-title" class="modal-title">Account &amp; Workspace</h3>
-          <button type="button" id="auth-modal-close-btn" class="btn-icon" aria-label="Close dialog">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
+    <div id="auth-modal" class="modal-backdrop auth-modal-backdrop" hidden>
+      <div class="modal-card auth-modal-card" role="dialog" aria-modal="true" aria-label="Account Authentication">
+        <!-- Close button top-right -->
+        <button type="button" id="auth-modal-close-btn" class="btn-icon auth-modal-close-btn" aria-label="Close dialog" title="Close dialog">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+
+        <!-- Top Switcher: Sign In & Create Account Pill Buttons with Anime Kamehameha Floating Bubble -->
+        <div class="auth-nav-container">
+          <div class="auth-tabs auth-bubble-track" role="tablist">
+            <div class="auth-floating-bubble" id="auth-floating-bubble" aria-hidden="true"></div>
+            <button type="button" id="auth-tab-signin" class="auth-tab auth-pill-btn active" role="tab" aria-selected="true">
+              <span class="auth-pill-text">Sign In</span>
+            </button>
+            <button type="button" id="auth-tab-register" class="auth-tab auth-pill-btn" role="tab" aria-selected="false">
+              <span class="auth-pill-text">Create Account</span>
+            </button>
+          </div>
         </div>
 
-        <!-- Auth Navigation Tabs -->
-        <div class="auth-tabs" role="tablist">
-          <button type="button" id="auth-tab-signin" class="auth-tab active" role="tab" aria-selected="true">Sign In</button>
-          <button type="button" id="auth-tab-register" class="auth-tab" role="tab" aria-selected="false">Create Account</button>
-        </div>
+        <!-- Blank Canvas Area down below for details -->
+        <div class="auth-canvas" id="auth-canvas">
+          <!-- Feedback Alert Box inside Canvas -->
+          <div id="auth-alert" class="auth-alert" hidden></div>
 
-        <!-- Feedback Alert Box -->
-        <div id="auth-alert" class="auth-alert" hidden></div>
-
-        <!-- Sign In Form -->
-        <form id="auth-signin-form" class="modal-form">
-          <div class="form-group">
-            <label for="auth-signin-email" class="form-label">Email Address <span class="required">*</span></label>
-            <input type="email" id="auth-signin-email" class="form-input" placeholder="alex@tempo.dev" autocomplete="email" required>
-          </div>
-          <div class="form-group">
-            <label for="auth-signin-password" class="form-label">Password <span class="required">*</span></label>
-            <input type="password" id="auth-signin-password" class="form-input" placeholder="••••••••" autocomplete="current-password" required>
-          </div>
-          <div class="modal-actions">
-            <button type="button" id="auth-signin-cancel-btn" class="btn btn-secondary">Cancel</button>
-            <button type="submit" id="auth-signin-submit-btn" class="btn btn-primary">Sign In</button>
-          </div>
-        </form>
-
-        <!-- Register Form -->
-        <form id="auth-register-form" class="modal-form" hidden>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="auth-reg-name" class="form-label">Full Name <span class="required">*</span></label>
-              <input type="text" id="auth-reg-name" class="form-input" placeholder="Alex Morgan" required>
+          <!-- Sign In Form Details -->
+          <form id="auth-signin-form" class="modal-form auth-form-details">
+            <div class="auth-canvas-header">
+              <h4 class="auth-canvas-title">Welcome Back</h4>
+              <p class="auth-canvas-subtitle">Enter your email and password to access your Tempo workspace</p>
             </div>
             <div class="form-group">
-              <label for="auth-reg-username" class="form-label">Username <span class="required">*</span></label>
-              <input type="text" id="auth-reg-username" class="form-input" placeholder="alexmorgan" required>
+              <label for="auth-signin-email" class="form-label">Email Address <span class="required">*</span></label>
+              <input type="email" id="auth-signin-email" class="form-input" placeholder="alex@tempo.dev" autocomplete="email" required>
             </div>
-          </div>
-          <div class="form-group">
-            <label for="auth-reg-email" class="form-label">Email Address <span class="required">*</span></label>
-            <input type="email" id="auth-reg-email" class="form-input" placeholder="alex@tempo.dev" autocomplete="email" required>
-          </div>
-          <div class="form-group">
-            <label for="auth-reg-password" class="form-label">Password (min 8 chars) <span class="required">*</span></label>
-            <input type="password" id="auth-reg-password" class="form-input" placeholder="••••••••" minlength="8" autocomplete="new-password" required>
-          </div>
-          <div class="modal-actions">
-            <button type="button" id="auth-register-cancel-btn" class="btn btn-secondary">Cancel</button>
-            <button type="submit" id="auth-register-submit-btn" class="btn btn-primary">Create Account</button>
-          </div>
-        </form>
+            <div class="form-group">
+              <label for="auth-signin-password" class="form-label">Password <span class="required">*</span></label>
+              <input type="password" id="auth-signin-password" class="form-input" placeholder="••••••••" autocomplete="current-password" required>
+            </div>
+            <div class="modal-actions">
+              <button type="button" id="auth-signin-cancel-btn" class="btn btn-secondary">Cancel</button>
+              <button type="submit" id="auth-signin-submit-btn" class="btn btn-primary">Sign In</button>
+            </div>
+          </form>
 
-        <!-- Active User Profile View -->
-        <div id="auth-profile-view" class="modal-form" hidden>
-          <div class="auth-profile-summary">
-            <div class="auth-avatar-large" id="auth-profile-avatar">AM</div>
-            <div class="auth-profile-info">
-              <h4 id="auth-profile-name" class="auth-profile-name">Alex Morgan</h4>
-              <p id="auth-profile-email" class="auth-profile-email">alex@tempo.dev</p>
-              <span class="badge badge-medium" id="auth-profile-badge">Active Session</span>
+          <!-- Register Form Details -->
+          <form id="auth-register-form" class="modal-form auth-form-details" hidden>
+            <div class="auth-canvas-header">
+              <h4 class="auth-canvas-title">Create Account</h4>
+              <p class="auth-canvas-subtitle">Join Tempo to organize your tasks, projects, and personal themes</p>
             </div>
-          </div>
-          <div class="modal-actions">
-            <button type="button" id="auth-logout-btn" class="btn btn-secondary">Sign Out</button>
-            <button type="button" id="auth-switch-account-btn" class="btn btn-primary">Switch Account</button>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="auth-reg-name" class="form-label">Full Name <span class="required">*</span></label>
+                <input type="text" id="auth-reg-name" class="form-input" placeholder="Alex Morgan" required>
+              </div>
+              <div class="form-group">
+                <label for="auth-reg-username" class="form-label">Username <span class="required">*</span></label>
+                <input type="text" id="auth-reg-username" class="form-input" placeholder="alexmorgan" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="auth-reg-email" class="form-label">Email Address <span class="required">*</span></label>
+              <input type="email" id="auth-reg-email" class="form-input" placeholder="alex@tempo.dev" autocomplete="email" required>
+            </div>
+            <div class="form-group">
+              <label for="auth-reg-password" class="form-label">Password (min 8 chars) <span class="required">*</span></label>
+              <input type="password" id="auth-reg-password" class="form-input" placeholder="••••••••" minlength="8" autocomplete="new-password" required>
+            </div>
+            <div class="modal-actions">
+              <button type="button" id="auth-register-cancel-btn" class="btn btn-secondary">Cancel</button>
+              <button type="submit" id="auth-register-submit-btn" class="btn btn-primary">Create Account</button>
+            </div>
+          </form>
+
+          <!-- Active User Profile View -->
+          <div id="auth-profile-view" class="modal-form auth-form-details" hidden>
+            <div class="auth-canvas-header">
+              <h4 class="auth-canvas-title">Active Workspace Session</h4>
+              <p class="auth-canvas-subtitle">Currently signed in to Tempo</p>
+            </div>
+            <div class="auth-profile-summary">
+              <div class="auth-avatar-large" id="auth-profile-avatar">AM</div>
+              <div class="auth-profile-info">
+                <h4 id="auth-profile-name" class="auth-profile-name">Alex Morgan</h4>
+                <p id="auth-profile-email" class="auth-profile-email">alex@tempo.dev</p>
+                <span class="badge badge-medium" id="auth-profile-badge">Active Session</span>
+              </div>
+            </div>
+            <div class="modal-actions">
+              <button type="button" id="auth-logout-btn" class="btn btn-secondary">Sign Out</button>
+              <button type="button" id="auth-switch-account-btn" class="btn btn-primary">Switch Account</button>
+            </div>
           </div>
         </div>
       </div>

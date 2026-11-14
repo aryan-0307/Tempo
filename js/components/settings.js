@@ -129,6 +129,16 @@ export class Settings {
         if (this.avatarEmail) this.avatarEmail.textContent = this.emailInput.value.trim() || 'user@tempo.dev';
       });
     }
+
+    const openAuthBtn = $('#settings-open-auth-btn');
+    if (openAuthBtn) {
+      on(openAuthBtn, 'click', () => {
+        const sidebarProfile = $('#sidebar-user-profile');
+        if (sidebarProfile) {
+          sidebarProfile.click();
+        }
+      });
+    }
   }
 
   handleStateChange() {

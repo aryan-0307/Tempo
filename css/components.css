@@ -930,45 +930,265 @@
 }
 
 /* ==========================================================================
-   Account & Authentication Modal
+   Account & Authentication Modal (DBZ Kamehameha & Borderless Canvas)
    ========================================================================== */
-.auth-tabs {
+.auth-modal-card {
+  position: relative;
+  background-color: var(--bg-main);
+  border: none !important;
+  border-radius: 28px;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.65), 0 0 1px rgba(255, 255, 255, 0.08);
+  width: 100%;
+  max-width: 520px;
+  box-sizing: border-box;
+  padding: var(--spacing-8) var(--spacing-9); /* 32px vertical, 36px horizontal padding */
   display: flex;
-  border-bottom: 1px solid var(--border-default);
-  padding: 0 var(--spacing-6);
-  gap: var(--spacing-2);
+  flex-direction: column;
+  gap: var(--spacing-5);
+  overflow: hidden;
+  animation: authModalPopIn 220ms ease;
+  font-family: var(--font-family-base) !important;
 }
 
-.auth-tab {
+@keyframes authModalPopIn {
+  from {
+    opacity: 0;
+    transform: scale(0.97) translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.auth-modal-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  z-index: 10;
+  color: var(--text-muted);
   background: transparent;
   border: none;
-  border-bottom: 2px solid transparent;
-  padding: var(--spacing-3) var(--spacing-4);
-  font-size: var(--font-size-sm);
-  font-weight: var(--font-weight-medium);
-  color: var(--text-secondary);
+  border-radius: var(--radius-full);
+  padding: 8px;
   cursor: pointer;
   transition: all var(--transition-fast);
 }
 
-.auth-tab:hover {
+.auth-modal-close-btn:hover {
   color: var(--text-primary);
+  background-color: var(--bg-hover);
 }
 
-.auth-tab.active {
-  color: var(--accent-light);
-  border-bottom-color: var(--accent-primary);
+/* Top Switcher Navigation Container */
+.auth-nav-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: var(--spacing-2);
+}
+
+.auth-bubble-track {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 4px;
+  border-radius: 18px;
+  background-color: transparent;
+}
+
+/* Floating Pill Active Indicator — Simple, smooth ease CSS transition */
+.auth-floating-bubble {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 150px;
+  height: 46px;
+  box-sizing: border-box;
+  border-radius: 14px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--accent-primary);
+  box-shadow: 0 0 10px rgba(107, 175, 164, 0.25);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  will-change: transform;
+  transition: transform 220ms ease,
+              opacity 150ms ease;
+}
+
+/* Rounded Pill Buttons — Both buttons permanently locked on the exact same level */
+.auth-pill-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 46px;
+  box-sizing: border-box;
+  padding: 0 var(--spacing-4);
+  border-radius: 14px;
+  border: 1.5px solid var(--border-default);
+  background-color: transparent !important;
+  color: var(--text-secondary);
+  font-family: var(--font-family-base) !important;
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-semibold);
+  line-height: 1;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  z-index: 2;
+  overflow: hidden;
+  transition: color 200ms ease;
+}
+
+.auth-pill-text {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-family-base) !important;
+  letter-spacing: -0.01em;
+}
+
+.auth-pill-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-primary);
+}
+
+.auth-pill-btn.active {
+  color: var(--text-primary);
+  border-color: transparent;
+  background-color: transparent !important;
   font-weight: var(--font-weight-semibold);
 }
 
+/* Blank Canvas Area Down Below — Pure open space, NO container boundary, stable height */
+.auth-canvas {
+  position: relative;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  width: 100%;
+  box-sizing: border-box;
+  min-height: 380px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  overflow: visible;
+}
+
+.auth-form-details {
+  padding: 0 !important;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+  min-height: 380px;
+  animation: authFormFadeIn 180ms ease;
+  font-family: var(--font-family-base) !important;
+}
+
+.auth-form-details .modal-actions {
+  margin-top: auto;
+  padding-top: var(--spacing-2);
+}
+
+@keyframes authFormFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.auth-canvas-header {
+  margin-bottom: var(--spacing-2);
+  text-align: left;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.auth-canvas-title {
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  letter-spacing: -0.02em;
+  font-family: var(--font-family-base) !important;
+}
+
+.auth-canvas-subtitle {
+  font-size: var(--font-size-sm);
+  color: var(--text-muted);
+  line-height: 1.4;
+  font-family: var(--font-family-base) !important;
+}
+
+/* Inputs inside auth canvas - properly padded, justified, and clearly visible */
+.auth-canvas .form-group {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.auth-canvas .form-row {
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-4);
+}
+
+.auth-canvas .form-input {
+  width: 100% !important;
+  box-sizing: border-box !important;
+  padding: 12px 16px !important;
+  font-size: var(--font-size-sm) !important;
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: 1.5px solid var(--border-default) !important;
+  border-radius: var(--radius-md) !important;
+  outline: none !important;
+  box-shadow: none !important;
+  transition: border-color 150ms ease, box-shadow 150ms ease !important;
+}
+
+.auth-canvas .form-input:focus {
+  border-color: var(--accent-primary) !important;
+  box-shadow: 0 0 0 3px rgba(107, 175, 164, 0.25) !important;
+}
+
+.auth-canvas .modal-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--spacing-3);
+  margin-top: var(--spacing-3);
+  padding-top: 0;
+  border-top: none;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .auth-alert {
-  margin: var(--spacing-4) var(--spacing-6) 0;
+  margin-bottom: var(--spacing-4);
   padding: var(--spacing-3) var(--spacing-4);
   border-radius: var(--radius-md);
   font-size: var(--font-size-xs);
-  border: 1px solid var(--border-default);
+  border: none !important;
   background-color: var(--accent-subtle);
   color: var(--accent-light);
+  animation: fadeIn 150ms ease-out;
+  font-family: var(--font-family-base) !important;
 }
 
 .auth-alert[hidden] {
@@ -983,12 +1203,12 @@
 }
 
 .auth-avatar-large {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border-radius: var(--radius-full);
   background-color: var(--accent-subtle);
   color: var(--accent-light);
-  border: 1px solid var(--border-default);
+  border: 1.5px solid var(--border-default);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -996,6 +1216,7 @@
   font-weight: var(--font-weight-bold);
   box-shadow: var(--shadow-sm);
   flex-shrink: 0;
+  font-family: var(--font-family-base) !important;
 }
 
 .auth-profile-info {
@@ -1009,12 +1230,14 @@
   font-size: var(--font-size-base);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
+  font-family: var(--font-family-base) !important;
 }
 
 .auth-profile-email {
   margin: 0;
   font-size: var(--font-size-sm);
   color: var(--text-secondary);
+  font-family: var(--font-family-base) !important;
 }
 
 /* ==========================================================================
