@@ -9,54 +9,14 @@ import { api } from '../services/api.js';
 
 export const THEMES = [
   {
-    id: 'carbon-teal',
-    name: 'Carbon & Sage Teal',
-    desc: 'Soft graphite surfaces with muted sage teal accents (Default)'
+    id: 'light',
+    name: 'Light Theme',
+    desc: 'Crisp architectural off-white canvas with bold Neo-Brutalist geometry (Default)'
   },
   {
-    id: 'midnight-navy',
-    name: 'Midnight Navy',
-    desc: 'Deep oceanic navy with crisp electric cyan highlights'
-  },
-  {
-    id: 'obsidian-amber',
-    name: 'Obsidian Amber',
-    desc: 'Dark charcoal canvas with warm radiant amber'
-  },
-  {
-    id: 'forest-emerald',
-    name: 'Forest Emerald',
-    desc: 'Botanical moss surfaces with vibrant emerald focus'
-  },
-  {
-    id: 'nordic-frost',
-    name: 'Nordic Frost',
-    desc: 'Cool arctic slate with ice glacier blue accents'
-  },
-  {
-    id: 'sunset-crimson',
-    name: 'Sunset Crimson',
-    desc: 'Deep plum and twilight graphite with coral rose highlights'
-  },
-  {
-    id: 'cyberpunk-violet',
-    name: 'Cyberpunk Violet',
-    desc: 'Ultra-deep violet canvas with neon electric purple'
-  },
-  {
-    id: 'monochrome-slate',
-    name: 'Monochrome Slate',
-    desc: 'Minimalist high-contrast dark graphite with platinum silver'
-  },
-  {
-    id: 'warm-sepia',
-    name: 'Warm Sepia',
-    desc: 'Roasted espresso tones with caramel and warm cream'
-  },
-  {
-    id: 'paper-light',
-    name: 'Paper Light',
-    desc: 'Clean, crisp light workspace with architectural ink accents'
+    id: 'dark',
+    name: 'Dark Theme',
+    desc: 'High-contrast charcoal & near-black canvas with crisp white geometry and vivid accents'
   }
 ];
 
@@ -80,9 +40,9 @@ export class Settings {
     this.avatarEmail = $('#settings-avatar-email');
     this.resetBtn = $('#settings-profile-reset-btn');
 
-    this.currentTheme = 'carbon-teal';
+    this.currentTheme = 'light';
     try {
-      this.currentTheme = localStorage.getItem('tempo_theme') || 'carbon-teal';
+      this.currentTheme = localStorage.getItem('tempo_theme') || 'light';
     } catch {}
   }
 

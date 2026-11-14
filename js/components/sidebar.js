@@ -11,6 +11,7 @@ export class Sidebar {
     this.authModal = authModal;
     this.sidebarEl = $('#app-sidebar');
     this.toggleBtn = $('#sidebar-toggle-btn');
+    this.headerToggleBtn = $('#sidebar-header-toggle-btn');
     this.backdropEl = $('#sidebar-backdrop');
     this.navItems = $$('.sidebar-nav .nav-item');
     this.currentViewBadge = $('#current-view-badge');
@@ -35,13 +36,42 @@ export class Sidebar {
         this.updateActiveNav();
       });
     }
+
+    // Restore desktop collapsed state preference
+    if (window.innerWidth > 768) {
+      try {
+        if (localStorage.getItem('tempo_sidebar_collapsed') === '1') {
+          this.sidebarEl?.classList.add('collapsed');
+        }
+      } catch (e) {}
+    }
   }
 
   bindEvents() {
-    // Toggle sidebar on mobile
+    // Toggle sidebar on mobile topbar or desktop collapsed topbar
     if (this.toggleBtn) {
       on(this.toggleBtn, 'click', () => this.toggle());
     }
+
+    // Toggle/resize sidebar from header toggle button
+    if (this.headerToggleBtn) {
+      on(this.headerToggleBtn, 'click', () => this.toggle());
+    }
+
+    // Responsive resize listener
+    window.addEventListener('resize', () => {
+      if (window.innerWidth <= 768) {
+        this.sidebarEl?.classList.remove('collapsed');
+      } else {
+        this.sidebarEl?.classList.remove('open');
+        this.backdropEl?.classList.remove('active');
+        try {
+          if (localStorage.getItem('tempo_sidebar_collapsed') === '1') {
+            this.sidebarEl?.classList.add('collapsed');
+          }
+        } catch (e) {}
+      }
+    });
 
     // Close on backdrop click
     if (this.backdropEl) {
@@ -113,11 +143,17 @@ export class Sidebar {
   }
 
   toggle() {
-    if (this.sidebarEl) {
+    if (!this.sidebarEl) return;
+    if (window.innerWidth <= 768) {
       const isOpen = this.sidebarEl.classList.toggle('open');
       if (this.backdropEl) {
         this.backdropEl.classList.toggle('active', isOpen);
       }
+    } else {
+      const isCollapsed = this.sidebarEl.classList.toggle('collapsed');
+      try {
+        localStorage.setItem('tempo_sidebar_collapsed', isCollapsed ? '1' : '0');
+      } catch (e) {}
     }
   }
 
@@ -131,7 +167,10 @@ export class Sidebar {
   }
 
   isOpen() {
-    return this.sidebarEl?.classList.contains('open') || false;
+    if (window.innerWidth <= 768) {
+      return this.sidebarEl?.classList.contains('open') || false;
+    }
+    return !this.sidebarEl?.classList.contains('collapsed');
   }
 
   setActiveItem(activeItem, view) {

@@ -1,5 +1,59 @@
 # Tempo Design System Specification
 
+## Theme: Neo-Brutalist Light (Default)
+
+### 1. Overview & Aesthetic
+Tempo features a **Modern Neo-Brutalist UI** inspired by high-contrast, structured poster art and modern engineering interfaces:
+- **Thick Black Borders**: Consistent 2px (and 3px for elevated modals) solid `#111111` borders on every interactive element.
+- **Sharp Rectangular Geometry**: 0px border-radii for cards, buttons, badges, and modals.
+- **Hard Offset Shadows**: Unblurred offset drop-shadows (`3px 3px 0px #111111` and `4px 4px 0px #111111`).
+- **Tactile Micro-Interactions**: Mechanical button clicks translating down-right by 2px with shrinking offset shadow.
+- **Subtle Technical Grid**: Architectural 24px grid pattern overlaid on an off-white `#F7F7F5` workspace canvas.
+- **High-Contrast Typography**: Bold grotesque headings (`font-weight: 800`) with uppercase section trackers.
+- **Vibrant Accent Colors**:
+  - **Lime Green** (`#C6F55A`): Primary actions, active navigation items, completed checkboxes.
+  - **Vibrant Pink** (`#FA779C`): Overdue cards, danger states, alert tags, urgent highlights.
+  - **Vibrant Purple** (`#8051F5`): Completed metrics, callout banners, Design System project dot.
+  - **Off-White** (`#F7F7F5`): Main application canvas and structural background.
+  - **Near-Black** (`#111111`): Structural borders, hard offset shadows, high-contrast headings and body text.
+  - **Pure White** (`#FFFFFF`): Inner card surfaces and input fields for pristine readability.
+
+| Element | Hex Code | Role |
+| :--- | :--- | :--- |
+| **Canvas Background** | `#F7F7F5` | Off-white main canvas with 24px subtle grid |
+| **Card Surface** | `#FFFFFF` | Crisp white cards and inputs for high contrast |
+| **Borders & Shadows** | `#111111` | 2px solid structural borders and hard offset shadows |
+| **Primary Text** | `#111111` | High-contrast bold typography |
+| **Secondary Text** | `#555555` | Supporting labels, descriptions, and timestamps |
+| **Lime Green Accent** | `#C6F55A` | Primary buttons, active nav, Total tasks card |
+| **Pink Accent** | `#FA779C` | Overdue card, high priority tag, urgent badges |
+| **Purple Accent** | `#8051F5` | Completed card, view indicators, callout blocks |
+
+---
+
+## Theme: Neo-Brutalist Dark
+
+### 1. Overview & Aesthetic
+The **Neo-Brutalist Dark Theme** provides an inverted high-contrast workspace with near-black charcoal surfaces, 2px white borders, and vibrant accents:
+- **Near-Black Canvas**: `#111111` main background with subtle white grid.
+- **Charcoal Card Surfaces**: `#222226` and `#18181B` with 2px solid `#FFFFFF` borders.
+- **Sharp Typography**: Pure `#FFFFFF` headings with `#A3ACAA` secondary text.
+- **Hard Offset Shadows**: Unblurred `4px 4px 0px #111111` shadows.
+- **Vibrant Highlights**: Lime green (`#C6F55A`), pink (`#FA779C`), and purple (`#8051F5`).
+
+| Element | Hex Code | Role |
+| :--- | :--- | :--- |
+| **Canvas Background** | `#111111` | Near-black canvas with 24px grid |
+| **Card Surface** | `#222226` | Deep charcoal cards with `#FFFFFF` 2px borders |
+| **Sidebar & Header** | `#18181B` | Structural dark containers |
+| **Primary Text** | `#FFFFFF` | High-contrast crisp white typography |
+| **Secondary Text** | `#A3ACAA` | Subtitles, descriptions, muted details |
+| **Lime Green Accent** | `#C6F55A` | Active states, primary buttons, Total tasks card |
+| **Pink Accent** | `#FA779C` | Overdue card, urgent tags |
+| **Purple Accent** | `#8051F5` | Completed metrics, category tags |
+
+---
+
 ## Theme: Carbon & Sage Teal
 
 ### 1. Overview & Aesthetic

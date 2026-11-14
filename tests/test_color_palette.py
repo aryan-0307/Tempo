@@ -70,17 +70,26 @@ APPROVED_HEX = {
     '#FBBF24', '#B45309', '#4A3525', '#4A3F39', '#2A1706',
 
     # 10. Paper Light
-    '#F8FAFC', '#0284C7', '#0369A1', '#E0F2FE', '#CBD5E1', '#E2E8F0', '#475569'
+    '#F8FAFC', '#0284C7', '#0369A1', '#E0F2FE', '#CBD5E1', '#E2E8F0', '#475569',
+
+    # 11. Neo-Brutalist (Flagship Design System)
+    '#C6F55A', '#FA779C', '#8051F5', '#F7F7F5', '#111111', '#FFFFFF',
+    '#555555', '#777777', '#E5E5E0', '#D4FA78', '#B5E84A', '#9B70FF', '#FB92AD'
 }
 APPROVED_HEX_LOWER = {c.lower() for c in APPROVED_HEX}
 
 APPROVED_RGB = {
     (0, 0, 0),          # Shadows / Elevation overlays
+    (17, 17, 17),       # #111111 (Near-black / Neo-Brutalist borders & text)
     (21, 23, 25),       # #151719 (Main background / Modal backdrop)
     (107, 175, 164),    # #6BAFA4 (Primary sage teal)
     (162, 210, 201),    # #A2D2C9 (Light sage teal)
     (128, 185, 160),    # #80B9A0 (Success)
     (136, 175, 194),    # #88AFC2 (Info)
+    (198, 245, 90),     # #C6F55A (Lime green)
+    (250, 119, 156),    # #FA779C (Pink)
+    (128, 81, 245),     # #8051F5 (Purple)
+    (247, 247, 245),    # #F7F7F5 (Off-white)
     (217, 139, 131),    # #D98B83 (Danger)
     (255, 255, 255)     # Swatch borders
 }

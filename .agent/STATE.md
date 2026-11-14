@@ -1,27 +1,37 @@
 # Current State
 
 ## Objective
-Rebuild Tempo as a modern, production-grade productivity workspace using a strict 7-Phase Learning-Focused Engineering Curriculum, featuring the **Carbon & Sage Teal** design system and a **10-Theme Customization Engine**.
+Rebuild Tempo as a modern, production-grade productivity workspace featuring a flagship **Neo-Brutalist Design System** (thick black borders, sharp rectangular cards, hard offset shadows, bold typography, vibrant lime, pink, and purple accents, subtle architectural grid pattern), streamlined **Light and Dark themes**, and a responsive sidebar with symmetrical periodic transitions.
 
 ## Active Phase
-Feature Enhancement — Butter-Smooth Jitter-Free Auth Modal Transitions (COMPLETED — 100% Verified)
+Dark Mode Contrast & UI Element Polishing (COMPLETED — 100% Verified)
 
 ## Curriculum Status
-ALL 7 CURRICULUM PHASES + CARBON & SAGE TEAL REDESIGN + SETTINGS ENGINE + MINIMAL AUTH MODAL COMPLETED
+ALL 7 CURRICULUM PHASES + FLAGSHIP NEO-BRUTALIST REDESIGN + LIGHT & DARK THEMES + PERFORMANCE MODALS + PERIODIC SIDEBAR TRANSITIONS COMPLETED
 
 ## Status
 COMPLETED_AND_VERIFIED
 
 ## Current Task
-Diagnosed and eliminated the underlying causes of lag, jank, and jitter in the Sign In / Create Account window:
-- **Zero Dialog Resizing / Jumping**: Discovered that `auth-register-form` was ~80px taller than `auth-signin-form`, causing the entire centered modal card to jump 40px vertically on every toggle. Locked `.auth-canvas` and `.auth-form-details` to a stable `min-height: 380px` with `margin-top: auto` on `.modal-actions`, keeping the entire window and both action button rows completely stationary.
-- **Unobstructed Pill Glide**: Discovered that `.auth-pill-btn` had an opaque `background-color: var(--bg-card)` at `z-index: 2` which hid the active indicator at `z-index: 1`. Set `background-color: transparent !important;` on `.auth-pill-btn`, allowing the indicator to glide in full view with zero clipping or background flashing.
-- **Pure Opacity Crossfade**: Replaced `translateY(4px)` with pure `opacity 180ms ease` in `@keyframes authFormFadeIn`, eliminating GPU transform churn.
-- **Eliminated Scroll/Focus Jank**: Deferred form field focus until animation completion (200ms) with `{ preventScroll: true }`, preventing browser viewport jumping.
-- All 9 test suites pass 100% with 0 errors.
+Resolved all dark mode contrast, search bar input visibility, and bottom section issues:
+1. **Overview Stat Cards in Dark Mode**:
+   - Updated `.stat-value` (`#stat-total-tasks`, `#stat-completed-tasks`, `#stat-pending-tasks`, `#stat-overdue-tasks`) from black to pure white (`#FFFFFF`).
+   - Updated `.stat-hint` ("Across all projects", "33% completion rate", "In active progress") to architectural off-white (`#F7F7F5`).
+   - Retained overdue warning indicator text in high-contrast pink (`#FA779C`).
+2. **Bottom Section Theme Alignment (Sidebar User Profile & App Statusbar)**:
+   - Fixed `.sidebar-user-profile` in `css/layout.css` and `css/themes.css` so it uses dark surface (`#18181B`) with 2px white border, pure white username (`Alex Morgan`), light graphite email, and dark more button.
+   - Fixed `.app-statusbar` in `css/layout.css` and `css/themes.css` so it uses dark surface (`#18181B`) with 2px white border, lime status dot, and muted light graphite text.
+3. **Search Bar Input Visibility on Typing in Dark Mode**:
+   - Styled `[data-theme="dark"] .search-input:focus` with dark `#222226` background, crisp white `#FFFFFF` text, lime green `#C6F55A` 2px border, and lime green `4px 4px 0px #C6F55A` hard shadow.
+   - Fixed previous issue where `:focus` turned the background white with white text.
+4. **Automated Verification**:
+   - Palette Compliance: `python tests/test_color_palette.py` — 0 color deviations across all 49 files.
+   - Unified Test Suite: `python tests/run_all_tests.py` — 9/9 test suites pass (100%).
+   - Browser Verifications: `test_theme_icons_and_sidebar.js`, `test_theme_refresh_fouc.js`, `test_sidebar_transition_symmetry.js` — all pass 100%.
+   - Visual Verification: Headless Chrome screenshots captured and verified (`dashboard_dark_theme.png`, `dashboard_dark_theme_search_typing.png`, `settings_dark_theme.png`).
 
 ## Last Completed Task
-Updated `css/components.css`, `js/components/modal.js`, verified all 9 test suites with `python tests/run_all_tests.py` passing in 6.64s.
+Updated `css/layout.css` and `css/themes.css`, tested typing behavior in Chrome, confirmed all 9/9 test suites pass, and visually verified all dark mode elements.
 
 ## Completed Work to Date
 - [x] Phase 0: Planning and Architecture.

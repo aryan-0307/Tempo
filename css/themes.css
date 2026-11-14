@@ -6,10 +6,103 @@
  */
 
 /* ==========================================================================
-   1. Carbon & Sage Teal (Default Theme)
+   0. Light Theme (Default Neo-Brutalist Architecture)
    ========================================================================== */
-[data-theme="carbon-teal"],
-:root:not([data-theme]) {
+:root:not([data-theme]),
+[data-theme="light"],
+[data-theme="neo-brutalist"] {
+  --bg-main: #F7F7F5;
+  --bg-sidebar: #F7F7F5;
+  --bg-header: #FFFFFF;
+  --bg-card: #FFFFFF;
+  --bg-elevated: #F7F7F5;
+  --bg-hover: #E5E5E0;
+  --text-primary: #111111;
+  --text-secondary: #555555;
+  --text-muted: #777777;
+  --accent-primary: #C6F55A;
+  --accent-light: #D4FA78;
+  --accent-hover: #B5E84A;
+  --accent-subtle: #E5E5E0;
+  --border-default: #111111;
+  --border-focus: #111111;
+  --btn-primary-text: #111111;
+  --stat-total-color: #111111;
+  --stat-total-bg: #C6F55A;
+  --stat-completed-color: #FFFFFF;
+  --stat-completed-bg: #8051F5;
+  --stat-pending-color: #555555;
+  --stat-pending-bg: #E5E5E0;
+  --stat-overdue-color: #FA779C;
+  --stat-overdue-bg: #111111;
+  --shadow-card: 4px 4px 0px #111111;
+  --shadow-xs: 2px 2px 0px #111111;
+  --shadow-sm: 3px 3px 0px #111111;
+  --shadow-md: 4px 4px 0px #111111;
+  --shadow-lg: 6px 6px 0px #111111;
+  --color-border: #111111;
+  --color-border-subtle: #111111;
+  --color-sidebar-bg: #F7F7F5;
+  --color-sidebar-border: #111111;
+  --color-sidebar-text: #111111;
+  --color-sidebar-text-muted: #555555;
+  --color-sidebar-hover: #FFFFFF;
+  --color-sidebar-active: #C6F55A;
+  --color-sidebar-active-text: #111111;
+  --color-bg-app: #F7F7F5;
+  --color-bg-surface: #FFFFFF;
+}
+
+/* ==========================================================================
+   0.5. Dark Theme (High-Contrast Neo-Brutalist Charcoal & White)
+   ========================================================================== */
+[data-theme="dark"] {
+  --bg-main: #111111;
+  --bg-sidebar: #18181B;
+  --bg-header: #18181B;
+  --bg-card: #222226;
+  --bg-elevated: #2C2C32;
+  --bg-hover: #323238;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A3ACAA;
+  --text-muted: #84918E;
+  --accent-primary: #C6F55A;
+  --accent-light: #D4FA78;
+  --accent-hover: #B5E84A;
+  --accent-subtle: #2C2C32;
+  --border-default: #FFFFFF;
+  --border-focus: #C6F55A;
+  --btn-primary-text: #111111;
+  --stat-total-color: #111111;
+  --stat-total-bg: #C6F55A;
+  --stat-completed-color: #FFFFFF;
+  --stat-completed-bg: #8051F5;
+  --stat-pending-color: #FFFFFF;
+  --stat-pending-bg: #2C2C32;
+  --stat-overdue-color: #111111;
+  --stat-overdue-bg: #FA779C;
+  --shadow-card: 4px 4px 0px #111111;
+  --shadow-xs: 2px 2px 0px #111111;
+  --shadow-sm: 3px 3px 0px #111111;
+  --shadow-md: 4px 4px 0px #111111;
+  --shadow-lg: 6px 6px 0px #111111;
+  --color-border: #FFFFFF;
+  --color-border-subtle: #FFFFFF;
+  --color-sidebar-bg: #18181B;
+  --color-sidebar-border: #FFFFFF;
+  --color-sidebar-text: #FFFFFF;
+  --color-sidebar-text-muted: #A3ACAA;
+  --color-sidebar-hover: #222226;
+  --color-sidebar-active: #C6F55A;
+  --color-sidebar-active-text: #111111;
+  --color-bg-app: #111111;
+  --color-bg-surface: #222226;
+}
+
+/* ==========================================================================
+   1. Carbon & Sage Teal
+   ========================================================================== */
+[data-theme="carbon-teal"] {
   --bg-main: #151719;
   --bg-sidebar: #202426;
   --bg-header: #202426;
@@ -26,6 +119,14 @@
   --border-default: #3B4444;
   --border-focus: #6BAFA4;
   --btn-primary-text: #14211E;
+  --stat-total-color: #A2D2C9;
+  --stat-total-bg: #344A46;
+  --stat-completed-color: #80B9A0;
+  --stat-completed-bg: #14211E;
+  --stat-pending-color: #D2AD70;
+  --stat-pending-bg: #514638;
+  --stat-overdue-color: #D98B83;
+  --stat-overdue-bg: #513A39;
 }
 
 /* ==========================================================================
@@ -48,6 +149,14 @@
   --border-default: #2E3E64;
   --border-focus: #38BDF8;
   --btn-primary-text: #082F49;
+  --stat-total-color: #7DD3FC;
+  --stat-total-bg: #1E3A5F;
+  --stat-completed-color: #38BDF8;
+  --stat-completed-bg: #082F49;
+  --stat-pending-color: #94A3B8;
+  --stat-pending-bg: #233157;
+  --stat-overdue-color: #0EA5E9;
+  --stat-overdue-bg: #2E3E64;
 }
 
 /* ==========================================================================
@@ -70,6 +179,14 @@
   --border-default: #33333D;
   --border-focus: #F59E0B;
   --btn-primary-text: #451A03;
+  --stat-total-color: #FCD34D;
+  --stat-total-bg: #452D12;
+  --stat-completed-color: #F59E0B;
+  --stat-completed-bg: #451A03;
+  --stat-pending-color: #A1A1AA;
+  --stat-pending-bg: #282830;
+  --stat-overdue-color: #D97706;
+  --stat-overdue-bg: #33333D;
 }
 
 /* ==========================================================================
@@ -92,6 +209,14 @@
   --border-default: #2A483E;
   --border-focus: #10B981;
   --btn-primary-text: #064E3B;
+  --stat-total-color: #34D399;
+  --stat-total-bg: #133D30;
+  --stat-completed-color: #10B981;
+  --stat-completed-bg: #064E3B;
+  --stat-pending-color: #A7F3D0;
+  --stat-pending-bg: #223B33;
+  --stat-overdue-color: #059669;
+  --stat-overdue-bg: #2A483E;
 }
 
 /* ==========================================================================
@@ -114,6 +239,14 @@
   --border-default: #2F414E;
   --border-focus: #60A5FA;
   --btn-primary-text: #0F172A;
+  --stat-total-color: #93C5FD;
+  --stat-total-bg: #1E334D;
+  --stat-completed-color: #60A5FA;
+  --stat-completed-bg: #0F172A;
+  --stat-pending-color: #94A3B8;
+  --stat-pending-bg: #24343F;
+  --stat-overdue-color: #3B82F6;
+  --stat-overdue-bg: #2F414E;
 }
 
 /* ==========================================================================
@@ -136,6 +269,14 @@
   --border-default: #473241;
   --border-focus: #FB7185;
   --btn-primary-text: #4C0519;
+  --stat-total-color: #FDA4AF;
+  --stat-total-bg: #4C1D32;
+  --stat-completed-color: #FB7185;
+  --stat-completed-bg: #4C0519;
+  --stat-pending-color: #F472B6;
+  --stat-pending-bg: #372833;
+  --stat-overdue-color: #F43F5E;
+  --stat-overdue-bg: #473241;
 }
 
 /* ==========================================================================
@@ -158,6 +299,14 @@
   --border-default: #3D365A;
   --border-focus: #A855F7;
   --btn-primary-text: #2E1065;
+  --stat-total-color: #C084FC;
+  --stat-total-bg: #3B2063;
+  --stat-completed-color: #A855F7;
+  --stat-completed-bg: #2E1065;
+  --stat-pending-color: #C4B5FD;
+  --stat-pending-bg: #2C2842;
+  --stat-overdue-color: #9333EA;
+  --stat-overdue-bg: #3D365A;
 }
 
 /* ==========================================================================
@@ -180,6 +329,14 @@
   --border-default: #43434C;
   --border-focus: #E4E4E7;
   --btn-primary-text: #18181B;
+  --stat-total-color: #E4E4E7;
+  --stat-total-bg: #3F3F46;
+  --stat-completed-color: #FFFFFF;
+  --stat-completed-bg: #323238;
+  --stat-pending-color: #D4D4D8;
+  --stat-pending-bg: #282830;
+  --stat-overdue-color: #A1A1AA;
+  --stat-overdue-bg: #18181B;
 }
 
 /* ==========================================================================
@@ -202,6 +359,14 @@
   --border-default: #4A3F39;
   --border-focus: #D97706;
   --btn-primary-text: #2A1706;
+  --stat-total-color: #FBBF24;
+  --stat-total-bg: #4A3525;
+  --stat-completed-color: #D97706;
+  --stat-completed-bg: #2A1706;
+  --stat-pending-color: #D6C7BC;
+  --stat-pending-bg: #3B322D;
+  --stat-overdue-color: #B45309;
+  --stat-overdue-bg: #4A3F39;
 }
 
 /* ==========================================================================
@@ -224,11 +389,33 @@
   --border-default: #CBD5E1;
   --border-focus: #0EA5E9;
   --btn-primary-text: #FFFFFF;
+  --stat-total-color: #0284C7;
+  --stat-total-bg: #E0F2FE;
+  --stat-completed-color: #0EA5E9;
+  --stat-completed-bg: #CBD5E1;
+  --stat-pending-color: #475569;
+  --stat-pending-bg: #E2E8F0;
+  --stat-overdue-color: #0369A1;
+  --stat-overdue-bg: #F8FAFC;
 }
 
 /* ==========================================================================
    Swatch Preview Dots for Theme Cards
    ========================================================================== */
+.theme-swatches[data-theme-preview="light"] .swatch-1,
+.theme-swatches[data-theme-preview="neo-brutalist"] .swatch-1 { background-color: #F7F7F5; }
+.theme-swatches[data-theme-preview="light"] .swatch-2,
+.theme-swatches[data-theme-preview="neo-brutalist"] .swatch-2 { background-color: #C6F55A; }
+.theme-swatches[data-theme-preview="light"] .swatch-3,
+.theme-swatches[data-theme-preview="neo-brutalist"] .swatch-3 { background-color: #FA779C; }
+.theme-swatches[data-theme-preview="light"] .swatch-4,
+.theme-swatches[data-theme-preview="neo-brutalist"] .swatch-4 { background-color: #8051F5; }
+
+.theme-swatches[data-theme-preview="dark"] .swatch-1 { background-color: #111111; }
+.theme-swatches[data-theme-preview="dark"] .swatch-2 { background-color: #18181B; }
+.theme-swatches[data-theme-preview="dark"] .swatch-3 { background-color: #C6F55A; }
+.theme-swatches[data-theme-preview="dark"] .swatch-4 { background-color: #FA779C; }
+
 .theme-swatches[data-theme-preview="carbon-teal"] .swatch-1 { background-color: #151719; }
 .theme-swatches[data-theme-preview="carbon-teal"] .swatch-2 { background-color: #202426; }
 .theme-swatches[data-theme-preview="carbon-teal"] .swatch-3 { background-color: #303739; }
@@ -278,4 +465,433 @@
 .theme-swatches[data-theme-preview="paper-light"] .swatch-2 { background-color: #F1F5F9; }
 .theme-swatches[data-theme-preview="paper-light"] .swatch-3 { background-color: #FFFFFF; }
 .theme-swatches[data-theme-preview="paper-light"] .swatch-4 { background-color: #0EA5E9; }
+
+/* ==========================================================================
+   Dark Theme Component Rules
+   ========================================================================== */
+[data-theme="dark"] .app-main {
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}
+
+[data-theme="dark"] .sidebar-header,
+[data-theme="dark"] .app-topbar {
+  background-color: #18181B;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .sidebar-header-toggle-btn {
+  background-color: #222226;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .brand-name {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .nav-item {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .nav-item:hover {
+  background-color: #222226;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .nav-item.active {
+  background-color: #C6F55A;
+  color: #111111;
+  border-color: #111111;
+}
+
+[data-theme="dark"] .nav-section-title {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .stat-card {
+  background-color: #222226;
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .stat-value,
+[data-theme="dark"] .stat-number {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .stat-hint {
+  color: #F7F7F5;
+}
+
+[data-theme="dark"] .stat-hint.text-danger {
+  color: #FA779C;
+}
+
+[data-theme="dark"] .stat-label {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .stat-desc {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .kanban-column {
+  background-color: #222226;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .column-title {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .column-count {
+  background-color: #18181B;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .task-card {
+  background-color: #18181B;
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .task-card-title {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .task-card-desc {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .task-checkbox {
+  background-color: #222226;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .search-input {
+  background-color: #18181B;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+  box-shadow: 2px 2px 0px #111111;
+}
+
+[data-theme="dark"] .search-input:focus {
+  background-color: #222226;
+  color: #FFFFFF;
+  border-color: #C6F55A;
+  box-shadow: 4px 4px 0px #C6F55A;
+}
+
+[data-theme="dark"] .search-input::placeholder {
+  color: #84918E;
+}
+
+[data-theme="dark"] .search-icon {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .search-shortcut {
+  background-color: #222226;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .topbar-view-badge {
+  background-color: #8051F5;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .topbar-date {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .task-modal,
+[data-theme="dark"] .auth-card {
+  background-color: #222226;
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .modal-header,
+[data-theme="dark"] .modal-footer {
+  background-color: #18181B;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .modal-title {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .modal-close-btn {
+  background-color: #222226;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .form-input,
+[data-theme="dark"] .form-textarea,
+[data-theme="dark"] .form-select {
+  background-color: #18181B;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .form-label {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .settings-card {
+  background-color: #222226;
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .settings-card-header {
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .settings-card-title {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .settings-card-desc {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .theme-card {
+  background-color: #18181B;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .theme-card.active {
+  border-color: #C6F55A;
+}
+
+[data-theme="dark"] .theme-card .theme-name {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .theme-card .theme-desc {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .theme-badge {
+  background-color: #C6F55A;
+  color: #111111;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background-color: #222226;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .btn-ghost {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .btn-ghost:hover {
+  background-color: #222226;
+}
+
+[data-theme="dark"] .profile-preview-card,
+[data-theme="dark"] .user-profile-widget {
+  background-color: #18181B;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .profile-name,
+[data-theme="dark"] .user-name {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .profile-title,
+[data-theme="dark"] .user-role {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .profile-bio {
+  color: #84918E;
+}
+
+[data-theme="dark"] .welcome-title {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .welcome-subtitle {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .section-title {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .section-desc {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .tasks-section {
+  background-color: #222226;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .tasks-section-header {
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .tasks-container,
+[data-theme="dark"] .task-item {
+  background-color: #18181B;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .task-item {
+  box-shadow: 3px 3px 0px #111111;
+}
+
+[data-theme="dark"] .task-item:hover {
+  background-color: #222226;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .task-title {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .task-meta,
+[data-theme="dark"] .task-meta span {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .task-checkbox {
+  background-color: #222226;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .tasks-count-pill {
+  background-color: #C6F55A;
+  color: #111111;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .tasks-sort-select {
+  background-color: #18181B;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .tasks-filter-group {
+  background-color: #18181B;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .filter-tab {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .filter-tab:hover:not(.active) {
+  background-color: #222226;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .filter-tab.active {
+  background-color: #C6F55A;
+  color: #111111;
+  border-color: #111111;
+}
+
+[data-theme="dark"] .task-action-btn {
+  background-color: #222226;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .task-action-btn:hover {
+  background-color: #C6F55A;
+  color: #111111;
+}
+
+[data-theme="dark"] .theme-card.active {
+  background-color: #C6F55A;
+  border-color: #111111;
+  box-shadow: 4px 4px 0px #111111;
+}
+
+[data-theme="dark"] .theme-card.active .theme-name {
+  color: #111111 !important;
+}
+
+[data-theme="dark"] .theme-card.active .theme-desc {
+  color: #111111 !important;
+}
+
+[data-theme="dark"] .theme-card.active .theme-badge {
+  background-color: #111111;
+  color: #C6F55A;
+  border-color: #111111;
+}
+
+.theme-card.active .theme-name {
+  color: #111111 !important;
+}
+
+.theme-card.active .theme-desc {
+  color: #111111 !important;
+}
+
+[data-theme="dark"] .sidebar-user-profile {
+  background-color: #18181B;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .sidebar-user-profile:hover {
+  background-color: #222226;
+}
+
+[data-theme="dark"] .sidebar-user-profile .user-name {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .sidebar-user-profile .user-role {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .sidebar-user-profile .user-more-btn {
+  background-color: #222226;
+  color: #FFFFFF;
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .sidebar-user-profile .user-more-btn:hover {
+  background-color: #C6F55A;
+  color: #111111;
+}
+
+[data-theme="dark"] .sidebar-user-profile .user-avatar {
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .sidebar-user-profile .user-status-dot {
+  border-color: #FFFFFF;
+}
+
+[data-theme="dark"] .app-statusbar {
+  background-color: #18181B;
+  border-color: #FFFFFF;
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .app-statusbar span {
+  color: #A3ACAA;
+}
+
+[data-theme="dark"] .status-dot {
+  border-color: #FFFFFF;
+}
 

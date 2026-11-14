@@ -74,8 +74,15 @@ export class Modal {
 
   open(taskToEdit = null) {
     if (!this.modalEl) return;
+    if (this._closeTimeout) {
+      clearTimeout(this._closeTimeout);
+      this._closeTimeout = null;
+    }
 
     this.modalEl.removeAttribute('hidden');
+    requestAnimationFrame(() => {
+      this.modalEl.classList.add('is-open');
+    });
 
     if (taskToEdit) {
       this.editingTaskId = taskToEdit.id;
@@ -98,21 +105,26 @@ export class Modal {
     }
 
     if (this.titleInput) {
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         this.titleInput.focus();
         this.titleInput.select();
-      }, 50);
+      });
     }
   }
 
   close() {
-    if (this.modalEl) {
-      this.modalEl.setAttribute('hidden', '');
-      this.editingTaskId = null;
-      if (this.form) {
-        this.form.reset();
+    if (!this.modalEl || !this.isOpen()) return;
+    this.modalEl.classList.remove('is-open');
+    this.editingTaskId = null;
+    if (this._closeTimeout) clearTimeout(this._closeTimeout);
+    this._closeTimeout = setTimeout(() => {
+      if (!this.modalEl.classList.contains('is-open')) {
+        this.modalEl.setAttribute('hidden', '');
+        if (this.form) {
+          this.form.reset();
+        }
       }
-    }
+    }, 200);
   }
 
   isOpen() {
@@ -160,6 +172,7 @@ export class AuthModal {
     this.modalCard = this.modalEl?.querySelector('.auth-modal-card');
     this.closeBtn = $('#auth-modal-close-btn');
     this.navContainer = $('.auth-nav-container');
+    this.bubbleTrack = this.modalEl?.querySelector('.auth-bubble-track');
     this.floatingBubble = $('#auth-floating-bubble');
     this.authCanvas = $('#auth-canvas');
     this.tabSignIn = $('#auth-tab-signin');
@@ -177,7 +190,14 @@ export class AuthModal {
     this.profileName = $('#auth-profile-name');
     this.profileEmail = $('#auth-profile-email');
 
+    this.signInTogglePwd = $('#auth-signin-toggle-pwd');
+    this.regTogglePwd = $('#auth-reg-toggle-pwd');
+    this.signInPwdInput = $('#auth-signin-password');
+    this.regPwdInput = $('#auth-reg-password');
+
     this.mode = 'signin';
+    this._closeTimeout = null;
+    this.cachedUser = null;
   }
 
   init() {
@@ -205,10 +225,31 @@ export class AuthModal {
       if (e.key === 'Escape' && this.isOpen()) this.close();
     });
 
-    on(window, 'resize', () => {
-      if (this.isOpen() && this.mode !== 'profile') {
-        this.updateBubble(false);
-      }
+    // Instant password visibility toggles
+    const setupPwdToggle = (btn, input) => {
+      if (!btn || !input) return;
+      on(btn, 'click', (e) => {
+        e.preventDefault();
+        const isPwd = input.type === 'password';
+        input.type = isPwd ? 'text' : 'password';
+        const showIcon = btn.querySelector('.eye-show');
+        const hideIcon = btn.querySelector('.eye-hide');
+        if (showIcon) showIcon.toggleAttribute('hidden', isPwd);
+        if (hideIcon) hideIcon.toggleAttribute('hidden', !isPwd);
+        btn.setAttribute('aria-label', isPwd ? 'Hide password' : 'Show password');
+      });
+    };
+    setupPwdToggle(this.signInTogglePwd, this.signInPwdInput);
+    setupPwdToggle(this.regTogglePwd, this.regPwdInput);
+
+    // Instant clear alert on user input typing
+    const inputIds = [
+      '#auth-signin-email', '#auth-signin-password',
+      '#auth-reg-name', '#auth-reg-username', '#auth-reg-email', '#auth-reg-password'
+    ];
+    inputIds.forEach(id => {
+      const el = $(id);
+      if (el) on(el, 'input', () => this.clearAlert());
     });
 
     if (this.signInForm) {
@@ -232,29 +273,50 @@ export class AuthModal {
 
   open(targetMode = null) {
     if (!this.modalEl) return;
+    if (this._closeTimeout) {
+      clearTimeout(this._closeTimeout);
+      this._closeTimeout = null;
+    }
     this.clearAlert();
-    this.modalEl.removeAttribute('hidden');
 
-    const initialMode = targetMode || 'signin';
+    const hasToken = !!api.getToken();
+    let initialMode = targetMode;
+    if (!initialMode) {
+      initialMode = (hasToken && this.cachedUser) ? 'profile' : 'signin';
+    }
+
+    this.modalEl.removeAttribute('hidden');
     this.setMode(initialMode, false);
+
+    // Trigger smooth GPU-accelerated entrance transition
     requestAnimationFrame(() => {
-      this.updateBubble(false);
+      this.modalEl.classList.add('is-open');
     });
 
-    // Check backend session non-blockingly so dialog opens instantly
-    api.getMe().then(user => {
-      if (user && this.isOpen()) {
-        this.renderProfile(user);
-        this.setMode('profile', false);
-      }
-    }).catch(() => {});
+    // Check backend session non-blockingly and cache user
+    if (hasToken) {
+      api.getMe().then(user => {
+        if (user && this.isOpen()) {
+          this.cachedUser = user;
+          this.renderProfile(user);
+          if (!targetMode && this.mode !== 'signin' && this.mode !== 'register') {
+            this.setMode('profile', false);
+          }
+        }
+      }).catch(() => {});
+    }
   }
 
   close() {
-    if (this.modalEl) {
-      this.modalEl.setAttribute('hidden', '');
-      this.clearAlert();
-    }
+    if (!this.modalEl || !this.isOpen()) return;
+    this.modalEl.classList.remove('is-open');
+    this.clearAlert();
+    if (this._closeTimeout) clearTimeout(this._closeTimeout);
+    this._closeTimeout = setTimeout(() => {
+      if (!this.modalEl.classList.contains('is-open')) {
+        this.modalEl.setAttribute('hidden', '');
+      }
+    }, 200);
   }
 
   showAlert(message) {
@@ -272,19 +334,15 @@ export class AuthModal {
   }
 
   updateBubble() {
-    const activeTab = this.mode === 'register' ? this.tabRegister : this.tabSignIn;
-    if (!this.floatingBubble || !activeTab) return;
-
-    const x = activeTab.offsetLeft;
-    const y = activeTab.offsetTop;
-
-    if (activeTab.offsetWidth === 0) return;
-
-    this.floatingBubble.style.transform = `translate3d(${x}px, ${y}px, 0)`;
-    this.floatingBubble.style.opacity = '1';
+    if (this.bubbleTrack && this.mode) {
+      this.bubbleTrack.setAttribute('data-mode', this.mode);
+    }
   }
 
   setMode(mode, animated = true) {
+    if (this.mode === mode && this.bubbleTrack?.getAttribute('data-mode') === mode) {
+      return;
+    }
     this.mode = mode;
     this.clearAlert();
 
@@ -299,6 +357,10 @@ export class AuthModal {
       if (navContainer) navContainer.removeAttribute('hidden');
       this.profileView?.setAttribute('hidden', '');
 
+      if (this.bubbleTrack) {
+        this.bubbleTrack.setAttribute('data-mode', mode);
+      }
+
       if (mode === 'signin') {
         this.tabSignIn?.classList.add('active');
         this.tabSignIn?.setAttribute('aria-selected', 'true');
@@ -308,9 +370,10 @@ export class AuthModal {
         this.signInForm?.removeAttribute('hidden');
         this.registerForm?.setAttribute('hidden', '');
 
-        setTimeout(() => {
+        // Immediate focus without artificial timeout
+        requestAnimationFrame(() => {
           if (this.isOpen()) $('#auth-signin-email')?.focus({ preventScroll: true });
-        }, 200);
+        });
       } else {
         this.tabRegister?.classList.add('active');
         this.tabRegister?.setAttribute('aria-selected', 'true');
@@ -320,12 +383,11 @@ export class AuthModal {
         this.registerForm?.removeAttribute('hidden');
         this.signInForm?.setAttribute('hidden', '');
 
-        setTimeout(() => {
+        // Immediate focus without artificial timeout
+        requestAnimationFrame(() => {
           if (this.isOpen()) $('#auth-reg-name')?.focus({ preventScroll: true });
-        }, 200);
+        });
       }
-
-      this.updateBubble(animated);
     }
   }
 
@@ -354,6 +416,7 @@ export class AuthModal {
 
     try {
       const data = await api.login({ email, password });
+      this.cachedUser = data.user;
       toast.show(`Welcome back, ${data.user.fullName}!`);
       this.updateSidebarUser(data.user);
       if (this.state) {
@@ -378,6 +441,7 @@ export class AuthModal {
 
     try {
       const data = await api.register({ fullName, username, email, password });
+      this.cachedUser = data.user;
       toast.show(`Account created! Welcome, ${data.user.fullName}!`);
       this.updateSidebarUser(data.user);
       if (this.state) {
@@ -393,6 +457,7 @@ export class AuthModal {
     try {
       await api.logout();
     } catch {}
+    this.cachedUser = null;
     api.clearToken();
     toast.show('Signed out successfully.');
     this.updateSidebarUser({
