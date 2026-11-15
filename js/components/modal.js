@@ -531,6 +531,12 @@ export class ProjectModal {
     this.form = $('#create-project-form');
     this.nameInput = $('#project-name-input');
     this.colorSelect = $('#project-color-select');
+    this.colorPicker = $('#project-color-picker');
+    this.colorPickerTrigger = $('#color-picker-trigger');
+    this.colorPickerMenu = $('#color-picker-menu');
+    this.colorPickerSelectedSwatch = $('#color-picker-selected-swatch');
+    this.colorPickerSelectedText = $('#color-picker-selected-text');
+    this.colorPickerItems = this.colorPickerMenu ? Array.from(this.colorPickerMenu.querySelectorAll('.color-picker-item')) : [];
     this.closeBtn = $('#project-modal-close-btn');
     this.cancelBtn = $('#project-modal-cancel-btn');
     this.openBtns = [
@@ -570,12 +576,121 @@ export class ProjectModal {
       }
     });
 
+    // Custom Color Picker Interactions
+    if (this.colorPickerTrigger) {
+      on(this.colorPickerTrigger, 'click', (e) => {
+        e.stopPropagation();
+        this.toggleColorMenu();
+      });
+
+      on(this.colorPickerTrigger, 'keydown', (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.openColorMenu();
+          const first = this.colorPickerItems.find(i => i.classList.contains('selected')) || this.colorPickerItems[0];
+          first?.focus();
+        }
+      });
+    }
+
+    this.colorPickerItems.forEach(item => {
+      on(item, 'click', (e) => {
+        e.stopPropagation();
+        this.selectColor(item);
+      });
+
+      on(item, 'keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.selectColor(item);
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          const next = item.nextElementSibling;
+          if (next && next.classList.contains('color-picker-item')) next.focus();
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          const prev = item.previousElementSibling;
+          if (prev && prev.classList.contains('color-picker-item')) prev.focus();
+        } else if (e.key === 'Escape') {
+          e.preventDefault();
+          this.closeColorMenu();
+          this.colorPickerTrigger?.focus();
+        }
+      });
+    });
+
+    // Close color menu on click outside
+    on(document, 'click', (e) => {
+      if (this.colorPicker && !this.colorPicker.contains(e.target)) {
+        this.closeColorMenu();
+      }
+    });
+
     if (this.form) {
       on(this.form, 'submit', async (e) => {
         e.preventDefault();
         await this.handleSubmit();
       });
     }
+  }
+
+  toggleColorMenu() {
+    if (!this.colorPickerMenu) return;
+    const isHidden = this.colorPickerMenu.hasAttribute('hidden');
+    if (isHidden) {
+      this.openColorMenu();
+    } else {
+      this.closeColorMenu();
+    }
+  }
+
+  openColorMenu() {
+    if (!this.colorPickerMenu || !this.colorPickerTrigger) return;
+    this.colorPickerMenu.removeAttribute('hidden');
+    this.colorPickerTrigger.setAttribute('aria-expanded', 'true');
+    this.colorPicker?.classList.add('is-open');
+  }
+
+  closeColorMenu() {
+    if (!this.colorPickerMenu || !this.colorPickerTrigger) return;
+    this.colorPickerMenu.setAttribute('hidden', '');
+    this.colorPickerTrigger.setAttribute('aria-expanded', 'false');
+    this.colorPicker?.classList.remove('is-open');
+  }
+
+  selectColor(item) {
+    const color = item.dataset.color;
+    const name = item.dataset.name;
+    const swatch = item.dataset.swatch;
+
+    if (this.colorSelect) {
+      this.colorSelect.value = color;
+    }
+
+    if (this.colorPickerSelectedSwatch) {
+      this.colorPickerSelectedSwatch.className = `color-swatch-box ${swatch}`;
+    }
+
+    if (this.colorPickerSelectedText) {
+      this.colorPickerSelectedText.textContent = name;
+    }
+
+    this.colorPickerItems.forEach(i => {
+      const isSel = i === item;
+      i.classList.toggle('selected', isSel);
+      i.setAttribute('aria-selected', isSel ? 'true' : 'false');
+    });
+
+    this.closeColorMenu();
+    this.colorPickerTrigger?.focus();
+  }
+
+  resetColorPicker() {
+    const defaultItem = this.colorPickerItems.find(i => i.dataset.color === '#C6F55A') || this.colorPickerItems[0];
+    if (defaultItem) {
+      this.selectColor(defaultItem);
+    }
+    this.closeColorMenu();
   }
 
   open() {
@@ -588,10 +703,12 @@ export class ProjectModal {
       this.nameInput.value = '';
       requestAnimationFrame(() => this.nameInput.focus());
     }
+    this.resetColorPicker();
   }
 
   close() {
     if (!this.modalEl || !this.isOpen()) return;
+    this.closeColorMenu();
     this.modalEl.classList.remove('is-open');
     setTimeout(() => {
       if (!this.modalEl.classList.contains('is-open')) {

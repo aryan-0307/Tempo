@@ -861,6 +861,140 @@
   transform: translate(-1px, -1px);
 }
 
+/* ==========================================================================
+   Project Color Accent Custom Dropdown Picker
+   ========================================================================== */
+.project-color-select-hidden {
+  position: absolute !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  width: 1px !important;
+  height: 1px !important;
+  margin: -1px !important;
+  border: 0 !important;
+  padding: 0 !important;
+  clip: rect(0, 0, 0, 0) !important;
+}
+
+#create-project-modal .modal-card {
+  overflow: visible !important;
+}
+
+.custom-color-picker {
+  position: relative;
+  width: 100%;
+}
+
+.color-picker-trigger {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  background-color: #FFFFFF;
+  border: 2px solid #111111;
+  border-radius: 0px;
+  color: #111111;
+  cursor: pointer;
+  box-shadow: none;
+  font-family: inherit;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  transition: box-shadow var(--transition-fast), transform var(--transition-fast);
+  text-align: left;
+}
+
+.color-picker-trigger:hover,
+.color-picker-trigger:focus {
+  border-color: #111111;
+  box-shadow: 3px 3px 0px #111111;
+  transform: translate(-1px, -1px);
+}
+
+.color-picker-selected {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-swatch-box {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #111111;
+  border-radius: 0px;
+  display: inline-block;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.swatch-lime { background-color: #C6F55A; }
+.swatch-pink { background-color: #FA779C; }
+.swatch-purple { background-color: #8051F5; }
+.swatch-teal { background-color: #6BAFA4; }
+.swatch-blue { background-color: #38BDF8; }
+.swatch-amber { background-color: #F59E0B; }
+
+.color-name-text {
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: inherit;
+}
+
+.color-picker-chevron {
+  color: #111111;
+  flex-shrink: 0;
+  transition: transform 150ms ease;
+}
+
+.custom-color-picker.is-open .color-picker-chevron {
+  transform: rotate(180deg);
+}
+
+.color-picker-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  background-color: #FFFFFF;
+  border: 2px solid #111111;
+  border-radius: 0px;
+  box-shadow: 4px 4px 0px #111111;
+  list-style: none;
+  padding: 4px 0;
+  margin: 0;
+  z-index: 100;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.color-picker-menu[hidden] {
+  display: none !important;
+}
+
+.color-picker-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #111111;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  transition: background-color var(--transition-fast);
+  user-select: none;
+}
+
+.color-picker-item:hover,
+.color-picker-item:focus {
+  background-color: #F7F7F5;
+  outline: none;
+}
+
+.color-picker-item.selected {
+  background-color: #F7F7F5;
+  font-weight: 700;
+}
+
 .modal-actions {
   display: flex;
   align-items: center;

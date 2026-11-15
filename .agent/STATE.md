@@ -4,45 +4,35 @@
 Rebuild Tempo as a modern, production-grade productivity workspace featuring a flagship **Neo-Brutalist Design System** (thick black borders, sharp rectangular cards, hard offset shadows, bold typography, vibrant lime, pink, and purple accents, subtle architectural grid pattern), streamlined **Light and Dark themes**, and a responsive sidebar with symmetrical periodic transitions.
 
 ## Active Phase
-Dark Theme Universal Text & Input Visibility Resolution (COMPLETED — 100% Verified)
+Create Project Color Accent Custom Swatch Dropdown (COMPLETED — 100% Verified)
 
 ## Curriculum Status
-ALL 7 CURRICULUM PHASES + FLAGSHIP NEO-BRUTALIST REDESIGN + LIGHT & DARK THEMES + PERFORMANCE MODALS + PERIODIC SIDEBAR TRANSITIONS + DEAD-CENTERED COLLAPSED ICONS + ANIME FIGHT ENTRANCE & FLOATING LOGO + MOBILE LAYOUT OPTIMIZATION + CREATE PROJECT FUNCTION (MOBILE & DESKTOP) + MOBILE NOTIFICATIONS DISPLAY + DARK THEME HIGH-CONTRAST VISIBILITY COMPLETED
+ALL 7 CURRICULUM PHASES + FLAGSHIP NEO-BRUTALIST REDESIGN + LIGHT & DARK THEMES + PERFORMANCE MODALS + PERIODIC SIDEBAR TRANSITIONS + DEAD-CENTERED COLLAPSED ICONS + ANIME FIGHT ENTRANCE & FLOATING LOGO + MOBILE LAYOUT OPTIMIZATION + CREATE PROJECT FUNCTION (MOBILE & DESKTOP) + MOBILE NOTIFICATIONS DISPLAY + DARK THEME HIGH-CONTRAST VISIBILITY + SORT SELECT & DROPDOWN OPTIONS VISIBILITY + PROJECT COLOR ACCENT SWATCH PICKER COMPLETED
 
 ## Status
 COMPLETED_AND_VERIFIED
 
 ## Current Task
-Audited and resolved all invisible/low-contrast text, form labels, inputs, dropdowns, and cards across Dark Theme:
-1. **Root Cause Analysis**:
-   - In `css/themes.css`, the dark mode rules had used selectors `.task-modal` and `.auth-card`, whereas `index.html` used `.modal-card` and `.auth-modal-card`.
-   - As a result, modal cards rendered with their default light background (`#FFFFFF`), while form labels (`.form-label`) were given `color: #FFFFFF` under `[data-theme="dark"]`, rendering white text on white cards (completely invisible, except the pink asterisk `*`).
-   - Furthermore, date picker calendar icons and inputs lacked explicit `color-scheme: dark`, causing black icon styling on dark backgrounds.
-2. **Comprehensive Dark Theme Overrides Added in `css/themes.css`**:
-   - **Modal Cards (`.modal-card`, `.auth-modal-card`)**: Dark background (`#18181B`), crisp 3px white border (`#FFFFFF`), and 6px white hard offset shadow (`#FFFFFF`).
-   - **Modal Header & Close Buttons**: `#222226` background, crisp 2px white border (`#FFFFFF`), bold white title, and white icon close button (`#18181B` with white border, turning pink `#FA779C` on hover).
-   - **Form Labels & Asterisks**: Crisp white (`#FFFFFF`) with pink asterisk (`#FA779C`) for high contrast on all modals and forms (Create Task, Edit Task, Create Project, Auth Sign In / Register, Settings).
-   - **Form Inputs, Textareas, & Selects**: `#222226` background, crisp 2px white border (`#FFFFFF`), white text (`#FFFFFF`), `color-scheme: dark` (rendering browser date picker and select arrows in white), light placeholder (`#A3ACAA`), and vibrant lime green focus border (`#C6F55A`).
-   - **Modal Action Buttons**:
-     - Cancel button (`.btn-secondary`): `#222226` with crisp white border and white text.
-     - Submit button (`.btn-primary`): vibrant lime green (`#C6F55A`), near-black bold text (`#111111`), crisp white border (`#FFFFFF`), and offset white shadow (`#FFFFFF`).
-   - **Auth Modal Elements**: Dark bubble track (`#222226`), lime active bubble (`#C6F55A`), high-contrast pill text, bold white titles and subtitles, and visible password toggle icon (`#A3ACAA` / `#FFFFFF`).
-   - **Settings Section**: Dark profile preview card with crisp white border, high-contrast avatar name (`#FFFFFF`), email (`#A3ACAA`), and white-bordered theme cards.
-   - **Desktop & Mobile Notifications Dropdown**: `#18181B` background, 2px white border, 4px white offset shadow, bold white titles and notification text, and secondary timestamps (`#A3ACAA`).
-   - **Empty States & Toast Notifications**: High-contrast white headers and text on dark cards with white borders.
+Implemented a custom Neo-Brutalist Color Accent dropdown for the Create New Project dialog, replacing the raw `#` hex strings with colored square swatches and clean color names matching `media_1794741225576_f36b7cc7.png`:
+1. **Requirements Satisfied**:
+   - Replaced raw hex codes (`Lime Green (#C6F55A)`) with clean color names (`Lime Green`, `Pink`, `Purple`, `Sage Teal`, `Sky Blue`, `Amber Gold`). Zero `#` values displayed in the UI.
+   - Added square color swatches (`.color-swatch-box`) with 1.5px/2px borders for each color option, directly matching the sidebar project dot design.
+   - Dropdown displays both the swatch square and the color name in the closed trigger box as well as in the expanded menu options.
+   - Synchronizes smoothly with the hidden native `<select id="project-color-select">` so backend API project creation (`POST /api/projects`), validation, and state store continue to work without regression.
+2. **Implementation Details**:
+   - `index.html`: Added accessible ARIA listbox markup (`.custom-color-picker`, `#color-picker-trigger`, `#color-picker-menu`, `.color-picker-item`) with dedicated swatch classes (`swatch-lime`, `swatch-pink`, `swatch-purple`, `swatch-teal`, `swatch-blue`, `swatch-amber`). Zero inline styles or inline event handlers.
+   - `css/components.css`: Neo-Brutalist styling for trigger button, active focus border, chevron indicator, menu box shadow, and selectable items.
+   - `css/themes.css`: Dark mode styles for `.color-picker-trigger`, `.color-picker-menu`, `.color-picker-item`, and white borders for `.color-swatch-box`.
+   - `js/components/modal.js`: Added event handlers for click, keyboard navigation (ArrowDown, ArrowUp, Enter, Space, Escape), outside-click closing, and automatic reset on modal open.
 3. **Verification**:
-   - Palette Compliance: `python tests/test_color_palette.py` passes with zero color deviations.
-   - Master Test Runner: `python tests/run_all_tests.py` passes 9/9 test suites (100%).
-   - Puppeteer / DevTools Browser Test: `tests/test_sidebar_transition_symmetry.js`, `tests/test_theme_icons_and_sidebar.js`, and `tests/test_theme_refresh_fouc.js` all pass 100%.
-   - Real-browser screenshot captures taken and verified:
-     - `real_modal_dark_fixed.png` (Task Create/Edit Modal)
-     - `dark_create_project_modal.png` (Create Project Modal)
-     - `dark_auth_modal_signin.png` (Auth Sign In)
-     - `dark_auth_modal_register.png` (Auth Register)
-     - `dark_settings_view.png` (Settings Section)
-     - `dark_notifications_dropdown.png` (Desktop Notifications)
-     - `mobile_dark_create_task_modal.png` (Mobile Task Modal)
-     - `mobile_dark_notifications.png` (Mobile Notifications)
+   - Verified via Chrome DevTools Protocol in both Light and Dark modes:
+     - `menuOpen`: `true`
+     - `itemCount`: `6`
+     - All 6 items have `hasSwatch: true` and `hasHexInText: false`.
+     - Selecting a color (e.g. Pink) correctly updates `selectedText: "Pink"`, `swatchClass: "color-swatch-box swatch-pink"`, and `hiddenSelectValue: "#FA779C"`.
+   - Palette Compliance: `python tests/test_color_palette.py` — 0 color deviations.
+   - Master Test Runner: `python tests/run_all_tests.py` — 9/9 test suites pass (100%).
+   - Symmetrical Transitions & Refresh Tests: `tests/test_sidebar_transition_symmetry.js`, `tests/test_theme_icons_and_sidebar.js`, and `tests/test_theme_refresh_fouc.js` all pass 100%.
 
 ## Completed Work to Date
 - [x] Phase 0: Planning and Architecture.

@@ -689,6 +689,52 @@
   color: #FFFFFF !important;
 }
 
+[data-theme="dark"] .color-picker-trigger {
+  background-color: #222226 !important;
+  color: #FFFFFF !important;
+  border: 2px solid #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+[data-theme="dark"] .color-picker-trigger:hover,
+[data-theme="dark"] .color-picker-trigger:focus {
+  border-color: #C6F55A !important;
+  box-shadow: 3px 3px 0px #C6F55A !important;
+}
+
+[data-theme="dark"] .color-swatch-box {
+  border-color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .color-name-text {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .color-picker-chevron {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .color-picker-menu {
+  background-color: #18181B !important;
+  border: 2px solid #FFFFFF !important;
+  box-shadow: 4px 4px 0px #FFFFFF !important;
+}
+
+[data-theme="dark"] .color-picker-item {
+  color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .color-picker-item:hover,
+[data-theme="dark"] .color-picker-item:focus {
+  background-color: #222226 !important;
+  outline: none !important;
+}
+
+[data-theme="dark"] .color-picker-item.selected {
+  background-color: #222226 !important;
+  color: #C6F55A !important;
+}
+
 [data-theme="dark"] .auth-bubble-track {
   background-color: #222226 !important;
   border-color: #FFFFFF !important;
@@ -1044,9 +1090,25 @@
 }
 
 [data-theme="dark"] .tasks-sort-select {
-  background-color: #18181B;
-  color: #FFFFFF;
-  border-color: #FFFFFF;
+  background-color: #18181B !important;
+  color: #FFFFFF !important;
+  border-color: #FFFFFF !important;
+  color-scheme: dark !important;
+  box-shadow: 2px 2px 0px #111111 !important;
+}
+
+[data-theme="dark"] .tasks-sort-select:hover,
+[data-theme="dark"] .tasks-sort-select:focus,
+[data-theme="dark"] .tasks-sort-select:active {
+  background-color: #222226 !important;
+  color: #FFFFFF !important;
+  border-color: #C6F55A !important;
+  box-shadow: 3px 3px 0px #C6F55A !important;
+}
+
+[data-theme="dark"] .tasks-sort-select option {
+  background-color: #18181B !important;
+  color: #FFFFFF !important;
 }
 
 [data-theme="dark"] .tasks-filter-group {

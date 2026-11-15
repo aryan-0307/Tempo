@@ -550,15 +550,52 @@
             <input type="text" id="project-name-input" class="form-input" placeholder="e.g., Marketing Campaign, Mobile App" required maxlength="50">
           </div>
           <div class="form-group">
-            <label for="project-color-select" class="form-label">Color Accent</label>
-            <select id="project-color-select" class="form-select">
-              <option value="#C6F55A" selected>Lime Green (#C6F55A)</option>
-              <option value="#FA779C">Pink (#FA779C)</option>
-              <option value="#8051F5">Purple (#8051F5)</option>
-              <option value="#6BAFA4">Sage Teal (#6BAFA4)</option>
-              <option value="#38BDF8">Sky Blue (#38BDF8)</option>
-              <option value="#F59E0B">Amber Gold (#F59E0B)</option>
+            <label id="project-color-label" for="color-picker-trigger" class="form-label">Color Accent</label>
+            <select id="project-color-select" class="form-select project-color-select-hidden" tabindex="-1" aria-hidden="true">
+              <option value="#C6F55A" selected>Lime Green</option>
+              <option value="#FA779C">Pink</option>
+              <option value="#8051F5">Purple</option>
+              <option value="#6BAFA4">Sage Teal</option>
+              <option value="#38BDF8">Sky Blue</option>
+              <option value="#F59E0B">Amber Gold</option>
             </select>
+            <div class="custom-color-picker" id="project-color-picker">
+              <button type="button" class="color-picker-trigger form-input" id="color-picker-trigger" aria-haspopup="listbox" aria-expanded="false" aria-labelledby="project-color-label color-picker-trigger">
+                <span class="color-picker-selected" id="color-picker-selected">
+                  <span class="color-swatch-box swatch-lime" id="color-picker-selected-swatch" aria-hidden="true"></span>
+                  <span class="color-name-text" id="color-picker-selected-text">Lime Green</span>
+                </span>
+                <svg class="color-picker-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+              <ul class="color-picker-menu" id="color-picker-menu" role="listbox" aria-labelledby="project-color-label" hidden>
+                <li class="color-picker-item selected" role="option" aria-selected="true" data-color="#C6F55A" data-name="Lime Green" data-swatch="swatch-lime" tabindex="0">
+                  <span class="color-swatch-box swatch-lime" aria-hidden="true"></span>
+                  <span class="color-name-text">Lime Green</span>
+                </li>
+                <li class="color-picker-item" role="option" aria-selected="false" data-color="#FA779C" data-name="Pink" data-swatch="swatch-pink" tabindex="0">
+                  <span class="color-swatch-box swatch-pink" aria-hidden="true"></span>
+                  <span class="color-name-text">Pink</span>
+                </li>
+                <li class="color-picker-item" role="option" aria-selected="false" data-color="#8051F5" data-name="Purple" data-swatch="swatch-purple" tabindex="0">
+                  <span class="color-swatch-box swatch-purple" aria-hidden="true"></span>
+                  <span class="color-name-text">Purple</span>
+                </li>
+                <li class="color-picker-item" role="option" aria-selected="false" data-color="#6BAFA4" data-name="Sage Teal" data-swatch="swatch-teal" tabindex="0">
+                  <span class="color-swatch-box swatch-teal" aria-hidden="true"></span>
+                  <span class="color-name-text">Sage Teal</span>
+                </li>
+                <li class="color-picker-item" role="option" aria-selected="false" data-color="#38BDF8" data-name="Sky Blue" data-swatch="swatch-blue" tabindex="0">
+                  <span class="color-swatch-box swatch-blue" aria-hidden="true"></span>
+                  <span class="color-name-text">Sky Blue</span>
+                </li>
+                <li class="color-picker-item" role="option" aria-selected="false" data-color="#F59E0B" data-name="Amber Gold" data-swatch="swatch-amber" tabindex="0">
+                  <span class="color-swatch-box swatch-amber" aria-hidden="true"></span>
+                  <span class="color-name-text">Amber Gold</span>
+                </li>
+              </ul>
+            </div>
           </div>
           <div class="modal-actions">
             <button type="button" id="project-modal-cancel-btn" class="btn btn-secondary">Cancel</button>
