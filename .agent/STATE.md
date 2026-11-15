@@ -4,34 +4,36 @@
 Rebuild Tempo as a modern, production-grade productivity workspace featuring a flagship **Neo-Brutalist Design System** (thick black borders, sharp rectangular cards, hard offset shadows, bold typography, vibrant lime, pink, and purple accents, subtle architectural grid pattern), streamlined **Light and Dark themes**, and a responsive sidebar with symmetrical periodic transitions.
 
 ## Active Phase
-Dark Mode Contrast & UI Element Polishing (COMPLETED — 100% Verified)
+Sidebar Collapsed Icons Dead-Centering Within Center Box (COMPLETED — 100% Verified)
 
 ## Curriculum Status
-ALL 7 CURRICULUM PHASES + FLAGSHIP NEO-BRUTALIST REDESIGN + LIGHT & DARK THEMES + PERFORMANCE MODALS + PERIODIC SIDEBAR TRANSITIONS COMPLETED
+ALL 7 CURRICULUM PHASES + FLAGSHIP NEO-BRUTALIST REDESIGN + LIGHT & DARK THEMES + PERFORMANCE MODALS + PERIODIC SIDEBAR TRANSITIONS + DEAD-CENTERED COLLAPSED ICONS COMPLETED
 
 ## Status
 COMPLETED_AND_VERIFIED
 
 ## Current Task
-Resolved all dark mode contrast, search bar input visibility, and bottom section issues:
-1. **Overview Stat Cards in Dark Mode**:
-   - Updated `.stat-value` (`#stat-total-tasks`, `#stat-completed-tasks`, `#stat-pending-tasks`, `#stat-overdue-tasks`) from black to pure white (`#FFFFFF`).
-   - Updated `.stat-hint` ("Across all projects", "33% completion rate", "In active progress") to architectural off-white (`#F7F7F5`).
-   - Retained overdue warning indicator text in high-contrast pink (`#FA779C`).
-2. **Bottom Section Theme Alignment (Sidebar User Profile & App Statusbar)**:
-   - Fixed `.sidebar-user-profile` in `css/layout.css` and `css/themes.css` so it uses dark surface (`#18181B`) with 2px white border, pure white username (`Alex Morgan`), light graphite email, and dark more button.
-   - Fixed `.app-statusbar` in `css/layout.css` and `css/themes.css` so it uses dark surface (`#18181B`) with 2px white border, lime status dot, and muted light graphite text.
-3. **Search Bar Input Visibility on Typing in Dark Mode**:
-   - Styled `[data-theme="dark"] .search-input:focus` with dark `#222226` background, crisp white `#FFFFFF` text, lime green `#C6F55A` 2px border, and lime green `4px 4px 0px #C6F55A` hard shadow.
-   - Fixed previous issue where `:focus` turned the background white with white text.
-4. **Automated Verification**:
+Dead-centering of all sidebar icons inside their respective center boxes upon sidebar minimization:
+1. **Root Cause Analysis & Elimination**:
+   - In collapsed state (68px rail), `.nav-label` and `.nav-count` had `visibility: hidden` but still occupied space in flex layout flow (`flex: 1` and computed width ~23px), which pushed `.nav-icon` and `.project-dot` off-center towards the left edge (`leftOffset: -1.5px`, `rightOffset: 21.5px`).
+   - Similarly, `.user-details` and `.user-more-btn` in `.sidebar-user-profile` occupied flex flow space, pushing the user avatar out to `leftInProfile: -16px`.
+2. **Precision Geometric Centering Implementation**:
+   - In [css/layout.css](file:///c:/Users/aryan/Desktop/Tempo/css/layout.css), updated `.app-sidebar.collapsed` and mobile `.app-sidebar:not(.open)`:
+     - Set `.nav-label`, `.nav-count`, `.user-details`, `.user-more-btn`, and `.nav-section-title` to `position: absolute; width: 0; min-width: 0; max-width: 0; margin: 0; padding: 0; border: none; overflow: hidden; opacity: 0; pointer-events: none; visibility: hidden;` with smooth 180ms transitions.
+     - Styled `.nav-item` as a dedicated square center box: `width: 44px; height: 44px; margin: 0 auto; padding: 0; display: flex; justify-content: center; align-items: center; gap: 0; box-sizing: border-box;`.
+     - Centered `.nav-icon` (22px x 22px): Left/right offset = exactly 11px, Top/bottom offset = exactly 11px.
+     - Centered `.project-dot` (14px x 14px): Left/right offset = exactly 15px, Top/bottom offset = exactly 15px.
+     - Centered `.brand-icon` (32px x 32px): perfectly centered in 68px header.
+     - Centered `.user-avatar-wrapper` (36px x 36px): Left/right offset = exactly 15px inside 66px inner profile box.
+3. **Automated Verification**:
    - Palette Compliance: `python tests/test_color_palette.py` — 0 color deviations across all 49 files.
    - Unified Test Suite: `python tests/run_all_tests.py` — 9/9 test suites pass (100%).
-   - Browser Verifications: `test_theme_icons_and_sidebar.js`, `test_theme_refresh_fouc.js`, `test_sidebar_transition_symmetry.js` — all pass 100%.
-   - Visual Verification: Headless Chrome screenshots captured and verified (`dashboard_dark_theme.png`, `dashboard_dark_theme_search_typing.png`, `settings_dark_theme.png`).
+   - Trajectory & Symmetry: `tests/test_sidebar_transition_symmetry.js` — passes 100% with reversible periodic transitions.
+   - Theme & Responsive Verification: `tests/test_theme_icons_and_sidebar.js` and `tests/test_theme_refresh_fouc.js` pass 100%.
+   - Visual Verification: Verified via DevTools telemetry and captured screenshots (`sidebar_collapsed_mode.png` and `sidebar_collapsed_mode_dark.png`).
 
 ## Last Completed Task
-Updated `css/layout.css` and `css/themes.css`, tested typing behavior in Chrome, confirmed all 9/9 test suites pass, and visually verified all dark mode elements.
+Updated `css/layout.css` and `css/themes.css`, verified 9/9 test suites pass, verified 3 browser suites, and confirmed larger icons in both Light and Dark collapsed modes.
 
 ## Completed Work to Date
 - [x] Phase 0: Planning and Architecture.

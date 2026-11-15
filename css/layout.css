@@ -120,6 +120,14 @@
 .app-sidebar.collapsed .nav-count,
 .app-sidebar.collapsed .user-details,
 .app-sidebar.collapsed .user-more-btn {
+  position: absolute;
+  width: 0;
+  min-width: 0;
+  max-width: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  overflow: hidden;
   opacity: 0;
   transform: translateX(-12px);
   pointer-events: none;
@@ -127,6 +135,10 @@
   transition: opacity 180ms cubic-bezier(0.4, 0, 0.2, 1),
               transform var(--transition-sidebar),
               visibility 0s linear 180ms;
+}
+
+.app-sidebar.collapsed .nav-section-title {
+  height: 0;
 }
 
 .app-sidebar.collapsed .sidebar-header-toggle-btn {
@@ -145,6 +157,56 @@
   transition: opacity 180ms cubic-bezier(0.4, 0, 0.2, 1),
               transform var(--transition-sidebar),
               visibility 0s linear 180ms;
+}
+
+/* Scaled & Centered Icons in Collapsed Sidebar */
+.app-sidebar.collapsed .nav-item {
+  width: 44px;
+  height: 44px;
+  margin: 0 auto;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  box-sizing: border-box;
+}
+
+.app-sidebar.collapsed .nav-icon {
+  width: 22px;
+  height: 22px;
+  stroke-width: 2.2;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.app-sidebar.collapsed .project-dot {
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  border-width: 2px;
+  flex-shrink: 0;
+}
+
+.app-sidebar.collapsed .brand-icon {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.app-sidebar.collapsed .sidebar-user-profile {
+  padding: var(--spacing-3) 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  box-sizing: border-box;
+}
+
+.app-sidebar.collapsed .user-avatar-wrapper {
+  margin: 0 auto;
+  flex-shrink: 0;
 }
 
 /* Sidebar Brand */
@@ -177,6 +239,7 @@
   padding: 3px;
   box-sizing: border-box;
   flex-shrink: 0;
+  transition: width var(--transition-sidebar), height var(--transition-sidebar), transform var(--transition-fast);
 }
 
 .brand-name {
@@ -246,11 +309,16 @@
   text-align: left;
   cursor: pointer;
   overflow: hidden;
+  position: relative;
   transition: background-color var(--transition-fast),
               color var(--transition-fast),
               border-color var(--transition-fast),
               box-shadow var(--transition-fast),
-              transform var(--transition-fast);
+              transform var(--transition-fast),
+              padding var(--transition-sidebar),
+              gap var(--transition-sidebar),
+              width var(--transition-sidebar),
+              height var(--transition-sidebar);
   text-decoration: none;
 }
 
@@ -275,6 +343,7 @@
   height: 18px;
   flex-shrink: 0;
   stroke-width: 2;
+  transition: width var(--transition-sidebar), height var(--transition-sidebar), stroke-width var(--transition-sidebar), transform var(--transition-fast);
 }
 
 .nav-label {
@@ -325,6 +394,7 @@
   border: 1.5px solid #111111;
   flex-shrink: 0;
   margin: 0 5px;
+  transition: width var(--transition-sidebar), height var(--transition-sidebar), margin var(--transition-sidebar), border-width var(--transition-sidebar), transform var(--transition-fast);
 }
 
 .dot-work {
@@ -735,6 +805,14 @@
   .app-sidebar:not(.open) .nav-count,
   .app-sidebar:not(.open) .user-details,
   .app-sidebar:not(.open) .user-more-btn {
+    position: absolute;
+    width: 0;
+    min-width: 0;
+    max-width: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    overflow: hidden;
     opacity: 0;
     transform: translateX(-12px);
     pointer-events: none;
@@ -742,6 +820,10 @@
     transition: opacity 180ms cubic-bezier(0.4, 0, 0.2, 1),
                 transform var(--transition-sidebar),
                 visibility 0s linear 180ms;
+  }
+
+  .app-sidebar:not(.open) .nav-section-title {
+    height: 0;
   }
 
   .app-sidebar:not(.open) .sidebar-header-toggle-btn {
@@ -760,6 +842,56 @@
     transition: opacity 180ms cubic-bezier(0.4, 0, 0.2, 1),
                 transform var(--transition-sidebar),
                 visibility 0s linear 180ms;
+  }
+
+  /* Scaled & Centered Icons in Mobile Collapsed Sidebar */
+  .app-sidebar:not(.open) .nav-item {
+    width: 44px;
+    height: 44px;
+    margin: 0 auto;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    box-sizing: border-box;
+  }
+
+  .app-sidebar:not(.open) .nav-icon {
+    width: 22px;
+    height: 22px;
+    stroke-width: 2.2;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .app-sidebar:not(.open) .project-dot {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    border-width: 2px;
+    flex-shrink: 0;
+  }
+
+  .app-sidebar:not(.open) .brand-icon {
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    flex-shrink: 0;
+  }
+
+  .app-sidebar:not(.open) .sidebar-user-profile {
+    padding: var(--spacing-3) 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    box-sizing: border-box;
+  }
+
+  .app-sidebar:not(.open) .user-avatar-wrapper {
+    margin: 0 auto;
+    flex-shrink: 0;
   }
 
   /* Expanded whole sidebar state when hamburger menu is toggled open */
@@ -782,6 +914,13 @@
   .app-sidebar.open .user-details,
   .app-sidebar.open .user-more-btn,
   .app-sidebar.open .sidebar-header-toggle-btn {
+    position: static;
+    width: auto;
+    min-width: auto;
+    max-width: none;
+    height: auto;
+    margin: 0;
+    overflow: visible;
     opacity: 1;
     transform: translateX(0);
     visibility: visible;
@@ -789,6 +928,11 @@
     transition: opacity 220ms cubic-bezier(0.4, 0, 0.2, 1) 40ms,
                 transform var(--transition-sidebar),
                 visibility 0s linear 0s;
+  }
+
+  .app-sidebar.open .nav-count {
+    padding: 1px 7px;
+    border: 1.5px solid #111111;
   }
 
   .app-sidebar.open .sidebar-brand {

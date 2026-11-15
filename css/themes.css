@@ -895,3 +895,7 @@
   border-color: #FFFFFF;
 }
 
+[data-theme="dark"] .project-dot {
+  border-color: #FFFFFF;
+}
+
