@@ -4,45 +4,45 @@
 Rebuild Tempo as a modern, production-grade productivity workspace featuring a flagship **Neo-Brutalist Design System** (thick black borders, sharp rectangular cards, hard offset shadows, bold typography, vibrant lime, pink, and purple accents, subtle architectural grid pattern), streamlined **Light and Dark themes**, and a responsive sidebar with symmetrical periodic transitions.
 
 ## Active Phase
-Create Projects Feature & Mobile Notifications Menu Adjustment (COMPLETED — 100% Verified)
+Dark Theme Universal Text & Input Visibility Resolution (COMPLETED — 100% Verified)
 
 ## Curriculum Status
-ALL 7 CURRICULUM PHASES + FLAGSHIP NEO-BRUTALIST REDESIGN + LIGHT & DARK THEMES + PERFORMANCE MODALS + PERIODIC SIDEBAR TRANSITIONS + DEAD-CENTERED COLLAPSED ICONS + ANIME FIGHT ENTRANCE & FLOATING LOGO + MOBILE LAYOUT OPTIMIZATION + CREATE PROJECT FUNCTION (MOBILE & DESKTOP) + MOBILE NOTIFICATIONS DISPLAY COMPLETED
+ALL 7 CURRICULUM PHASES + FLAGSHIP NEO-BRUTALIST REDESIGN + LIGHT & DARK THEMES + PERFORMANCE MODALS + PERIODIC SIDEBAR TRANSITIONS + DEAD-CENTERED COLLAPSED ICONS + ANIME FIGHT ENTRANCE & FLOATING LOGO + MOBILE LAYOUT OPTIMIZATION + CREATE PROJECT FUNCTION (MOBILE & DESKTOP) + MOBILE NOTIFICATIONS DISPLAY + DARK THEME HIGH-CONTRAST VISIBILITY COMPLETED
 
 ## Status
 COMPLETED_AND_VERIFIED
 
 ## Current Task
-Implemented the requested Create Project feature for both Mobile and Desktop viewports and resolved the Mobile Notifications popover clipping:
-1. **Create Project Feature (Mobile & Desktop)**:
-   - **Trigger Points**:
-     - Desktop Topbar: Added `+ PROJECT` button (`#open-create-project-modal-btn`) next to `+ CREATE TASK`.
-     - Mobile Topbar: Added 38x38px icon button with folder-plus SVG next to notifications.
-     - Sidebar (Desktop & Mobile Drawer): Added `+` button in "PROJECTS" section header (`#sidebar-add-project-btn`).
-   - **Create Project Modal**:
-     - `#create-project-modal` dialog featuring Neo-Brutalist borders, offset shadows, and clean form inputs.
-     - Project Name input (with validation & duplicate checking) and Color Accent selector (`#C6F55A`, `#FA779C`, `#8051F5`, `#6BAFA4`, etc.).
-   - **Reactive Integration**:
-     - Adding a project automatically inserts it into the sidebar under "PROJECTS" with its color dot and live task count.
-     - Automatically populates the Project dropdown in `#task-project-input` inside the Create Task modal, so new tasks can immediately be assigned to the new project.
-     - Filtering: Clicking the project in the sidebar filters the task list to that project.
-     - Persistence: Saved locally via LocalStorage and synchronized with backend API via `POST /api/projects`.
-   - **Backend & Database**:
-     - Added `projectsRepository.create(userId, projectData)` with parameterized SQL.
-     - Added `projectsController.createProject` and `POST /api/projects` route.
-     - Added `MockDatabase.createProject` for offline standalone mode.
-     - Added `api.createProject` in frontend API client.
-2. **Strictly Mobile Notifications Menu Adjustment**:
-   - Fixed clipping issue where the notification card overflowed on the left side of mobile screens.
-   - On mobile (`@media (max-width: 768px)`), `.notifications-dropdown` is fixed with `left: 12px; right: 12px; top: 58px; width: auto;`, completely on-screen with zero horizontal clipping.
-   - Header, title ("NOTIFICATIONS"), active counter badge, overdue and upcoming items, and timestamps are 100% visible and readable on both Light and Dark themes.
-   - Desktop view keeps standard absolute popover position with zero regressions.
-3. **Automated Verification Matrix**:
-   - Palette Compliance: `python tests/test_color_palette.py` — 0 color deviations across all 49 files.
-   - Unified Test Suite: `python tests/run_all_tests.py` — 9/9 test suites pass (100%).
-   - Desktop Trajectory & Symmetry: `tests/test_sidebar_transition_symmetry.js` — passes 100%.
-   - Responsive & Theme Verification: `tests/test_theme_icons_and_sidebar.js` and `tests/test_theme_refresh_fouc.js` pass 100%.
-   - Visual Verification: Chrome screenshots captured and verified (`mobile_notifications_fixed.png`, `mobile_create_project_modal.png`, `mobile_sidebar_with_new_project.png`, `mobile_create_task_with_new_project_option.png`, `desktop_view_with_project_button.png`, `desktop_create_project_modal.png`).
+Audited and resolved all invisible/low-contrast text, form labels, inputs, dropdowns, and cards across Dark Theme:
+1. **Root Cause Analysis**:
+   - In `css/themes.css`, the dark mode rules had used selectors `.task-modal` and `.auth-card`, whereas `index.html` used `.modal-card` and `.auth-modal-card`.
+   - As a result, modal cards rendered with their default light background (`#FFFFFF`), while form labels (`.form-label`) were given `color: #FFFFFF` under `[data-theme="dark"]`, rendering white text on white cards (completely invisible, except the pink asterisk `*`).
+   - Furthermore, date picker calendar icons and inputs lacked explicit `color-scheme: dark`, causing black icon styling on dark backgrounds.
+2. **Comprehensive Dark Theme Overrides Added in `css/themes.css`**:
+   - **Modal Cards (`.modal-card`, `.auth-modal-card`)**: Dark background (`#18181B`), crisp 3px white border (`#FFFFFF`), and 6px white hard offset shadow (`#FFFFFF`).
+   - **Modal Header & Close Buttons**: `#222226` background, crisp 2px white border (`#FFFFFF`), bold white title, and white icon close button (`#18181B` with white border, turning pink `#FA779C` on hover).
+   - **Form Labels & Asterisks**: Crisp white (`#FFFFFF`) with pink asterisk (`#FA779C`) for high contrast on all modals and forms (Create Task, Edit Task, Create Project, Auth Sign In / Register, Settings).
+   - **Form Inputs, Textareas, & Selects**: `#222226` background, crisp 2px white border (`#FFFFFF`), white text (`#FFFFFF`), `color-scheme: dark` (rendering browser date picker and select arrows in white), light placeholder (`#A3ACAA`), and vibrant lime green focus border (`#C6F55A`).
+   - **Modal Action Buttons**:
+     - Cancel button (`.btn-secondary`): `#222226` with crisp white border and white text.
+     - Submit button (`.btn-primary`): vibrant lime green (`#C6F55A`), near-black bold text (`#111111`), crisp white border (`#FFFFFF`), and offset white shadow (`#FFFFFF`).
+   - **Auth Modal Elements**: Dark bubble track (`#222226`), lime active bubble (`#C6F55A`), high-contrast pill text, bold white titles and subtitles, and visible password toggle icon (`#A3ACAA` / `#FFFFFF`).
+   - **Settings Section**: Dark profile preview card with crisp white border, high-contrast avatar name (`#FFFFFF`), email (`#A3ACAA`), and white-bordered theme cards.
+   - **Desktop & Mobile Notifications Dropdown**: `#18181B` background, 2px white border, 4px white offset shadow, bold white titles and notification text, and secondary timestamps (`#A3ACAA`).
+   - **Empty States & Toast Notifications**: High-contrast white headers and text on dark cards with white borders.
+3. **Verification**:
+   - Palette Compliance: `python tests/test_color_palette.py` passes with zero color deviations.
+   - Master Test Runner: `python tests/run_all_tests.py` passes 9/9 test suites (100%).
+   - Puppeteer / DevTools Browser Test: `tests/test_sidebar_transition_symmetry.js`, `tests/test_theme_icons_and_sidebar.js`, and `tests/test_theme_refresh_fouc.js` all pass 100%.
+   - Real-browser screenshot captures taken and verified:
+     - `real_modal_dark_fixed.png` (Task Create/Edit Modal)
+     - `dark_create_project_modal.png` (Create Project Modal)
+     - `dark_auth_modal_signin.png` (Auth Sign In)
+     - `dark_auth_modal_register.png` (Auth Register)
+     - `dark_settings_view.png` (Settings Section)
+     - `dark_notifications_dropdown.png` (Desktop Notifications)
+     - `mobile_dark_create_task_modal.png` (Mobile Task Modal)
+     - `mobile_dark_notifications.png` (Mobile Notifications)
 
 ## Completed Work to Date
 - [x] Phase 0: Planning and Architecture.
