@@ -45,8 +45,8 @@ class TempoApp {
     this.sidebar = new Sidebar(this.state, this.authModal);
     this.sidebar.init();
 
-    // 2b. Initialize Anime Fight Entrance Transition & Floating Logo
-    this.initAnimeEntranceTransition();
+    // 2b. Initialize 3D Book Page Flip & Gust of Wind Transition on Site Load/Refresh
+    this.initBookTransition();
 
     // 3. Initialize Header (search, notifications, date/greeting)
     this.header = new Header(this.state);
@@ -108,53 +108,61 @@ class TempoApp {
     }
   }
 
-  initAnimeEntranceTransition() {
-    const entranceOverlay = document.getElementById('anime-entrance-transition');
+  initBookTransition() {
+    const bookOverlay = document.getElementById('book-transition');
     const brandLinks = document.querySelectorAll('.brand-wrapper');
 
-    if (!entranceOverlay) return;
-
-    // Check prefers-reduced-motion
-    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      entranceOverlay.style.display = 'none';
+    if (!bookOverlay) {
       brandLinks.forEach(b => b.classList.add('floating'));
       return;
     }
 
-    // Trigger Anime Fight Entrance on site open / refresh
+    // Check prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      bookOverlay.style.display = 'none';
+      brandLinks.forEach(b => b.classList.add('floating'));
+      return;
+    }
+
+    // Trigger 3D Book Page Flip & Wind Gust Transition on site open / refresh
     requestAnimationFrame(() => {
-      entranceOverlay.classList.add('active');
-      brandLinks.forEach(b => b.classList.add('anime-entrance'));
+      bookOverlay.classList.add('active');
+      brandLinks.forEach(b => b.classList.add('book-entrance'));
 
-      // Fade out speed lines and slash cuts smoothly
+      // Smooth scale-zoom & dissolve fade-out as pages fan out
       setTimeout(() => {
-        entranceOverlay.classList.add('fade-out');
-      }, 600);
+        bookOverlay.classList.add('fade-out');
+      }, 850);
 
-      // Transition completes: overlay removed from rendering, logo enters continuous floating
+      // Transition completes: overlay completely hidden from layout & paint, logo enters continuous floating
       setTimeout(() => {
-        entranceOverlay.style.display = 'none';
+        bookOverlay.style.display = 'none';
         brandLinks.forEach(b => {
-          b.classList.remove('anime-entrance');
+          b.classList.remove('book-entrance');
           b.classList.add('floating');
         });
-      }, 850);
+      }, 1050);
     });
 
-    // Interactive anime combat recoil on logo click
+    // Interactive recoil on logo click
     brandLinks.forEach(brandLink => {
       brandLink.addEventListener('click', () => {
-        brandLink.classList.remove('anime-recoil');
+        brandLink.classList.remove('book-recoil');
         void brandLink.offsetWidth;
-        brandLink.classList.add('anime-recoil');
+        brandLink.classList.add('book-recoil');
       });
     });
+  }
+
+  // Backwards compatibility alias
+  initSpiderWebTransition() {
+    this.initBookTransition();
   }
 }
 
 // Bootstrap application on DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-  const app = new TempoApp();
-  app.init();
+  window.tempoApp = new TempoApp();
+  window.tempoApp.init();
 });

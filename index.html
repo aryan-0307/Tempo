@@ -18,13 +18,85 @@
   </script>
 </head>
 <body>
-  <!-- Anime Fight Entrance Transition Overlay -->
-  <div id="anime-entrance-transition" class="anime-entrance-overlay" aria-hidden="true">
-    <div class="anime-speed-lines"></div>
-    <div class="anime-slash-cut anime-slash-primary"></div>
-    <div class="anime-slash-cut anime-slash-secondary"></div>
-    <div class="anime-impact-ring"></div>
-    <div class="anime-action-badge">TEMPO // 1610 • 激突</div>
+  <!-- 3D Book Page Flip & Gust of Wind Transition Overlay -->
+  <div id="book-transition" class="book-overlay" aria-hidden="true">
+    <div class="book-stage">
+      <div class="book-shadow"></div>
+      <div class="book-fall-rig">
+        <div class="book-aligner">
+          <!-- Right Base Page Stack -->
+          <div class="book-base-right">
+            <div class="page-header-mark">TASKS</div>
+            <div class="page-ruled-lines">
+              <span class="ruled-line"></span>
+              <span class="ruled-line short"></span>
+              <span class="ruled-line lime-accent"></span>
+              <span class="ruled-line"></span>
+              <span class="ruled-line"></span>
+            </div>
+          </div>
+
+          <!-- Center Book Spine -->
+          <div class="book-spine"></div>
+
+          <!-- Gust of Wind Fluttering Pages (waving across to the middle) -->
+          <div class="wind-page page-5">
+            <div class="page-ruled-lines">
+              <span class="ruled-line"></span>
+              <span class="ruled-line short"></span>
+            </div>
+          </div>
+          <div class="wind-page page-4">
+            <div class="page-ruled-lines">
+              <span class="ruled-line lime-accent"></span>
+              <span class="ruled-line"></span>
+            </div>
+          </div>
+          <div class="wind-page page-3">
+            <div class="page-ruled-lines">
+              <span class="ruled-line"></span>
+              <span class="ruled-line short"></span>
+            </div>
+          </div>
+          <div class="wind-page page-2">
+            <div class="page-ruled-lines">
+              <span class="ruled-line pink-accent"></span>
+              <span class="ruled-line"></span>
+            </div>
+          </div>
+          <div class="wind-page page-1">
+            <div class="page-ruled-lines">
+              <span class="ruled-line"></span>
+              <span class="ruled-line short"></span>
+            </div>
+          </div>
+
+          <!-- Front Cover Hinge (Two-Sided 3D Card) -->
+          <div class="book-cover-hinge">
+            <div class="cover-face-front">
+              <div class="cover-emblem"></div>
+              <div class="cover-title">TEMPO</div>
+              <div class="cover-badge">STAGE 01 // 1610</div>
+            </div>
+            <div class="cover-face-inside">
+              <div class="page-header-mark">WELCOME</div>
+              <div class="page-ruled-lines">
+                <span class="ruled-line"></span>
+                <span class="ruled-line short"></span>
+                <span class="ruled-line lime-accent"></span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Wind Gust Air Streaks -->
+          <div class="wind-gust-layer">
+            <div class="wind-line wind-top"></div>
+            <div class="wind-line wind-mid"></div>
+            <div class="wind-line wind-bot"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <div class="app-layout">
     <!-- 1. Sidebar -->

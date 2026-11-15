@@ -1,38 +1,46 @@
 # Current State
 
 ## Objective
-Rebuild Tempo as a modern, production-grade productivity workspace featuring a flagship **Neo-Brutalist Design System** (thick black borders, sharp rectangular cards, hard offset shadows, bold typography, vibrant lime, pink, and purple accents, subtle architectural grid pattern), streamlined **Light and Dark themes**, and a responsive sidebar with symmetrical periodic transitions.
+Rebuild Tempo as a modern, production-grade productivity workspace featuring a flagship **Neo-Brutalist Design System** (thick black borders, sharp rectangular cards, hard offset shadows, bold typography, vibrant lime, pink, and purple accents, subtle architectural grid pattern), streamlined **Light and Dark themes**, a responsive sidebar with symmetrical periodic transitions, an authentic **Gravity Falling 3D Book Page Flip & Gust of Wind Transition** on page load/refresh, continuously floating navbar icons, and the **Game Paused** retro arcade pixel font across the whole site.
 
 ## Active Phase
-Create Project Color Accent Custom Swatch Dropdown (COMPLETED — 100% Verified)
+Mobile View Full-Width Layout Optimization (COMPLETED — 100% Verified)
 
 ## Curriculum Status
-ALL 7 CURRICULUM PHASES + FLAGSHIP NEO-BRUTALIST REDESIGN + LIGHT & DARK THEMES + PERFORMANCE MODALS + PERIODIC SIDEBAR TRANSITIONS + DEAD-CENTERED COLLAPSED ICONS + ANIME FIGHT ENTRANCE & FLOATING LOGO + MOBILE LAYOUT OPTIMIZATION + CREATE PROJECT FUNCTION (MOBILE & DESKTOP) + MOBILE NOTIFICATIONS DISPLAY + DARK THEME HIGH-CONTRAST VISIBILITY + SORT SELECT & DROPDOWN OPTIONS VISIBILITY + PROJECT COLOR ACCENT SWATCH PICKER COMPLETED
+ALL 7 CURRICULUM PHASES + FLAGSHIP NEO-BRUTALIST REDESIGN + LIGHT & DARK THEMES + PERFORMANCE MODALS + PERIODIC SIDEBAR TRANSITIONS + DEAD-CENTERED COLLAPSED ICONS + GRAVITY FALLING 3D ANIMATED BOOK PAGE FLIP TRANSITION + CONTINUOUS FLOATING NAVBAR ICONS + GAME PAUSED RETRO ARCADE FONT + MOBILE FULL-WIDTH ZERO-EMPTY-SPACE REDESIGN + CREATE PROJECT FUNCTION (MOBILE & DESKTOP) + MOBILE NOTIFICATIONS DISPLAY + DARK THEME HIGH-CONTRAST VISIBILITY + SORT SELECT & DROPDOWN OPTIONS VISIBILITY + PROJECT COLOR ACCENT SWATCH PICKER COMPLETED
 
 ## Status
 COMPLETED_AND_VERIFIED
 
 ## Current Task
-Implemented a custom Neo-Brutalist Color Accent dropdown for the Create New Project dialog, replacing the raw `#` hex strings with colored square swatches and clean color names matching `media_1794741225576_f36b7cc7.png`:
+Redesigned mobile topbar layout (`@media (max-width: 768px)` and `@media (max-width: 480px)`) so that every element fills the space with zero empty space remaining:
 1. **Requirements Satisfied**:
-   - Replaced raw hex codes (`Lime Green (#C6F55A)`) with clean color names (`Lime Green`, `Pink`, `Purple`, `Sage Teal`, `Sky Blue`, `Amber Gold`). Zero `#` values displayed in the UI.
-   - Added square color swatches (`.color-swatch-box`) with 1.5px/2px borders for each color option, directly matching the sidebar project dot design.
-   - Dropdown displays both the swatch square and the color name in the closed trigger box as well as in the expanded menu options.
-   - Synchronizes smoothly with the hidden native `<select id="project-color-select">` so backend API project creation (`POST /api/projects`), validation, and state store continue to work without regression.
+   - Eliminated the large empty black spaces on the right side of Row 1 and Row 2 on mobile devices (shown in user's screenshot `media_1794755759217_e50d96b7.png`).
+   - **Row 1**: Hamburger navigation toggle button `[ ≡ ]` and `[ TEMPO ]` logo anchored on the left, with the Notification Bell `[ 🔔 ]` dynamically moved to the far right (`margin-left: auto`), creating a full-width header with zero awkward gap.
+   - **Row 2**: Action buttons `#open-create-project-modal-btn` and `#open-create-task-modal-btn` sit side-by-side, each expanding to 50% width (`flex: 1 1 calc(50% - 5px)`, `max-width: calc(50% - 4px)`), centered, full height (40px), filling 100% of the row edge-to-edge.
+   - **Row 3**: Search bar `#global-search-input` spans 100% full width edge-to-edge.
+   - Zero horizontal overflow (`scrollWidth <= windowWidth`).
+   - Zero impact or regression on desktop view (`@media (min-width: 769px)`).
 2. **Implementation Details**:
-   - `index.html`: Added accessible ARIA listbox markup (`.custom-color-picker`, `#color-picker-trigger`, `#color-picker-menu`, `.color-picker-item`) with dedicated swatch classes (`swatch-lime`, `swatch-pink`, `swatch-purple`, `swatch-teal`, `swatch-blue`, `swatch-amber`). Zero inline styles or inline event handlers.
-   - `css/components.css`: Neo-Brutalist styling for trigger button, active focus border, chevron indicator, menu box shadow, and selectable items.
-   - `css/themes.css`: Dark mode styles for `.color-picker-trigger`, `.color-picker-menu`, `.color-picker-item`, and white borders for `.color-swatch-box`.
-   - `js/components/modal.js`: Added event handlers for click, keyboard navigation (ArrowDown, ArrowUp, Enter, Space, Escape), outside-click closing, and automatic reset on modal open.
+   - `css/layout.css`:
+     - Under `@media (max-width: 768px)`:
+       - `.app-topbar`: `row-gap: 8px !important; column-gap: 8px !important;`
+       - `.topbar-right`: `display: contents !important;` (unboxes child elements to directly participate in `.app-topbar`'s flex layout).
+       - `.notifications-wrapper`: `order: 2 !important; margin-left: auto !important; flex: 0 0 auto !important;` (anchors bell to the right of Row 1).
+       - `#open-create-project-modal-btn`: `order: 3 !important; flex: 1 1 calc(50% - 5px) !important; max-width: calc(50% - 4px) !important; width: calc(50% - 4px) !important; height: 40px !important; justify-content: center !important;`
+       - `#open-create-task-modal-btn`: `order: 4 !important; flex: 1 1 calc(50% - 5px) !important; max-width: calc(50% - 4px) !important; width: calc(50% - 4px) !important; height: 40px !important; justify-content: center !important;`
+       - `.topbar-center`: `order: 5 !important; flex: 1 1 100% !important; width: 100% !important;`
+     - Under `@media (max-width: 480px)`:
+       - Preserved 50% / 50% button widths and inline text visibility (`#open-create-project-modal-btn span, #open-create-task-modal-btn span { display: inline !important; font-size: 0.78rem !important; }`).
 3. **Verification**:
-   - Verified via Chrome DevTools Protocol in both Light and Dark modes:
-     - `menuOpen`: `true`
-     - `itemCount`: `6`
-     - All 6 items have `hasSwatch: true` and `hasHexInText: false`.
-     - Selecting a color (e.g. Pink) correctly updates `selectedText: "Pink"`, `swatchClass: "color-swatch-box swatch-pink"`, and `hiddenSelectValue: "#FA779C"`.
-   - Palette Compliance: `python tests/test_color_palette.py` — 0 color deviations.
-   - Master Test Runner: `python tests/run_all_tests.py` — 9/9 test suites pass (100%).
-   - Symmetrical Transitions & Refresh Tests: `tests/test_sidebar_transition_symmetry.js`, `tests/test_theme_icons_and_sidebar.js`, and `tests/test_theme_refresh_fouc.js` all pass 100%.
+   - Headless Chrome DevTools verification (`tests/verify_mobile_layout.js`):
+     - `mobile_header_dark_no_empty_space.png`: Mobile viewport (375x812) in Dark mode confirms 100% space filling with zero empty space.
+     - `mobile_header_light_no_empty_space.png`: Mobile viewport (375x812) in Light mode confirms 100% space filling with zero empty space.
+     - `mobile_header_320px_narrow.png`: Ultra-narrow mobile viewport (320x568) confirms perfect 50%/50% button symmetry with zero overflow.
+     - `desktop_view_verified.png`: Desktop viewport (1280x800) confirms 100% pristine preservation of desktop topbar, sidebar, overview, and task list.
+   - Palette Compliance: `python tests/test_color_palette.py` — 0 deviations across 51 files.
+   - Layout & Semantic Compliance: `python tests/test_main_layout.py` — 100% PASS.
+   - Master Test Suite: `python tests/run_all_tests.py` — 9/9 suites pass (100%).
 
 ## Completed Work to Date
 - [x] Phase 0: Planning and Architecture.
@@ -47,7 +55,8 @@ Implemented a custom Neo-Brutalist Color Accent dropdown for the Create New Proj
 - [x] Visual Redesign: Carbon & Sage Teal Design System.
 - [x] Settings & Profile View: Full profile customization and selectable themes with persistent storage.
 - [x] Flagship Neo-Brutalist Redesign with Light and Dark themes.
-- [x] Anime Fight Entrance transition, permanent hamburger positioning, and original-size floating logo.
+- [x] Whole-Page Spider-Man Spider Web Transition on refresh and continuous floating navbar icons.
+- [x] Whole-site typography replaced with Game Paused retro arcade pixel font.
 
 ## Tests & Verification Matrix (100% Passing)
 - `python tests/run_all_tests.py` — **9/9 PASSED (0 failures, 100% pass rate)**
@@ -65,4 +74,4 @@ Implemented a custom Neo-Brutalist Color Accent dropdown for the Create New Proj
 - `tests/test_theme_refresh_fouc.js` — **PASS**
 
 ## Exact Next Action
-Tempo is 100% verified, production ready, and updated with the requested Anime Fight Entrance, permanent hamburger button position, and full original-size logo on sidebar resize. Ready for user review.
+Tempo is 100% verified, production ready, and updated with the requested Game Paused arcade font across the whole site. Ready for user review.
