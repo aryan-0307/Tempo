@@ -27,13 +27,49 @@ const app = express();
 // Production Security & Compression Middlewares
 app.use(securityHeaders);
 app.use(responseCompression);
-app.use(cors());
+
+// Production CORS Configuration
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN || true,
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
 
+// Block access to sensitive server files, configs, tests, and database artifacts
+app.use((req, res, next) => {
+  const normalizedPath = req.path.toLowerCase();
+  const sensitivePatterns = [
+    /^\/\.env/,
+    /^\/\.git/,
+    /^\/\.agent/,
+    /^\/\.neon/,
+    /^\/server/,
+    /^\/tests/,
+    /package\.json$/,
+    /package-lock\.json$/,
+    /neon\.ts$/,
+    /\.sql$/,
+    /\.dump$/,
+    /\.gz$/
+  ];
+  if (sensitivePatterns.some(pattern => pattern.test(normalizedPath))) {
+    return res.status(403).json({ success: false, error: 'Access denied.' });
+  }
+  next();
+});
+
 // Serve Frontend Static Files
-app.use(express.static(projectRoot));
+app.use(express.static(projectRoot, {
+  dotfiles: 'deny',
+  index: 'index.html',
+  maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0
+}));
 
 // Rate Limiting
 app.use('/api', apiLimiter);

@@ -6,15 +6,16 @@
 import app from './app.js';
 import { pool } from './db/pool.js';
 
-const PORT = process.env.PORT || 3000;
+const PORT = parseInt(process.env.PORT || '3000', 10);
+const HOST = process.env.HOST || '0.0.0.0';
 
-const server = app.listen(PORT, () => {
+const server = app.listen(PORT, HOST, () => {
   console.log(`\n==================================================`);
   console.log(`🚀 Tempo Server v1.0.0 (Production Ready)`);
-  console.log(`📡 URL: http://localhost:${PORT}`);
-  console.log(`📋 API: http://localhost:${PORT}/api/tasks`);
-  console.log(`🔐 Auth: http://localhost:${PORT}/api/auth`);
-  console.log(`📊 Stats: http://localhost:${PORT}/api/stats`);
+  console.log(`📡 URL: http://${HOST}:${PORT}`);
+  console.log(`📋 API: http://${HOST}:${PORT}/api/tasks`);
+  console.log(`🔐 Auth: http://${HOST}:${PORT}/api/auth`);
+  console.log(`📊 Stats: http://${HOST}:${PORT}/api/stats`);
   console.log(`📁 Static Frontend: Served from root`);
   console.log(`🛡️ Security: Helmet CSP, Rate Limiting & Gzip Active`);
   console.log(`==================================================\n`);
@@ -28,10 +29,10 @@ async function gracefulShutdown(signal) {
     console.log('[Server] HTTP server closed.');
     try {
       await pool.end();
-      console.log('[Server] MySQL connection pool closed.');
+      console.log('[Server] PostgreSQL connection pool closed.');
       process.exit(0);
     } catch (err) {
-      console.error('[Server] Error closing MySQL pool:', err.message);
+      console.error('[Server] Error closing PostgreSQL pool:', err.message);
       process.exit(1);
     }
   });

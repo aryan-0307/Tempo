@@ -14,6 +14,11 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Database backups & exports
+server/db/backups/
+*.dump
+*.sql.gz
+
 # Operating System files
 .DS_Store
 Thumbs.db
@@ -22,3 +27,4 @@ Thumbs.db
 .vscode/
 .idea/
 
+.neon

@@ -1,6 +1,6 @@
 # Tempo — Minimal Productivity Workspace
 
-A clean, high-performance, minimalist task and productivity workspace engineered with vanilla web technologies, Node.js/Express, and MySQL.
+A clean, high-performance, minimalist task and productivity workspace engineered with vanilla web technologies, Node.js/Express, and PostgreSQL (with Neon PostgreSQL & Render deployment support).
 
 ---
 
@@ -24,13 +24,16 @@ Specification: [DESIGN.md](DESIGN.md)
   - Accessible modal dialogs, toast notifications, drag-and-drop reordering, inline title editing.
 - **Backend**: Node.js & Express REST API (`server/`).
   - Layered architecture: `routes/`, `controllers/`, `middleware/`, `config/`, and `db/`.
-  - Scoped development user context (`authDev.js`) prepared for Phase 5 authentication.
+  - JWT authentication with bcrypt password hashing (`auth.js`) and cross-user data isolation.
   - Standard HTTP semantics (`GET`, `POST`, `PUT`, `PATCH`, `DELETE`).
-- **Database**: MySQL 8.0 with `mysql2/promise` connection pooling.
+  - Cloud deployment ready with dynamic `process.env.PORT` handling for Render.
+- **Database**: PostgreSQL 16+ via `pg` (node-postgres) connection pooling.
   - Normalized schema: `users`, `categories`, `projects`, `tasks`, and `schema_migrations`.
-  - Safe, versioned migration runner with statement-level tracking accounting for MySQL implicit DDL commits.
+  - Native connection string support (`DATABASE_URL`) with SSL for **Neon PostgreSQL**.
+  - Safe, versioned migration runner with transactional rollback support.
+  - Zero-data-loss export/import utilities for migrating existing MySQL data to PostgreSQL.
   - Parameterized SQL queries preventing injection vulnerabilities.
-  - UTC date handling and timezone stability.
+  - ISO / UTC date handling and timezone stability.
 
 ---
 
@@ -38,7 +41,7 @@ Specification: [DESIGN.md](DESIGN.md)
 
 ### 1. Prerequisites
 - Node.js (v18+ or v26+)
-- MySQL Server 8.0+
+- PostgreSQL 14+ (local) OR a free [Neon PostgreSQL](https://neon.tech) cloud database.
 
 ### 2. Installation
 ```bash
@@ -46,34 +49,55 @@ npm install
 ```
 
 ### 3. Environment Configuration
-Copy the template configuration and set your local MySQL credentials:
+Copy the template configuration:
 ```bash
 cp .env.example .env
 ```
-Edit `.env`:
+
+#### Option A: Neon Cloud PostgreSQL (Recommended)
+Set `DATABASE_URL` in `.env`:
+```env
+PORT=3000
+DATABASE_URL=postgres://username:password@ep-sample-pooler.us-east-2.aws.neon.tech/neondb?sslmode=require
+DB_SSL=true
+JWT_SECRET=your_super_secret_jwt_key_at_least_32_chars
+```
+
+#### Option B: Local PostgreSQL Server
 ```env
 PORT=3000
 DB_HOST=127.0.0.1
-DB_PORT=3306
+DB_PORT=5432
 DB_NAME=tempo_db
-DB_USER=root
-DB_PASSWORD=your_password_here
-DB_TIMEZONE=Z
+DB_USER=postgres
+DB_PASSWORD=your_postgres_password
+DB_SSL=false
+JWT_SECRET=your_super_secret_jwt_key_at_least_32_chars
 ```
 
-### 4. Database Setup
+### 4. Database Setup & Migrations
 ```bash
-# 1. Verify connection to MySQL
+# 1. Verify PostgreSQL connection
 npm run db:verify
 
-# 2. Run version-controlled schema migrations
+# 2. Run schema migrations
 npm run db:migrate
 
 # 3. Populate development seed data
 npm run db:seed
 ```
 
-### 5. Start Application
+### 5. Safe Data Migration from MySQL (Zero Data Loss)
+If migrating from an existing MySQL database:
+```bash
+# 1. Export existing MySQL records safely to server/db/backups/mysql_data_export.json
+npm run db:export
+
+# 2. Import exported records into your PostgreSQL database with conflict resolution
+npm run db:import
+```
+
+### 6. Start Application
 ```bash
 npm start
 ```
@@ -89,7 +113,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `POST` | `/api/auth/login` | Authenticate credentials and receive signed JWT token |
 | `GET` | `/api/auth/me` | Retrieve profile of currently authenticated user |
 | `POST` | `/api/auth/logout` | Clear authentication state |
-| `GET` | `/api/health` | Service health and MySQL database connectivity status |
+| `GET` | `/api/health` | Service health and PostgreSQL database connectivity status |
 | `GET` | `/api/tasks` | List tasks (supports `?status=`, `?view=`, `?search=`, `?sort=`) |
 | `GET` | `/api/tasks/:id` | Retrieve single task by ID |
 | `POST` | `/api/tasks` | Create task (201 Created) |
@@ -118,13 +142,13 @@ Individual test suites:
 # Verify authentication and multi-tenant security
 python tests/test_auth_security.py
 
-# Verify database integration
+# Verify PostgreSQL database integration & transactional reordering
 python tests/test_database_integration.py
 
 # Verify REST API contracts
 python tests/test_backend_api.py
 
-# Verify schema migrations
+# Verify PostgreSQL schema migrations & version tracking
 python tests/test_phase4_2_migrations.py
 
 # Verify strict color palette adherence
@@ -140,7 +164,7 @@ python tests/test_phase2_functionality.py
 
 ## 🚢 Deployment & Production Operations
 
-See [DEPLOYMENT.md](DEPLOYMENT.md) for full instructions on PM2 process management, Docker containerization, Nginx reverse proxy configuration, SSL termination, and automated MySQL backups.
+See [DEPLOYMENT.md](DEPLOYMENT.md) for full instructions on deploying to **Render**, provisioning **Neon PostgreSQL**, Docker containerization, PM2 process management, and automated PostgreSQL backups.
 
 ---
 

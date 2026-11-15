@@ -10,11 +10,18 @@ export function notFoundHandler(req, res, next) {
 }
 
 export function errorHandler(err, req, res, next) {
-  console.error('[Error]', err);
+  if (process.env.NODE_ENV !== 'test') {
+    console.error('[Error]', err.stack || err.message || err);
+  }
   const status = err.status || 500;
+  const isProd = process.env.NODE_ENV === 'production';
+  const message = isProd && status === 500
+    ? 'An unexpected internal server error occurred.'
+    : (err.message || 'Internal Server Error');
+
   res.status(status).json({
     success: false,
-    error: err.message || 'Internal Server Error'
+    error: message
   });
 }
 

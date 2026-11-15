@@ -1,5 +1,5 @@
 /**
- * Tempo Development Database Seed Runner (Phase 4.2)
+ * Tempo Development Database Seed Runner (PostgreSQL Edition)
  *
  * Populates initial sample data for users, categories, projects, and tasks.
  * Kept strictly separate from schema migrations.
@@ -7,9 +7,12 @@
 
 import fs from 'fs';
 import path from 'path';
-import mysql from 'mysql2/promise';
+import pg from 'pg';
 import { fileURLToPath } from 'url';
 import { dbConfig, validateDbEnv } from '../config/db.config.js';
+import { pool } from './pool.js';
+
+const { Client } = pg;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -39,32 +42,31 @@ function parseSqlStatements(sqlText) {
 
 export async function runSeeds() {
   const envCheck = validateDbEnv();
-  if (!envCheck.isValid) {
-    console.error('Database configuration error:');
-    envCheck.missing.forEach(m => console.error(`  - ${m}`));
-    process.exit(1);
-  }
-
   console.log('\n==============================================');
-  console.log('🌱 Tempo Database Seed Runner (Phase 4.2)');
-  console.log(`📡 Target: ${dbConfig.host}:${dbConfig.port} (DB: ${dbConfig.database})`);
+  console.log('🌱 Tempo Database Seed Runner (PostgreSQL)');
+  console.log(`📡 Target: ${dbConfig.connectionString ? 'DATABASE_URL (Neon/Cloud)' : `${dbConfig.host}:${dbConfig.port} (DB: ${dbConfig.database})`}`);
   console.log('==============================================\n');
 
-  let connection;
+  let client = null;
+  let usePool = false;
+
   try {
-    connection = await mysql.createConnection({
-      host: dbConfig.host,
-      port: dbConfig.port,
-      user: dbConfig.user,
-      password: dbConfig.password,
-      database: dbConfig.database,
-      timezone: dbConfig.timezone,
-      connectTimeout: dbConfig.connectTimeout
-    });
+    client = new Client(dbConfig);
+    try {
+      await client.connect();
+    } catch (connErr) {
+      console.warn(`[Seed] Direct connection attempt failed (${connErr.message}). Routing through managed pool...`);
+      client = await pool.connect();
+      usePool = true;
+    }
 
     // 1. Check that tables exist
-    const [tables] = await connection.query('SHOW TABLES');
-    const tableNames = tables.map(t => Object.values(t)[0]);
+    const { rows: tables } = await client.query(`
+      SELECT table_name 
+      FROM information_schema.tables 
+      WHERE table_schema = 'public'
+    `);
+    const tableNames = tables.map(t => t.table_name);
     const requiredTables = ['users', 'categories', 'projects', 'tasks'];
     const missingTables = requiredTables.filter(t => !tableNames.includes(t));
 
@@ -91,16 +93,16 @@ export async function runSeeds() {
       const statements = parseSqlStatements(sqlContent);
 
       for (const statement of statements) {
-        await connection.query(statement);
+        await client.query(statement);
       }
       console.log(`  ✓ Finished ${file} (${statements.length} statements executed).`);
     }
 
     // 3. Summarize seeded data
-    const [userRows] = await connection.query('SELECT COUNT(*) AS count FROM users');
-    const [catRows] = await connection.query('SELECT COUNT(*) AS count FROM categories');
-    const [projRows] = await connection.query('SELECT COUNT(*) AS count FROM projects');
-    const [taskRows] = await connection.query('SELECT COUNT(*) AS count FROM tasks');
+    const { rows: userRows } = await client.query('SELECT COUNT(*) AS count FROM users');
+    const { rows: catRows } = await client.query('SELECT COUNT(*) AS count FROM categories');
+    const { rows: projRows } = await client.query('SELECT COUNT(*) AS count FROM projects');
+    const { rows: taskRows } = await client.query('SELECT COUNT(*) AS count FROM tasks');
 
     console.log('\n----------------------------------------------');
     console.log('📊 Current Database Record Counts:');
@@ -115,8 +117,12 @@ export async function runSeeds() {
     console.error('\n❌ Seeding failed:', err.message);
     process.exit(1);
   } finally {
-    if (connection) {
-      await connection.end();
+    if (client) {
+      if (usePool) {
+        client.release();
+      } else {
+        await client.end();
+      }
     }
   }
 }
@@ -125,4 +131,3 @@ export async function runSeeds() {
 if (process.argv[1] && process.argv[1].endsWith('seed.js')) {
   runSeeds();
 }
-

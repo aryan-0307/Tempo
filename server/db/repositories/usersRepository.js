@@ -1,9 +1,21 @@
 /**
- * Users Repository (Phase 5)
+ * Users Repository (PostgreSQL Edition)
  * Parameterized SQL queries for user authentication, accounts, and profile data.
  */
 
 import { pool } from '../pool.js';
+
+function formatUser(row) {
+  if (!row) return null;
+  return {
+    id: row.id,
+    username: row.username,
+    email: row.email,
+    fullName: row.fullName || row.full_name,
+    avatarColor: row.avatarColor || row.avatar_color,
+    createdAt: row.createdAt instanceof Date ? row.createdAt.toISOString() : (row.createdAt || new Date().toISOString())
+  };
+}
 
 export const usersRepository = {
   /**
@@ -15,15 +27,15 @@ export const usersRepository = {
         id, 
         username, 
         email, 
-        full_name AS fullName, 
-        avatar_color AS avatarColor, 
-        DATE_FORMAT(created_at, '%Y-%m-%dT%T.000Z') AS createdAt
+        full_name AS "fullName", 
+        avatar_color AS "avatarColor", 
+        created_at AS "createdAt"
       FROM users 
-      WHERE id = ?
+      WHERE id = $1
       LIMIT 1
     `;
-    const [rows] = await pool.query(query, [id]);
-    return rows.length > 0 ? rows[0] : null;
+    const { rows } = await pool.query(query, [id]);
+    return rows.length > 0 ? formatUser(rows[0]) : null;
   },
 
   /**
@@ -36,14 +48,23 @@ export const usersRepository = {
         username, 
         email, 
         password_hash, 
-        full_name AS fullName, 
-        avatar_color AS avatarColor
+        full_name AS "fullName", 
+        avatar_color AS "avatarColor"
       FROM users 
-      WHERE LOWER(email) = LOWER(?)
+      WHERE LOWER(email) = LOWER($1)
       LIMIT 1
     `;
-    const [rows] = await pool.query(query, [email.trim()]);
-    return rows.length > 0 ? rows[0] : null;
+    const { rows } = await pool.query(query, [email.trim()]);
+    if (rows.length === 0) return null;
+    const row = rows[0];
+    return {
+      id: row.id,
+      username: row.username,
+      email: row.email,
+      password_hash: row.password_hash,
+      fullName: row.fullName || row.full_name,
+      avatarColor: row.avatarColor || row.avatar_color
+    };
   },
 
   /**
@@ -53,10 +74,10 @@ export const usersRepository = {
     const query = `
       SELECT id, username, email 
       FROM users 
-      WHERE LOWER(username) = LOWER(?)
+      WHERE LOWER(username) = LOWER($1)
       LIMIT 1
     `;
-    const [rows] = await pool.query(query, [username.trim()]);
+    const { rows } = await pool.query(query, [username.trim()]);
     return rows.length > 0 ? rows[0] : null;
   },
 
@@ -66,9 +87,10 @@ export const usersRepository = {
   async create({ username, email, passwordHash, fullName, avatarColor = '#6BAFA4' }) {
     const insertSql = `
       INSERT INTO users (username, email, password_hash, full_name, avatar_color)
-      VALUES (?, ?, ?, ?, ?)
+      VALUES ($1, $2, $3, $4, $5)
+      RETURNING id
     `;
-    const [result] = await pool.query(insertSql, [
+    const result = await pool.query(insertSql, [
       username.trim(),
       email.trim().toLowerCase(),
       passwordHash,
@@ -76,7 +98,7 @@ export const usersRepository = {
       avatarColor
     ]);
 
-    const newUserId = result.insertId;
+    const newUserId = result.rows[0].id;
 
     // Create standard default projects for new user
     await this.createDefaultProjects(newUserId);
@@ -96,10 +118,11 @@ export const usersRepository = {
 
     for (const p of defaultProjects) {
       await pool.query(
-        'INSERT INTO projects (project_key, user_id, name, color) VALUES (?, ?, ?, ?)',
+        'INSERT INTO projects (project_key, user_id, name, color) VALUES ($1, $2, $3, $4)',
         [p.key, userId, p.name, p.color]
       );
     }
   }
 };
 
+export default usersRepository;

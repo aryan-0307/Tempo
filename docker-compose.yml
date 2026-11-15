@@ -1,22 +1,21 @@
 version: '3.8'
 
 services:
-  # MySQL Database Service
+  # PostgreSQL Database Service
   db:
-    image: mysql:8.0
+    image: postgres:16-alpine
     container_name: tempo_db
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-tempo_secure_root_password}
-      MYSQL_DATABASE: ${DB_NAME:-tempo_db}
-      MYSQL_USER: ${DB_USER:-tempo_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-tempo_secure_password}
+      POSTGRES_DB: ${DB_NAME:-tempo_db}
+      POSTGRES_USER: ${DB_USER:-tempo_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-tempo_secure_password}
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql_data:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -32,18 +31,12 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_NAME: ${DB_NAME:-tempo_db}
-      DB_USER: ${DB_USER:-tempo_user}
-      DB_PASSWORD: ${DB_PASSWORD:-tempo_secure_password}
-      DB_TIMEZONE: Z
+      DATABASE_URL: postgresql://${DB_USER:-tempo_user}:${DB_PASSWORD:-tempo_secure_password}@db:5432/${DB_NAME:-tempo_db}
       JWT_SECRET: ${JWT_SECRET:-tempo_production_jwt_secret_key_change_me}
       JWT_EXPIRES_IN: 7d
     ports:
       - "3000:3000"
 
 volumes:
-  mysql_data:
+  postgres_data:
     driver: local
-

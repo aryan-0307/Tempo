@@ -16,11 +16,11 @@ TEST_SUITES = [
         'file': 'tests/test_phase4_1_setup.py'
     },
     {
-        'name': 'MySQL Schema Migrations & Tracking',
+        'name': 'PostgreSQL Schema Migrations & Tracking',
         'file': 'tests/test_phase4_2_migrations.py'
     },
     {
-        'name': 'MySQL Persistence & Transactional Reordering',
+        'name': 'PostgreSQL Persistence & Transactional Reordering',
         'file': 'tests/test_database_integration.py'
     },
     {

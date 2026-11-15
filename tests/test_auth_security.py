@@ -71,7 +71,7 @@ try:
     status, body = make_request('/api/health')
     assert status == 200
     assert body.get('database') == 'connected'
-    print("  [PASS] Server is running with MySQL connected.")
+    print("  [PASS] Server is running with PostgreSQL connected.")
 
     # 2. Test User Registration
     print("\n--- 2. Testing POST /api/auth/register ---")
@@ -225,14 +225,12 @@ finally:
             server_proc.kill()
     print("  [OK] Test server stopped cleanly.")
 
-    # Clean up test users from MySQL
+    # Clean up test users from PostgreSQL
     try:
         cleanup_script = """
-        import mysql from 'mysql2/promise';
-        import { dbConfig } from './server/config/db.config.js';
-        const conn = await mysql.createConnection(dbConfig);
-        await conn.query("DELETE FROM users WHERE username LIKE 'usera_%' OR username LIKE 'userb_%'");
-        await conn.end();
+        import { pool } from './server/db/pool.js';
+        await pool.query("DELETE FROM users WHERE username LIKE 'usera_%' OR username LIKE 'userb_%'");
+        await pool.end();
         """
         subprocess.run([node_bin, '--input-type=module', '-e', cleanup_script], capture_output=True)
     except Exception:

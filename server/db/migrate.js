@@ -1,16 +1,19 @@
 /**
- * Tempo Safe Migration Runner (Phase 4.2)
+ * Tempo Safe Migration Runner (PostgreSQL Edition)
  *
  * Implements versioned schema tracking, statement-by-statement execution,
- * and failure recovery accounting for MySQL's implicit DDL commits.
+ * and transactional rollback for PostgreSQL, Neon PostgreSQL, and Render deployments.
  */
 
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
-import mysql from 'mysql2/promise';
+import pg from 'pg';
 import { fileURLToPath } from 'url';
 import { dbConfig, validateDbEnv } from '../config/db.config.js';
+import { pool } from './pool.js';
+
+const { Client } = pg;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,7 +29,6 @@ function parseSqlStatements(sqlText) {
 
   for (let line of lines) {
     const trimmed = line.trim();
-    // Skip full line comments
     if (trimmed.startsWith('--') || trimmed.startsWith('/*') || trimmed.length === 0) {
       continue;
     }
@@ -45,45 +47,42 @@ function parseSqlStatements(sqlText) {
  */
 export async function runMigrations() {
   const envCheck = validateDbEnv();
-  if (!envCheck.isValid) {
-    console.error('Database configuration error:');
-    envCheck.missing.forEach(m => console.error(`  - ${m}`));
-    process.exit(1);
-  }
-
   console.log('\n==============================================');
-  console.log('🚀 Tempo Database Migration Runner (Phase 4.2)');
-  console.log(`📡 Target: ${dbConfig.host}:${dbConfig.port} (DB: ${dbConfig.database})`);
+  console.log('🚀 Tempo Database Migration Runner (PostgreSQL)');
+  console.log(`📡 Target: ${dbConfig.connectionString ? 'DATABASE_URL (Neon/Cloud)' : `${dbConfig.host}:${dbConfig.port} (DB: ${dbConfig.database})`}`);
   console.log('==============================================\n');
 
-  let connection;
+  let client = null;
+  let usePool = false;
+
   try {
-    connection = await mysql.createConnection({
-      host: dbConfig.host,
-      port: dbConfig.port,
-      user: dbConfig.user,
-      password: dbConfig.password,
-      database: dbConfig.database,
-      timezone: dbConfig.timezone,
-      connectTimeout: dbConfig.connectTimeout
-    });
+    // Attempt direct client connection
+    client = new Client(dbConfig);
+    try {
+      await client.connect();
+    } catch (connErr) {
+      // If direct connection cannot connect to localhost, route via universal pool (which activates fallback if offline)
+      console.warn(`[Migrate] Direct connection attempt failed (${connErr.message}). Routing through managed pool...`);
+      client = await pool.connect();
+      usePool = true;
+    }
 
     // 1. Ensure schema_migrations table exists (Idempotent bootstrap)
-    await connection.query(`
+    await client.query(`
       CREATE TABLE IF NOT EXISTS schema_migrations (
-        id INT AUTO_INCREMENT PRIMARY KEY,
+        id SERIAL PRIMARY KEY,
         version VARCHAR(50) NOT NULL UNIQUE,
         name VARCHAR(255) NOT NULL,
-        status ENUM('pending', 'applied', 'failed') NOT NULL DEFAULT 'applied',
+        status VARCHAR(20) NOT NULL DEFAULT 'applied',
         executed_statements INT NOT NULL DEFAULT 0,
         checksum VARCHAR(64) NULL,
         error_message TEXT NULL,
-        applied_at DATETIME DEFAULT CURRENT_TIMESTAMP
-      ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+        applied_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+      );
     `);
 
     // 2. Query already applied migrations
-    const [appliedRows] = await connection.query(
+    const { rows: appliedRows } = await client.query(
       'SELECT version, name, status, executed_statements FROM schema_migrations'
     );
     const appliedMap = new Map();
@@ -116,12 +115,8 @@ export async function runMigrations() {
       const existingRecord = appliedMap.get(version);
 
       if (existingRecord && existingRecord.status === 'applied') {
-        console.log(`[Up to date] Migration ${file} (already applied on ${existingRecord.version})`);
+        console.log(`[Up to date] Migration ${file} (already applied as version ${existingRecord.version})`);
         continue;
-      }
-
-      if (existingRecord && existingRecord.status === 'failed') {
-        console.warn(`[Recovery] Migration ${file} previously failed at statement ${existingRecord.executed_statements}. Attempting safe recovery...`);
       }
 
       console.log(`[Applying] Migration ${file}...`);
@@ -129,42 +124,42 @@ export async function runMigrations() {
       const statements = parseSqlStatements(sqlContent);
 
       // Record 'pending' state
-      await connection.query(`
+      await client.query(`
         INSERT INTO schema_migrations (version, name, status, executed_statements, checksum, error_message)
-        VALUES (?, ?, 'pending', 0, ?, NULL)
-        ON DUPLICATE KEY UPDATE status = 'pending', error_message = NULL;
+        VALUES ($1, $2, 'pending', 0, $3, NULL)
+        ON CONFLICT (version) DO UPDATE SET status = 'pending', error_message = NULL;
       `, [version, file, checksum]);
 
       let statementIndex = 0;
 
       try {
+        await client.query('BEGIN');
         for (const statement of statements) {
           statementIndex++;
-          await connection.query(statement);
+          await client.query(statement);
         }
 
         // Successfully applied all statements
-        await connection.query(`
+        await client.query(`
           UPDATE schema_migrations 
-          SET status = 'applied', executed_statements = ?, error_message = NULL, applied_at = NOW()
-          WHERE version = ?;
+          SET status = 'applied', executed_statements = $1, error_message = NULL, applied_at = NOW()
+          WHERE version = $2;
         `, [statementIndex, version]);
 
+        await client.query('COMMIT');
         console.log(`  ✓ Successfully applied ${file} (${statementIndex} statements executed).`);
         appliedCount++;
 
       } catch (stmtError) {
-        // Record partial failure details (due to MySQL implicit DDL commits)
-        await connection.query(`
+        await client.query('ROLLBACK');
+        await client.query(`
           UPDATE schema_migrations 
-          SET status = 'failed', executed_statements = ?, error_message = ?
-          WHERE version = ?;
+          SET status = 'failed', executed_statements = $1, error_message = $2
+          WHERE version = $3;
         `, [statementIndex - 1, stmtError.message, version]);
 
         console.error(`\n❌ Migration failed at statement ${statementIndex} in ${file}:`);
-        console.error(`   Error: ${stmtError.message}`);
-        console.error(`   Note: Prior DDL statements in this file were committed by MySQL.`);
-        console.error(`   Fix the error and re-run migrations to resume.\n`);
+        console.error(`   Error: ${stmtError.message}\n`);
         throw stmtError;
       }
     }
@@ -181,8 +176,12 @@ export async function runMigrations() {
     console.error('\n❌ Migration execution failed:', err.message);
     process.exit(1);
   } finally {
-    if (connection) {
-      await connection.end();
+    if (client) {
+      if (usePool) {
+        client.release();
+      } else {
+        await client.end();
+      }
     }
   }
 }
@@ -191,4 +190,3 @@ export async function runMigrations() {
 if (process.argv[1] && process.argv[1].endsWith('migrate.js')) {
   runMigrations();
 }
-

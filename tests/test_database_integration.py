@@ -1,5 +1,5 @@
 # Tempo Phase 4 Database Integration Test
-# Validates Express REST API operating against live MySQL database
+# Validates Express REST API operating against live PostgreSQL database
 
 import os
 import sys
@@ -14,7 +14,7 @@ script_dir = os.path.dirname(os.path.abspath(__file__))
 project_root = os.path.abspath(os.path.join(script_dir, '..'))
 os.chdir(project_root)
 
-print("=== Tempo Phase 4 MySQL Database Integration Test ===")
+print("=== Tempo Phase 4 PostgreSQL Database Integration Test ===")
 
 TEST_PORT = 3838
 BASE_URL = f"http://127.0.0.1:{TEST_PORT}"
@@ -72,19 +72,19 @@ try:
     assert body.get('database') == 'connected', f"Expected database 'connected', got {body.get('database')}"
     print(f"  [PASS] GET /api/health returned 200 OK with database: connected")
 
-    # 2. Get Tasks from MySQL
+    # 2. Get Tasks from PostgreSQL
     print("\n--- 2. Testing GET /api/tasks ---")
     status, body = make_request('/api/tasks')
     assert status == 200, f"Expected 200, got {status}"
     assert body.get('success') is True, "Expected success: true"
     tasks = body.get('data', [])
     assert len(tasks) >= 6, f"Expected at least 6 tasks from seed data, got {len(tasks)}"
-    print(f"  [PASS] GET /api/tasks returned {len(tasks)} tasks from MySQL.")
+    print(f"  [PASS] GET /api/tasks returned {len(tasks)} tasks from PostgreSQL.")
 
-    # 3. Create Task with Description in MySQL
-    print("\n--- 3. Testing POST /api/tasks (Create in MySQL) ---")
+    # 3. Create Task with Description in PostgreSQL
+    print("\n--- 3. Testing POST /api/tasks (Create in PostgreSQL) ---")
     new_task_payload = {
-        'title': 'Automated MySQL Integration Test Task',
+        'title': 'Automated PostgreSQL Integration Test Task',
         'description': 'Testing full persistence, description storage, and status mapping.',
         'priority': 'high',
         'dueDate': '2026-11-20',
@@ -123,7 +123,7 @@ try:
     assert status == 200
     assert body['data']['title'] == update_payload['title']
     assert body['data']['priority'] == 'medium'
-    print("  [PASS] PUT /api/tasks/:id successfully updated task fields in MySQL.")
+    print("  [PASS] PUT /api/tasks/:id successfully updated task fields in PostgreSQL.")
 
     # 6. Toggle Task Completion
     print("\n--- 6. Testing PATCH /api/tasks/:id/toggle ---")

@@ -1,5 +1,5 @@
 /**
- * Stats Repository (Phase 4.3)
+ * Stats Repository (PostgreSQL Edition)
  * Parameterized SQL queries for real-time overview metrics and completion rates.
  */
 
@@ -15,14 +15,14 @@ export const statsRepository = {
     const query = `
       SELECT 
         COUNT(*) AS total,
-        COALESCE(SUM(CASE WHEN completed = 1 OR status = 'completed' THEN 1 ELSE 0 END), 0) AS completed,
-        COALESCE(SUM(CASE WHEN completed = 0 AND status != 'completed' THEN 1 ELSE 0 END), 0) AS pending,
-        COALESCE(SUM(CASE WHEN (completed = 0 AND status != 'completed') AND due_date < CURDATE() THEN 1 ELSE 0 END), 0) AS overdue
+        COALESCE(SUM(CASE WHEN completed = TRUE OR status = 'completed' THEN 1 ELSE 0 END), 0) AS completed,
+        COALESCE(SUM(CASE WHEN completed = FALSE AND status != 'completed' THEN 1 ELSE 0 END), 0) AS pending,
+        COALESCE(SUM(CASE WHEN (completed = FALSE AND status != 'completed') AND due_date < CURRENT_DATE THEN 1 ELSE 0 END), 0) AS overdue
       FROM tasks
-      WHERE user_id = ?
+      WHERE user_id = $1
     `;
 
-    const [rows] = await pool.query(query, [userId]);
+    const { rows } = await pool.query(query, [userId]);
     const row = rows[0] || {};
 
     const total = Number(row.total || 0);
@@ -41,3 +41,4 @@ export const statsRepository = {
   }
 };
 
+export default statsRepository;

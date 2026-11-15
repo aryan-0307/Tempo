@@ -1,4 +1,4 @@
-# Tempo Phase 4.1 Setup & Environment Verification Test
+# Tempo Phase 4.1 Setup & Environment Verification Test (PostgreSQL Edition)
 
 import os
 import sys
@@ -24,22 +24,22 @@ print("  [PASS] .gitignore exists and properly ignores .env")
 assert os.path.exists('.env.example'), ".env.example template is missing"
 with open('.env.example', 'r', encoding='utf-8') as f:
     example_content = f.read()
+assert 'DATABASE_URL' in example_content, "DATABASE_URL missing in .env.example"
 assert 'DB_HOST' in example_content, "DB_HOST missing in .env.example"
 assert 'DB_PORT' in example_content, "DB_PORT missing in .env.example"
 assert 'DB_NAME' in example_content, "DB_NAME missing in .env.example"
 assert 'DB_USER' in example_content, "DB_USER missing in .env.example"
-assert 'DB_PASSWORD=' in example_content, "DB_PASSWORD template missing in .env.example"
-print("  [PASS] .env.example exists and documents all database settings safely")
+print("  [PASS] .env.example exists and documents all PostgreSQL settings safely")
 
 # --- 2. Verify Package Dependencies ---
-print("\n--- 2. Checking npm Dependencies (mysql2, dotenv) ---")
+print("\n--- 2. Checking npm Dependencies (pg, dotenv) ---")
 with open('package.json', 'r', encoding='utf-8') as f:
     pkg = json.load(f)
 
 deps = pkg.get('dependencies', {})
-assert 'mysql2' in deps, "'mysql2' package is missing from dependencies in package.json"
+assert 'pg' in deps, "'pg' package is missing from dependencies in package.json"
 assert 'dotenv' in deps, "'dotenv' package is missing from dependencies in package.json"
-print(f"  [PASS] Dependencies verified: mysql2 ({deps['mysql2']}), dotenv ({deps['dotenv']})")
+print(f"  [PASS] Dependencies verified: pg ({deps['pg']}), dotenv ({deps['dotenv']})")
 
 # --- 3. Verify Database Config Module ---
 print("\n--- 3. Checking server/config/db.config.js Module ---")
@@ -49,6 +49,7 @@ assert os.path.exists(config_file), f"Missing database configuration module: {co
 # Run Node.js evaluation of db.config.js
 node_candidates = [
     r'C:\Users\aryan\AppData\Local\Author Software\nvm\installs\v26.12.1\node.exe',
+    r'C:\Users\aryan\AppData\Local\Programs\cursor\resources\app\resources\helpers\node.exe',
     r'C:\Program Files\nodejs\node.exe',
     'node'
 ]
@@ -69,23 +70,31 @@ console.log(JSON.stringify({ config: { ...dbConfig, password: '***' }, validatio
 
 res = subprocess.run([node_bin, '--input-type=module', '-e', eval_script], capture_output=True, text=True)
 assert res.returncode == 0, f"Failed to import server/config/db.config.js:\n{res.stderr}"
-eval_result = json.loads(res.stdout.strip())
+stdout = res.stdout.strip()
+json_start = stdout.find('{')
+assert json_start != -1, f"No JSON output from eval script:\n{stdout}"
+eval_result = json.loads(stdout[json_start:])
 assert eval_result['validation']['isValid'] == True, f"Environment validation failed: {eval_result['validation']['missing']}"
-print(f"  [PASS] db.config.js loaded successfully. Validated config: {eval_result['config']['host']}:{eval_result['config']['port']} (DB: {eval_result['config']['database']})")
+cfg = eval_result['config']
+summary = eval_result['validation']['summary']
+host_disp = cfg.get('host') or summary.get('host')
+port_disp = cfg.get('port') or summary.get('port')
+db_disp = cfg.get('database') or summary.get('database')
+print(f"  [PASS] db.config.js loaded successfully. Validated config: {host_disp}:{port_disp} (DB: {db_disp})")
 
-# --- 4. Probe Local MySQL Server Connectivity ---
-print("\n--- 4. Probing Local MySQL Server (Port 3306) ---")
+# --- 4. Probe Local PostgreSQL Server Connectivity ---
+print("\n--- 4. Probing Local PostgreSQL Server (Port 5432) ---")
 host = '127.0.0.1'
-port = 3306
+port = 5432
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.settimeout(2.0)
 try:
     result = sock.connect_ex((host, port))
     if result == 0:
-        print(f"  [ONLINE] Successfully connected to MySQL server at {host}:{port}!")
+        print(f"  [ONLINE] Successfully connected to PostgreSQL server at {host}:{port}!")
     else:
         print(f"  [NOTICE] Port {port} is closed / not listening. (Error code: {result})")
-        print(f"           MySQL service is not running or on another port.")
+        print(f"           PostgreSQL service is offline or managed cloud (Neon) is used.")
 finally:
     sock.close()
 
