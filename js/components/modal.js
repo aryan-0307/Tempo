@@ -89,6 +89,7 @@ export class Modal {
       if (this.modalTitleEl) this.modalTitleEl.textContent = 'Edit Task';
       if (this.modalSubmitBtn) this.modalSubmitBtn.textContent = 'Save Changes';
 
+      this.updateProjectOptions(taskToEdit.project);
       if (this.titleInput) this.titleInput.value = taskToEdit.title;
       if (this.priorityInput) this.priorityInput.value = taskToEdit.priority;
       if (this.projectInput) this.projectInput.value = taskToEdit.project;
@@ -98,6 +99,7 @@ export class Modal {
       if (this.modalTitleEl) this.modalTitleEl.textContent = 'Create New Task';
       if (this.modalSubmitBtn) this.modalSubmitBtn.textContent = 'Create Task';
 
+      this.updateProjectOptions();
       if (this.form) this.form.reset();
       if (this.dueDateInput) {
         this.dueDateInput.value = this.state.getTodayString();
@@ -109,6 +111,20 @@ export class Modal {
         this.titleInput.focus();
         this.titleInput.select();
       });
+    }
+  }
+
+  updateProjectOptions(selectedProject = null) {
+    if (!this.projectInput || !this.state) return;
+    const projects = this.state.getProjects ? this.state.getProjects() : [];
+    if (!projects || projects.length === 0) return;
+    const currentVal = selectedProject || this.projectInput.value || 'Work';
+    this.projectInput.innerHTML = projects.map(p =>
+      `<option value="${p.name}">${p.name}</option>`
+    ).join('');
+    this.projectInput.value = currentVal;
+    if (!this.projectInput.value && projects.length > 0) {
+      this.projectInput.value = projects[0].name;
     }
   }
 
@@ -307,6 +323,20 @@ export class AuthModal {
     }
   }
 
+  updateProjectOptions(selectedProject = null) {
+    if (!this.projectInput || !this.state) return;
+    const projects = this.state.getProjects ? this.state.getProjects() : [];
+    if (!projects || projects.length === 0) return;
+    const currentVal = selectedProject || this.projectInput.value || 'Work';
+    this.projectInput.innerHTML = projects.map(p =>
+      `<option value="${p.name}">${p.name}</option>`
+    ).join('');
+    this.projectInput.value = currentVal;
+    if (!this.projectInput.value && projects.length > 0) {
+      this.projectInput.value = projects[0].name;
+    }
+  }
+
   close() {
     if (!this.modalEl || !this.isOpen()) return;
     this.modalEl.classList.remove('is-open');
@@ -485,6 +515,115 @@ export class AuthModal {
         .join('')
         .toUpperCase();
       avatarEl.textContent = initials;
+    }
+  }
+}
+
+/**
+ * ProjectModal Component
+ * Manages Create Project modal dialog for both Desktop and Mobile viewports
+ */
+export class ProjectModal {
+  constructor(state, onProjectCreated = null) {
+    this.state = state;
+    this.onProjectCreated = onProjectCreated;
+    this.modalEl = $('#create-project-modal');
+    this.form = $('#create-project-form');
+    this.nameInput = $('#project-name-input');
+    this.colorSelect = $('#project-color-select');
+    this.closeBtn = $('#project-modal-close-btn');
+    this.cancelBtn = $('#project-modal-cancel-btn');
+    this.openBtns = [
+      $('#open-create-project-modal-btn'),
+      $('#sidebar-add-project-btn')
+    ].filter(Boolean);
+  }
+
+  init() {
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    this.openBtns.forEach(btn => {
+      on(btn, 'click', () => this.open());
+    });
+
+    if (this.closeBtn) {
+      on(this.closeBtn, 'click', () => this.close());
+    }
+
+    if (this.cancelBtn) {
+      on(this.cancelBtn, 'click', () => this.close());
+    }
+
+    if (this.modalEl) {
+      on(this.modalEl, 'click', (e) => {
+        if (e.target === this.modalEl) {
+          this.close();
+        }
+      });
+    }
+
+    on(document, 'keydown', (e) => {
+      if (e.key === 'Escape' && this.isOpen()) {
+        this.close();
+      }
+    });
+
+    if (this.form) {
+      on(this.form, 'submit', async (e) => {
+        e.preventDefault();
+        await this.handleSubmit();
+      });
+    }
+  }
+
+  open() {
+    if (!this.modalEl) return;
+    this.modalEl.removeAttribute('hidden');
+    requestAnimationFrame(() => {
+      this.modalEl.classList.add('is-open');
+    });
+    if (this.nameInput) {
+      this.nameInput.value = '';
+      requestAnimationFrame(() => this.nameInput.focus());
+    }
+  }
+
+  close() {
+    if (!this.modalEl || !this.isOpen()) return;
+    this.modalEl.classList.remove('is-open');
+    setTimeout(() => {
+      if (!this.modalEl.classList.contains('is-open')) {
+        this.modalEl.setAttribute('hidden', '');
+      }
+    }, 220);
+  }
+
+  isOpen() {
+    return this.modalEl && !this.modalEl.hasAttribute('hidden') && this.modalEl.classList.contains('is-open');
+  }
+
+  async handleSubmit() {
+    const name = (this.nameInput?.value || '').trim();
+    const color = this.colorSelect?.value || '#C6F55A';
+
+    if (!name) {
+      toast.show('Please enter a project name', 'error');
+      return;
+    }
+
+    try {
+      const newProj = await this.state.addProject({ name, color });
+      if (newProj) {
+        toast.show(`Project "${name}" created successfully!`, 'success');
+        if (typeof this.onProjectCreated === 'function') {
+          this.onProjectCreated(newProj);
+        }
+        this.close();
+      }
+    } catch (err) {
+      toast.show(err.message || 'Failed to create project', 'error');
     }
   }
 }

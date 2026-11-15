@@ -29,9 +29,11 @@ export class Sidebar {
   }
 
   init() {
+    this.renderProjects();
     this.bindEvents();
     if (this.state) {
       this.state.subscribe(() => {
+        this.renderProjects();
         this.updateCounts();
         this.updateActiveNav();
       });
@@ -199,6 +201,65 @@ export class Sidebar {
     });
   }
 
+  renderProjects() {
+    if (!this.state) return;
+    const container = $('#projects-list-container');
+    if (!container) return;
+
+    const projects = this.state.getProjects ? this.state.getProjects() : [];
+    const customProjects = projects.filter(p => p.isCustom);
+
+    // Remove previously rendered custom project nav buttons
+    container.querySelectorAll('.nav-item-custom').forEach(el => el.remove());
+
+    customProjects.forEach(proj => {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'nav-item nav-item-custom';
+      btn.setAttribute('data-view', `project-${proj.id}`);
+      btn.title = `Project: ${proj.name}`;
+
+      const dot = document.createElement('span');
+      dot.className = 'project-dot';
+      if (proj.color) {
+        dot.style.backgroundColor = proj.color;
+      }
+
+      const label = document.createElement('span');
+      label.className = 'nav-label';
+      label.textContent = proj.name;
+
+      const count = document.createElement('span');
+      count.className = 'nav-count';
+      count.textContent = '0';
+
+      btn.appendChild(dot);
+      btn.appendChild(label);
+      btn.appendChild(count);
+
+      on(btn, 'click', (e) => {
+        const target = e.currentTarget;
+        const view = target.getAttribute('data-view');
+        this.setActiveItem(target, view);
+        if (this.state && view) {
+          this.state.setViewFilter(view);
+        }
+        const mainContainer = document.getElementById('main-content') || document.querySelector('.app-main');
+        if (mainContainer) {
+          mainContainer.scrollTop = 0;
+        }
+        window.scrollTo(0, 0);
+        if (window.innerWidth <= 768) {
+          this.close();
+        }
+      });
+
+      container.appendChild(btn);
+    });
+
+    this.navItems = $$('.sidebar-nav .nav-item');
+  }
+
   updateCounts() {
     if (!this.state) return;
     const tasks = this.state.getTasks();
@@ -219,5 +280,20 @@ export class Sidebar {
     if (this.countProjectWork) this.countProjectWork.textContent = work;
     if (this.countProjectPersonal) this.countProjectPersonal.textContent = personal;
     if (this.countProjectDesign) this.countProjectDesign.textContent = design;
+
+    // Update counts for custom projects
+    const container = $('#projects-list-container');
+    if (container) {
+      container.querySelectorAll('.nav-item-custom').forEach(btn => {
+        const view = btn.getAttribute('data-view');
+        const projKey = (view || '').replace('project-', '').toLowerCase();
+        const projObj = (this.state.getProjects() || []).find(p => p.id.toLowerCase() === projKey || p.name.toLowerCase() === projKey);
+        if (projObj) {
+          const count = tasks.filter(t => t.project.toLowerCase() === projObj.name.toLowerCase()).length;
+          const countEl = btn.querySelector('.nav-count');
+          if (countEl) countEl.textContent = count;
+        }
+      });
+    }
   }
 }

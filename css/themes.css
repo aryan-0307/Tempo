@@ -768,6 +768,51 @@
   color: #A3ACAA;
 }
 
+[data-theme="dark"] .priority-high,
+[data-theme="dark"] .priority-high span,
+[data-theme="dark"] .due-date-badge.is-overdue,
+[data-theme="dark"] .due-date-badge.is-overdue span {
+  background-color: #FA779C !important;
+  color: #111111 !important;
+  border-color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .due-date-badge.is-overdue svg {
+  stroke: #111111 !important;
+}
+
+[data-theme="dark"] .priority-medium,
+[data-theme="dark"] .priority-medium span {
+  background-color: #C6F55A !important;
+  color: #111111 !important;
+  border-color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .priority-low,
+[data-theme="dark"] .priority-low span {
+  background-color: #18181B !important;
+  color: #FFFFFF !important;
+  border-color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .project-tag,
+[data-theme="dark"] .project-tag span {
+  background-color: #18181B !important;
+  color: #FFFFFF !important;
+  border-color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .due-date-badge,
+[data-theme="dark"] .due-date-badge span {
+  background-color: #18181B !important;
+  color: #FFFFFF !important;
+  border-color: #FFFFFF !important;
+}
+
+[data-theme="dark"] .due-date-badge svg {
+  stroke: #FFFFFF !important;
+}
+
 [data-theme="dark"] .task-checkbox {
   background-color: #222226;
   border-color: #FFFFFF;

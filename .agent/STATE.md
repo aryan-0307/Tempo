@@ -4,36 +4,45 @@
 Rebuild Tempo as a modern, production-grade productivity workspace featuring a flagship **Neo-Brutalist Design System** (thick black borders, sharp rectangular cards, hard offset shadows, bold typography, vibrant lime, pink, and purple accents, subtle architectural grid pattern), streamlined **Light and Dark themes**, and a responsive sidebar with symmetrical periodic transitions.
 
 ## Active Phase
-Sidebar Collapsed Icons Dead-Centering Within Center Box (COMPLETED — 100% Verified)
+Create Projects Feature & Mobile Notifications Menu Adjustment (COMPLETED — 100% Verified)
 
 ## Curriculum Status
-ALL 7 CURRICULUM PHASES + FLAGSHIP NEO-BRUTALIST REDESIGN + LIGHT & DARK THEMES + PERFORMANCE MODALS + PERIODIC SIDEBAR TRANSITIONS + DEAD-CENTERED COLLAPSED ICONS COMPLETED
+ALL 7 CURRICULUM PHASES + FLAGSHIP NEO-BRUTALIST REDESIGN + LIGHT & DARK THEMES + PERFORMANCE MODALS + PERIODIC SIDEBAR TRANSITIONS + DEAD-CENTERED COLLAPSED ICONS + ANIME FIGHT ENTRANCE & FLOATING LOGO + MOBILE LAYOUT OPTIMIZATION + CREATE PROJECT FUNCTION (MOBILE & DESKTOP) + MOBILE NOTIFICATIONS DISPLAY COMPLETED
 
 ## Status
 COMPLETED_AND_VERIFIED
 
 ## Current Task
-Dead-centering of all sidebar icons inside their respective center boxes upon sidebar minimization:
-1. **Root Cause Analysis & Elimination**:
-   - In collapsed state (68px rail), `.nav-label` and `.nav-count` had `visibility: hidden` but still occupied space in flex layout flow (`flex: 1` and computed width ~23px), which pushed `.nav-icon` and `.project-dot` off-center towards the left edge (`leftOffset: -1.5px`, `rightOffset: 21.5px`).
-   - Similarly, `.user-details` and `.user-more-btn` in `.sidebar-user-profile` occupied flex flow space, pushing the user avatar out to `leftInProfile: -16px`.
-2. **Precision Geometric Centering Implementation**:
-   - In [css/layout.css](file:///c:/Users/aryan/Desktop/Tempo/css/layout.css), updated `.app-sidebar.collapsed` and mobile `.app-sidebar:not(.open)`:
-     - Set `.nav-label`, `.nav-count`, `.user-details`, `.user-more-btn`, and `.nav-section-title` to `position: absolute; width: 0; min-width: 0; max-width: 0; margin: 0; padding: 0; border: none; overflow: hidden; opacity: 0; pointer-events: none; visibility: hidden;` with smooth 180ms transitions.
-     - Styled `.nav-item` as a dedicated square center box: `width: 44px; height: 44px; margin: 0 auto; padding: 0; display: flex; justify-content: center; align-items: center; gap: 0; box-sizing: border-box;`.
-     - Centered `.nav-icon` (22px x 22px): Left/right offset = exactly 11px, Top/bottom offset = exactly 11px.
-     - Centered `.project-dot` (14px x 14px): Left/right offset = exactly 15px, Top/bottom offset = exactly 15px.
-     - Centered `.brand-icon` (32px x 32px): perfectly centered in 68px header.
-     - Centered `.user-avatar-wrapper` (36px x 36px): Left/right offset = exactly 15px inside 66px inner profile box.
-3. **Automated Verification**:
+Implemented the requested Create Project feature for both Mobile and Desktop viewports and resolved the Mobile Notifications popover clipping:
+1. **Create Project Feature (Mobile & Desktop)**:
+   - **Trigger Points**:
+     - Desktop Topbar: Added `+ PROJECT` button (`#open-create-project-modal-btn`) next to `+ CREATE TASK`.
+     - Mobile Topbar: Added 38x38px icon button with folder-plus SVG next to notifications.
+     - Sidebar (Desktop & Mobile Drawer): Added `+` button in "PROJECTS" section header (`#sidebar-add-project-btn`).
+   - **Create Project Modal**:
+     - `#create-project-modal` dialog featuring Neo-Brutalist borders, offset shadows, and clean form inputs.
+     - Project Name input (with validation & duplicate checking) and Color Accent selector (`#C6F55A`, `#FA779C`, `#8051F5`, `#6BAFA4`, etc.).
+   - **Reactive Integration**:
+     - Adding a project automatically inserts it into the sidebar under "PROJECTS" with its color dot and live task count.
+     - Automatically populates the Project dropdown in `#task-project-input` inside the Create Task modal, so new tasks can immediately be assigned to the new project.
+     - Filtering: Clicking the project in the sidebar filters the task list to that project.
+     - Persistence: Saved locally via LocalStorage and synchronized with backend API via `POST /api/projects`.
+   - **Backend & Database**:
+     - Added `projectsRepository.create(userId, projectData)` with parameterized SQL.
+     - Added `projectsController.createProject` and `POST /api/projects` route.
+     - Added `MockDatabase.createProject` for offline standalone mode.
+     - Added `api.createProject` in frontend API client.
+2. **Strictly Mobile Notifications Menu Adjustment**:
+   - Fixed clipping issue where the notification card overflowed on the left side of mobile screens.
+   - On mobile (`@media (max-width: 768px)`), `.notifications-dropdown` is fixed with `left: 12px; right: 12px; top: 58px; width: auto;`, completely on-screen with zero horizontal clipping.
+   - Header, title ("NOTIFICATIONS"), active counter badge, overdue and upcoming items, and timestamps are 100% visible and readable on both Light and Dark themes.
+   - Desktop view keeps standard absolute popover position with zero regressions.
+3. **Automated Verification Matrix**:
    - Palette Compliance: `python tests/test_color_palette.py` — 0 color deviations across all 49 files.
    - Unified Test Suite: `python tests/run_all_tests.py` — 9/9 test suites pass (100%).
-   - Trajectory & Symmetry: `tests/test_sidebar_transition_symmetry.js` — passes 100% with reversible periodic transitions.
-   - Theme & Responsive Verification: `tests/test_theme_icons_and_sidebar.js` and `tests/test_theme_refresh_fouc.js` pass 100%.
-   - Visual Verification: Verified via DevTools telemetry and captured screenshots (`sidebar_collapsed_mode.png` and `sidebar_collapsed_mode_dark.png`).
-
-## Last Completed Task
-Updated `css/layout.css` and `css/themes.css`, verified 9/9 test suites pass, verified 3 browser suites, and confirmed larger icons in both Light and Dark collapsed modes.
+   - Desktop Trajectory & Symmetry: `tests/test_sidebar_transition_symmetry.js` — passes 100%.
+   - Responsive & Theme Verification: `tests/test_theme_icons_and_sidebar.js` and `tests/test_theme_refresh_fouc.js` pass 100%.
+   - Visual Verification: Chrome screenshots captured and verified (`mobile_notifications_fixed.png`, `mobile_create_project_modal.png`, `mobile_sidebar_with_new_project.png`, `mobile_create_task_with_new_project_option.png`, `desktop_view_with_project_button.png`, `desktop_create_project_modal.png`).
 
 ## Completed Work to Date
 - [x] Phase 0: Planning and Architecture.
@@ -46,7 +55,9 @@ Updated `css/layout.css` and `css/themes.css`, verified 9/9 test suites pass, ve
 - [x] Phase 6: Testing and Deployment (Security middleware, Rate-limiting, Compression, Graceful shutdown, PM2 & Docker containerization, DEPLOYMENT.md, and Master test runner).
 - [x] Interactive UI Auth Modal: Live sign-in, user registration, active session inspection, and seamless workspace switching directly from the browser.
 - [x] Visual Redesign: Carbon & Sage Teal Design System.
-- [x] Settings & Profile View: Full profile customization and 10 handcrafted multi-theme selector with persistent storage.
+- [x] Settings & Profile View: Full profile customization and selectable themes with persistent storage.
+- [x] Flagship Neo-Brutalist Redesign with Light and Dark themes.
+- [x] Anime Fight Entrance transition, permanent hamburger positioning, and original-size floating logo.
 
 ## Tests & Verification Matrix (100% Passing)
 - `python tests/run_all_tests.py` — **9/9 PASSED (0 failures, 100% pass rate)**
@@ -59,6 +70,9 @@ Updated `css/layout.css` and `css/themes.css`, verified 9/9 test suites pass, ve
   7. `tests/test_frontend_shell.py` — **PASS** (Frontend Shell Linkage & ES Import Resolution)
   8. `tests/test_main_layout.py` — **PASS** (Semantic HTML Layout, Drawer & Responsive Rules)
   9. `tests/test_phase2_functionality.py` — **PASS** (Interactive JavaScript Functionality & State Store)
+- `tests/test_sidebar_transition_symmetry.js` — **PASS**
+- `tests/test_theme_icons_and_sidebar.js` — **PASS**
+- `tests/test_theme_refresh_fouc.js` — **PASS**
 
 ## Exact Next Action
-Tempo is 100% production ready, verified, and enhanced with the requested Settings/Profile page and 10 selectable themes. Ready for user feedback.
+Tempo is 100% verified, production ready, and updated with the requested Anime Fight Entrance, permanent hamburger button position, and full original-size logo on sidebar resize. Ready for user review.

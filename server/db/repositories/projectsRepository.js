@@ -55,6 +55,33 @@ export const projectsRepository = {
 
     const [rows] = await pool.query(query, [userId, identifier, identifier, identifier]);
     return rows.length > 0 ? rows[0] : null;
+  },
+
+  /**
+   * Creates a new project for a specific user
+   * @param {number} userId
+   * @param {object} projectData
+   * @returns {Promise<object>}
+   */
+  async create(userId, projectData) {
+    const name = (projectData.name || '').trim();
+    const color = projectData.color || '#C6F55A';
+    const cleanKey = name.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const projectKey = projectData.project_key || `${cleanKey}-${Date.now().toString(36)}`;
+
+    const query = `
+      INSERT INTO projects (user_id, project_key, name, color)
+      VALUES (?, ?, ?, ?)
+    `;
+
+    await pool.query(query, [userId, projectKey, name, color]);
+    return {
+      id: projectKey,
+      name,
+      color,
+      taskCount: 0,
+      pendingCount: 0
+    };
   }
 };
 

@@ -8,6 +8,13 @@ import { api } from './services/api.js';
 
 const STORAGE_KEY = 'tempo_tasks_v2';
 const LEGACY_STORAGE_KEY = 'taskflow_tasks_v2';
+const PROJECTS_STORAGE_KEY = 'tempo_projects_v2';
+
+const DEFAULT_PROJECTS = [
+  { id: 'work', name: 'Work', color: '#C6F55A', dotClass: 'dot-work' },
+  { id: 'personal', name: 'Personal', color: '#FA779C', dotClass: 'dot-personal' },
+  { id: 'design', name: 'Design System', color: '#8051F5', dotClass: 'dot-design' }
+];
 
 function getISODateOffset(dayOffset = 0) {
   const d = new Date();
@@ -78,6 +85,7 @@ const INITIAL_TASKS = [
 class StateManager {
   constructor() {
     this.tasks = [];
+    this.projects = [];
     this.activeView = 'dashboard';
     this.statusFilter = 'all'; // 'all' | 'pending' | 'completed'
     this.searchQuery = '';
@@ -88,6 +96,7 @@ class StateManager {
     this.isBackendOnline = false;
 
     this.loadFromStorage();
+    this.loadProjects();
   }
 
   getTodayString() {
@@ -102,8 +111,26 @@ class StateManager {
         const remoteTasks = await api.getTasks();
         if (Array.isArray(remoteTasks) && remoteTasks.length > 0) {
           this.tasks = remoteTasks;
-          this.notify();
         }
+
+        try {
+          const remoteProjects = await api.getProjects();
+          if (Array.isArray(remoteProjects) && remoteProjects.length > 0) {
+            remoteProjects.forEach(rp => {
+              if (!this.projects.some(p => p.name.toLowerCase() === rp.name.toLowerCase())) {
+                this.projects.push({
+                  id: rp.id,
+                  name: rp.name,
+                  color: rp.color || '#C6F55A',
+                  isCustom: true
+                });
+              }
+            });
+            this.saveProjects();
+          }
+        } catch {}
+
+        this.notify();
         const statusEl = document.getElementById('system-status-text');
         if (statusEl) {
           statusEl.textContent = 'Tempo Connected • Node.js/Express Backend Active';
@@ -112,6 +139,75 @@ class StateManager {
     } catch (e) {
       console.log('[StateManager] Running in standalone/offline mode:', e.message);
     }
+  }
+
+  loadProjects() {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        const saved = window.localStorage.getItem(PROJECTS_STORAGE_KEY);
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            this.projects = parsed;
+            return;
+          }
+        }
+      }
+    } catch (e) {
+      console.warn('[StateManager] LocalStorage read projects failed:', e);
+    }
+    this.projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
+    this.saveProjects();
+  }
+
+  saveProjects() {
+    try {
+      if (typeof window !== 'undefined' && window.localStorage) {
+        window.localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(this.projects));
+      }
+    } catch (e) {
+      console.warn('[StateManager] LocalStorage save projects failed:', e);
+    }
+  }
+
+  getProjects() {
+    return this.projects;
+  }
+
+  async addProject({ name, color }) {
+    const trimmedName = (name || '').trim();
+    if (!trimmedName) return null;
+
+    const exists = this.projects.some(p => p.name.toLowerCase() === trimmedName.toLowerCase());
+    if (exists) {
+      throw new Error(`Project "${trimmedName}" already exists`);
+    }
+
+    const cleanKey = trimmedName.toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const projectKey = `${cleanKey}-${Date.now().toString(36)}`;
+    const chosenColor = color || '#C6F55A';
+
+    const newProject = {
+      id: cleanKey,
+      project_key: projectKey,
+      name: trimmedName,
+      color: chosenColor,
+      isCustom: true
+    };
+
+    this.projects.push(newProject);
+    this.saveProjects();
+
+    if (this.isBackendOnline) {
+      try {
+        await api.createProject({ name: trimmedName, color: chosenColor });
+      } catch (e) {
+        console.warn('[StateManager] Backend project create error:', e.message);
+      }
+    }
+
+    this.notify();
+    return newProject;
   }
 
   loadFromStorage() {
@@ -403,6 +499,16 @@ class StateManager {
         if (task.project !== 'Personal') return false;
       } else if (this.activeView === 'project-design') {
         if (task.project !== 'Design System') return false;
+      } else if (this.activeView.startsWith('project-')) {
+        const projKey = this.activeView.replace('project-', '').toLowerCase();
+        const foundProj = (this.projects || []).find(p =>
+          p.id.toLowerCase() === projKey ||
+          p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-') === projKey ||
+          p.name.toLowerCase() === projKey
+        );
+        if (foundProj) {
+          if (task.project.toLowerCase() !== foundProj.name.toLowerCase()) return false;
+        }
       }
 
       // Filter by Task Status Tab

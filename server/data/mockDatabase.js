@@ -214,6 +214,20 @@ class MockDatabase {
     });
   }
 
+  createProject(data) {
+    const cleanKey = (data.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    const id = `${cleanKey}-${Date.now().toString(36)}`;
+    const project = {
+      id,
+      name: data.name.trim(),
+      color: data.color || '#C6F55A',
+      taskCount: 0,
+      pendingCount: 0
+    };
+    this.projects.push(project);
+    return project;
+  }
+
   getStats() {
     const today = getISODateOffset(0);
     const total = this.tasks.length;

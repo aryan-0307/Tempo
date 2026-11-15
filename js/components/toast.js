@@ -32,16 +32,18 @@ class ToastManager {
       this.timeoutId = null;
     }
 
+    const hasAction = action && typeof action === 'object' && action.label;
+
     this.container.innerHTML = `
       <div class="toast-item">
         <span class="toast-message">${message}</span>
-        ${action ? `<button type="button" class="toast-action-btn" id="toast-action-btn">${action.label}</button>` : ''}
+        ${hasAction ? `<button type="button" class="toast-action-btn" id="toast-action-btn">${action.label}</button>` : ''}
       </div>
     `;
 
     this.container.classList.add('visible');
 
-    if (action && action.onClick) {
+    if (hasAction && action.onClick) {
       const btn = $('#toast-action-btn');
       if (btn) {
         on(btn, 'click', () => {

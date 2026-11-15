@@ -8,7 +8,7 @@ import { Sidebar } from './components/sidebar.js';
 import { Header } from './components/header.js';
 import { Overview } from './components/overview.js';
 import { Tasks } from './components/tasks.js';
-import { Modal, AuthModal } from './components/modal.js';
+import { Modal, AuthModal, ProjectModal } from './components/modal.js';
 import { Settings } from './components/settings.js';
 import { api } from './services/api.js';
 
@@ -31,12 +31,22 @@ class TempoApp {
     this.modal = new Modal(this.state);
     this.modal.init();
 
+    this.projectModal = new ProjectModal(this.state, () => {
+      if (this.modal) {
+        this.modal.updateProjectOptions();
+      }
+    });
+    this.projectModal.init();
+
     this.authModal = new AuthModal(this.state);
     this.authModal.init();
 
     // 2. Initialize Sidebar (branding, views, mobile drawer, counts, auth trigger)
     this.sidebar = new Sidebar(this.state, this.authModal);
     this.sidebar.init();
+
+    // 2b. Initialize Anime Fight Entrance Transition & Floating Logo
+    this.initAnimeEntranceTransition();
 
     // 3. Initialize Header (search, notifications, date/greeting)
     this.header = new Header(this.state);
@@ -96,6 +106,50 @@ class TempoApp {
     if (statusText) {
       statusText.textContent = 'Tempo Ready • LocalStorage & Reactive State Active';
     }
+  }
+
+  initAnimeEntranceTransition() {
+    const entranceOverlay = document.getElementById('anime-entrance-transition');
+    const brandLinks = document.querySelectorAll('.brand-wrapper');
+
+    if (!entranceOverlay) return;
+
+    // Check prefers-reduced-motion
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      entranceOverlay.style.display = 'none';
+      brandLinks.forEach(b => b.classList.add('floating'));
+      return;
+    }
+
+    // Trigger Anime Fight Entrance on site open / refresh
+    requestAnimationFrame(() => {
+      entranceOverlay.classList.add('active');
+      brandLinks.forEach(b => b.classList.add('anime-entrance'));
+
+      // Fade out speed lines and slash cuts smoothly
+      setTimeout(() => {
+        entranceOverlay.classList.add('fade-out');
+      }, 600);
+
+      // Transition completes: overlay removed from rendering, logo enters continuous floating
+      setTimeout(() => {
+        entranceOverlay.style.display = 'none';
+        brandLinks.forEach(b => {
+          b.classList.remove('anime-entrance');
+          b.classList.add('floating');
+        });
+      }, 850);
+    });
+
+    // Interactive anime combat recoil on logo click
+    brandLinks.forEach(brandLink => {
+      brandLink.addEventListener('click', () => {
+        brandLink.classList.remove('anime-recoil');
+        void brandLink.offsetWidth;
+        brandLink.classList.add('anime-recoil');
+      });
+    });
   }
 }
 

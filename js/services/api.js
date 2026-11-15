@@ -209,7 +209,22 @@ export const api = {
     return json.data;
   },
 
-  // 9. GET /api/stats
+  // 9. POST /api/projects
+  async createProject(projectData) {
+    const res = await fetch(`${API_BASE}/projects`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(projectData)
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.error || `HTTP Error ${res.status}: Failed to create project`);
+    }
+    const json = await res.json();
+    return json.data;
+  },
+
+  // 10. GET /api/stats
   async getStats() {
     const res = await fetch(`${API_BASE}/stats`, {
       headers: getAuthHeaders()
