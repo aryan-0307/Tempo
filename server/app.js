@@ -25,7 +25,7 @@ const projectRoot = path.resolve(__dirname, '..');
 const app = express();
 
 // Trust reverse proxy headers in cloud environments (Render, Cloudflare, Heroku)
-app.set('trust proxy', 1);
+app.set('trust proxy', true);
 
 // Production Security & Compression Middlewares
 app.use(securityHeaders);
@@ -44,37 +44,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(requestLogger);
 
-// Block access to sensitive server files, configs, tests, and database artifacts
-app.use((req, res, next) => {
-  const normalizedPath = req.path.toLowerCase();
-  const sensitivePatterns = [
-    /^\/\.env/,
-    /^\/\.git/,
-    /^\/\.agent/,
-    /^\/\.neon/,
-    /^\/server/,
-    /^\/tests/,
-    /package\.json$/,
-    /package-lock\.json$/,
-    /neon\.ts$/,
-    /\.sql$/,
-    /\.dump$/,
-    /\.gz$/
-  ];
-  if (sensitivePatterns.some(pattern => pattern.test(normalizedPath))) {
-    return res.status(403).json({ success: false, error: 'Access denied.' });
-  }
-  next();
-});
-
-// Serve Frontend Static Files
-app.use(express.static(projectRoot, {
-  dotfiles: 'deny',
-  index: 'index.html',
-  maxAge: process.env.NODE_ENV === 'production' ? '1d' : 0
-}));
-
-// Rate Limiting
+// Rate Limiting on API Endpoints
 app.use('/api', apiLimiter);
 app.use('/api/auth/login', authLimiter);
 app.use('/api/auth/register', authLimiter);
@@ -105,6 +75,46 @@ app.get('/api/health', async (req, res) => {
 app.use('/api/tasks', authenticate, tasksRoutes);
 app.use('/api/projects', authenticate, projectsRoutes);
 app.use('/api/stats', authenticate, statsRoutes);
+
+// Block direct access to sensitive server files, configs, tests, and database artifacts
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api')) {
+    return next();
+  }
+  const normalizedPath = req.path.toLowerCase();
+  const sensitivePatterns = [
+    /^\/\.env/,
+    /^\/\.git/,
+    /^\/\.agent/,
+    /^\/\.neon/,
+    /^\/server/,
+    /^\/tests/,
+    /package\.json$/,
+    /package-lock\.json$/,
+    /neon\.ts$/,
+    /\.sql$/,
+    /\.dump$/,
+    /\.gz$/
+  ];
+  if (sensitivePatterns.some(pattern => pattern.test(normalizedPath))) {
+    return res.status(403).json({ success: false, error: 'Access denied.' });
+  }
+  next();
+});
+
+// Serve Frontend Static Files
+app.use(express.static(projectRoot, {
+  dotfiles: 'deny',
+  index: 'index.html',
+  setHeaders: (res, filePath) => {
+    // Avoid caching HTML or JS modules in browser so deployments take effect immediately
+    if (filePath.endsWith('.html') || filePath.endsWith('.js')) {
+      res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+    } else {
+      res.setHeader('Cache-Control', 'public, max-age=86400');
+    }
+  }
+}));
 
 // Fallback to index.html for SPA view navigation
 app.get('*', (req, res, next) => {

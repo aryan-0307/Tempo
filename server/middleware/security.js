@@ -44,22 +44,26 @@ export const apiLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   skip: () => process.env.NODE_ENV === 'test', // Skip in automated tests
-  message: {
-    success: false,
-    error: 'Too many requests from this IP. Please try again after 15 minutes.'
+  handler: (req, res, _next, options) => {
+    res.status(options.statusCode).json({
+      success: false,
+      error: 'Too many requests from this IP. Please try again after 15 minutes.'
+    });
   }
 });
 
-// Auth Limiter for Login/Register (20 attempts per 15 minutes to prevent brute-force)
+// Auth Limiter for Login/Register (30 attempts per 15 minutes to prevent brute-force)
 export const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20,
+  max: 30,
   standardHeaders: true,
   legacyHeaders: false,
   skip: () => process.env.NODE_ENV === 'test', // Skip in automated tests
-  message: {
-    success: false,
-    error: 'Too many authentication attempts. Please try again after 15 minutes.'
+  handler: (req, res, _next, options) => {
+    res.status(options.statusCode).json({
+      success: false,
+      error: 'Too many authentication attempts. Please try again after 15 minutes.'
+    });
   }
 });
 

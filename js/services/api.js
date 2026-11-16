@@ -29,17 +29,41 @@ function getAuthHeaders(extraHeaders = {}) {
  */
 async function parseResponse(res, fallbackMessage = 'Request failed') {
   let json = null;
+  let text = '';
   try {
-    const text = await res.text();
+    text = await res.text();
     if (text && text.trim()) {
       json = JSON.parse(text);
     }
   } catch {}
 
   if (!res.ok) {
-    const errorMsg = json?.error || (res.status === 404
-      ? 'Endpoint not found. Ensure the Node.js/Express backend server is running.'
-      : `${fallbackMessage} (Status ${res.status})`);
+    let errorMsg = json?.error || json?.message;
+    if (!errorMsg && text) {
+      const titleMatch = text.match(/<title[^>]*>([^<]+)<\/title>/i);
+      const h1Match = text.match(/<h1[^>]*>([^<]+)<\/h1>/i);
+      if (h1Match && h1Match[1] && !h1Match[1].toLowerCase().includes('error')) {
+        errorMsg = h1Match[1].trim();
+      } else if (titleMatch && titleMatch[1]) {
+        errorMsg = titleMatch[1].trim();
+      } else if (!text.includes('<html')) {
+        errorMsg = text.trim().slice(0, 150);
+      }
+    }
+
+    if (!errorMsg) {
+      if (res.status === 404) {
+        errorMsg = 'Endpoint not found. Ensure the Node.js/Express backend server is running.';
+      } else if (res.status === 403) {
+        errorMsg = 'Access forbidden (403). Cloudflare/WAF or server security policy rejected this request.';
+      } else if (res.status === 429) {
+        errorMsg = 'Too many requests. Please wait a few minutes before trying again.';
+      } else {
+        errorMsg = `${fallbackMessage} (Status ${res.status})`;
+      }
+    }
+
+    console.error(`[Tempo API Error] ${res.status} on ${res.url}:`, errorMsg, text ? `\nBody: ${text.slice(0, 300)}` : '');
     throw new Error(errorMsg);
   }
 
