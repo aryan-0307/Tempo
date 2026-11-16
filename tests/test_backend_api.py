@@ -16,6 +16,7 @@ print("=== Tempo Phase 3 Backend REST API Test ===")
 # 1. Identify Node.js binary
 node_candidates = [
     r'C:\Users\aryan\AppData\Local\Author Software\nvm\installs\v26.12.1\node.exe',
+    r'C:\Users\aryan\AppData\Local\Programs\cursor\resources\app\resources\helpers\node.exe',
     r'C:\Program Files\nodejs\node.exe',
     'node'
 ]
@@ -27,15 +28,8 @@ for candidate in node_candidates:
         break
 
 if not node_bin:
-    # Try finding in PATH
-    try:
-        res = subprocess.run(['node', '-v'], capture_output=True, text=True)
-        if res.returncode == 0:
-            node_bin = 'node'
-    except Exception:
-        pass
+    node_bin = 'node'
 
-assert node_bin, "Node.js executable could not be located"
 print(f"  [OK] Using Node.js binary: {node_bin}")
 
 # 2. Start Express server on test port 3847
@@ -53,10 +47,14 @@ server_process = subprocess.Popen(
 )
 
 BASE_URL = f"http://127.0.0.1:{TEST_PORT}/api"
+auth_token = None
 
-def make_request(path, method='GET', body=None):
+def make_request(path, method='GET', body=None, token=None):
     url = f"{BASE_URL}{path}"
     headers = {}
+    effective_token = token if token is not None else auth_token
+    if effective_token:
+        headers['Authorization'] = f"Bearer {effective_token}"
     data = None
     if body is not None:
         headers['Content-Type'] = 'application/json'
@@ -90,7 +88,19 @@ try:
     assert booted, "Server failed to respond on /api/health within 6 seconds"
     print(f"  [PASS] GET /api/health returned 200 OK: {res}")
 
-    # 3. GET /api/tasks
+    # 2. Verify unauthenticated access to /api/tasks is rejected (401)
+    status_unauth, res_unauth = make_request('/tasks')
+    assert status_unauth == 401, f"Expected 401 for unauthenticated request, got {status_unauth}"
+    print("  [PASS] GET /api/tasks correctly rejects unauthenticated requests with 401.")
+
+    # 3. Authenticate with Alex Morgan demo credentials
+    login_status, login_res = make_request('/auth/login', method='POST', body={'email': 'alex@tempo.dev', 'password': 'Password123!'})
+    assert login_status == 200, f"Failed to login: {login_res}"
+    auth_token = login_res['data']['token']
+    assert auth_token, "No token returned"
+    print("  [PASS] Authenticated successfully as Alex Morgan.")
+
+    # 4. GET /api/tasks
     print("\n--- 2. Testing GET /api/tasks ---")
     status, res = make_request('/tasks')
     assert status == 200, f"Expected 200, got {status}"

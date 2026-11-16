@@ -9,7 +9,13 @@ export const tasksController = {
   // GET /api/tasks
   async getTasks(req, res, next) {
     try {
-      const userId = req.user ? req.user.id : 1;
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          error: 'Authentication required. User not identified.'
+        });
+      }
       const { status, view, search, sort } = req.query;
       const tasks = await tasksRepository.findAll({ userId, status, view, search, sort });
       res.json({
@@ -25,7 +31,13 @@ export const tasksController = {
   // GET /api/tasks/:id
   async getTaskById(req, res, next) {
     try {
-      const userId = req.user ? req.user.id : 1;
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          error: 'Authentication required. User not identified.'
+        });
+      }
       const { id } = req.params;
       const task = await tasksRepository.findById(id, userId);
       if (!task) {
@@ -46,7 +58,13 @@ export const tasksController = {
   // POST /api/tasks
   async createTask(req, res, next) {
     try {
-      const userId = req.user ? req.user.id : 1;
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          error: 'Authentication required. User not identified.'
+        });
+      }
       const { title, description, priority, dueDate, project } = req.body;
       const newTask = await tasksRepository.create(userId, { title, description, priority, dueDate, project });
       res.status(201).json({
@@ -62,7 +80,13 @@ export const tasksController = {
   // PUT /api/tasks/:id
   async updateTask(req, res, next) {
     try {
-      const userId = req.user ? req.user.id : 1;
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          error: 'Authentication required. User not identified.'
+        });
+      }
       const { id } = req.params;
       const updated = await tasksRepository.update(id, userId, req.body);
       if (!updated) {
@@ -84,7 +108,13 @@ export const tasksController = {
   // PATCH /api/tasks/:id/toggle
   async toggleTask(req, res, next) {
     try {
-      const userId = req.user ? req.user.id : 1;
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          error: 'Authentication required. User not identified.'
+        });
+      }
       const { id } = req.params;
       const task = await tasksRepository.toggle(id, userId);
       if (!task) {
@@ -106,7 +136,13 @@ export const tasksController = {
   // DELETE /api/tasks/:id
   async deleteTask(req, res, next) {
     try {
-      const userId = req.user ? req.user.id : 1;
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          error: 'Authentication required. User not identified.'
+        });
+      }
       const { id } = req.params;
       const deleted = await tasksRepository.delete(id, userId);
       if (!deleted) {
@@ -128,7 +164,13 @@ export const tasksController = {
   // POST /api/tasks/reorder
   async reorderTasks(req, res, next) {
     try {
-      const userId = req.user ? req.user.id : 1;
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          error: 'Authentication required. User not identified.'
+        });
+      }
       const { sourceId, targetId, position } = req.body;
       const success = await tasksRepository.reorder(userId, sourceId, targetId, position);
       if (!success) {

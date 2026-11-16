@@ -28,6 +28,10 @@ TEST_SUITES = [
         'file': 'tests/test_auth_security.py'
     },
     {
+        'name': 'Multi-User Boundary Isolation & Cache Defense',
+        'file': 'tests/test_user_isolation.py'
+    },
+    {
         'name': 'Express REST API Contract Verification',
         'file': 'tests/test_backend_api.py'
     },

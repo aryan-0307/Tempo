@@ -450,6 +450,7 @@ export class AuthModal {
       toast.show(`Welcome back, ${data.user.fullName}!`);
       this.updateSidebarUser(data.user);
       if (this.state) {
+        this.state.switchUser(data.user);
         await this.state.syncWithBackend();
       }
       this.close();
@@ -475,6 +476,7 @@ export class AuthModal {
       toast.show(`Account created! Welcome, ${data.user.fullName}!`);
       this.updateSidebarUser(data.user);
       if (this.state) {
+        this.state.switchUser(data.user);
         await this.state.syncWithBackend();
       }
       this.close();
@@ -490,12 +492,9 @@ export class AuthModal {
     this.cachedUser = null;
     api.clearToken();
     toast.show('Signed out successfully.');
-    this.updateSidebarUser({
-      fullName: 'Alex Morgan',
-      email: 'alex@tempo.dev'
-    });
+    this.updateSidebarUser(null);
     if (this.state) {
-      await this.state.syncWithBackend();
+      this.state.clearUserData();
     }
     this.close();
   }
@@ -505,10 +504,17 @@ export class AuthModal {
     const roleEl = $('#sidebar-user-role');
     const avatarEl = $('#sidebar-user-avatar');
 
+    if (!user) {
+      if (nameEl) nameEl.textContent = 'Guest User';
+      if (roleEl) roleEl.textContent = 'Sign in to sync tasks';
+      if (avatarEl) avatarEl.textContent = 'GU';
+      return;
+    }
+
     if (nameEl) nameEl.textContent = user.fullName || user.username || 'Tempo User';
     if (roleEl) roleEl.textContent = user.email || 'user@tempo.dev';
     if (avatarEl) {
-      const initials = (user.fullName || user.username || 'TM')
+      const initials = (user.fullName || user.username || 'TU')
         .split(' ')
         .map(n => n[0])
         .slice(0, 2)

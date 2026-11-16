@@ -47,9 +47,13 @@ server_proc = subprocess.Popen(
     text=True
 )
 
+auth_token = None
+
 def make_request(path, method='GET', data=None):
     url = f"{BASE_URL}{path}"
     headers = {'Content-Type': 'application/json'}
+    if auth_token:
+        headers['Authorization'] = f"Bearer {auth_token}"
     body = json.dumps(data).encode('utf-8') if data else None
     req = urllib.request.Request(url, data=body, headers=headers, method=method)
     try:
@@ -71,6 +75,11 @@ try:
     assert body.get('status') == 'ok', "Server status not ok"
     assert body.get('database') == 'connected', f"Expected database 'connected', got {body.get('database')}"
     print(f"  [PASS] GET /api/health returned 200 OK with database: connected")
+
+    # Authenticate as Alex Morgan
+    login_status, login_res = make_request('/api/auth/login', method='POST', data={'email': 'alex@tempo.dev', 'password': 'Password123!'})
+    assert login_status == 200, f"Login failed: {login_res}"
+    auth_token = login_res['data']['token']
 
     # 2. Get Tasks from PostgreSQL
     print("\n--- 2. Testing GET /api/tasks ---")

@@ -24,6 +24,9 @@ const projectRoot = path.resolve(__dirname, '..');
 
 const app = express();
 
+// Trust reverse proxy headers in cloud environments (Render, Cloudflare, Heroku)
+app.set('trust proxy', 1);
+
 // Production Security & Compression Middlewares
 app.use(securityHeaders);
 app.use(responseCompression);
@@ -79,12 +82,6 @@ app.use('/api/auth/register', authLimiter);
 // Public & Protected Auth Routes
 app.use('/api/auth', authRoutes);
 
-// Protected Resource Routes (Guarded by JWT/Session Authentication)
-app.use('/api', authenticate);
-app.use('/api/tasks', tasksRoutes);
-app.use('/api/projects', projectsRoutes);
-app.use('/api/stats', statsRoutes);
-
 // Enhanced Health Check Endpoint (Includes system uptime, memory, and database status)
 app.get('/api/health', async (req, res) => {
   const dbConnected = await checkDatabaseHealth();
@@ -103,6 +100,11 @@ app.get('/api/health', async (req, res) => {
     timestamp: new Date().toISOString()
   });
 });
+
+// Protected Resource Routes (Guarded by JWT/Session Authentication)
+app.use('/api/tasks', authenticate, tasksRoutes);
+app.use('/api/projects', authenticate, projectsRoutes);
+app.use('/api/stats', authenticate, statsRoutes);
 
 // Fallback to index.html for SPA view navigation
 app.get('*', (req, res, next) => {

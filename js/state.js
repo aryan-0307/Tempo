@@ -6,9 +6,16 @@
 
 import { api } from './services/api.js';
 
-const STORAGE_KEY = 'tempo_tasks_v2';
-const LEGACY_STORAGE_KEY = 'taskflow_tasks_v2';
-const PROJECTS_STORAGE_KEY = 'tempo_projects_v2';
+export const STORAGE_KEY = 'tempo_tasks_v2';
+export const PROJECTS_STORAGE_KEY = 'tempo_projects_v2';
+
+function getTasksStorageKey(userId) {
+  return userId ? `tempo_tasks_user_${userId}` : 'tempo_tasks_guest';
+}
+
+function getProjectsStorageKey(userId) {
+  return userId ? `tempo_projects_user_${userId}` : 'tempo_projects_guest';
+}
 
 const DEFAULT_PROJECTS = [
   { id: 'work', name: 'Work', color: '#C6F55A', dotClass: 'dot-work' },
@@ -84,6 +91,7 @@ const INITIAL_TASKS = [
 
 class StateManager {
   constructor() {
+    this.currentUser = null;
     this.tasks = [];
     this.projects = [];
     this.activeView = 'dashboard';
@@ -103,38 +111,67 @@ class StateManager {
     return getISODateOffset(0);
   }
 
+  switchUser(user) {
+    this.currentUser = user || null;
+    this.tasks = [];
+    this.projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
+    this.loadFromStorage();
+    this.loadProjects();
+    this.notify();
+  }
+
+  clearUserData() {
+    this.currentUser = null;
+    this.tasks = [];
+    this.projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
+    this.loadFromStorage();
+    this.loadProjects();
+    this.notify();
+  }
+
   async syncWithBackend() {
     try {
       const isOnline = await api.checkHealth();
       this.isBackendOnline = isOnline;
-      if (isOnline) {
-        const remoteTasks = await api.getTasks();
-        if (Array.isArray(remoteTasks) && remoteTasks.length > 0) {
-          this.tasks = remoteTasks;
-        }
+      if (!isOnline) return;
 
-        try {
-          const remoteProjects = await api.getProjects();
-          if (Array.isArray(remoteProjects) && remoteProjects.length > 0) {
-            remoteProjects.forEach(rp => {
-              if (!this.projects.some(p => p.name.toLowerCase() === rp.name.toLowerCase())) {
-                this.projects.push({
-                  id: rp.id,
-                  name: rp.name,
-                  color: rp.color || '#C6F55A',
-                  isCustom: true
-                });
-              }
-            });
-            this.saveProjects();
+      const token = api.getToken();
+      if (!token) {
+        // Unauthenticated visitor: do not fetch protected backend data
+        return;
+      }
+
+      // 1. Sync tasks for the authenticated user (empty list [] is valid and clears previous user's tasks)
+      const remoteTasks = await api.getTasks();
+      if (Array.isArray(remoteTasks)) {
+        this.tasks = remoteTasks;
+        this.saveToStorage();
+      }
+
+      // 2. Sync projects for the authenticated user
+      try {
+        const remoteProjects = await api.getProjects();
+        if (Array.isArray(remoteProjects)) {
+          if (remoteProjects.length > 0) {
+            this.projects = remoteProjects.map(rp => ({
+              id: rp.id,
+              name: rp.name,
+              color: rp.color || '#C6F55A',
+              isCustom: !['work', 'personal', 'design'].includes(String(rp.id).toLowerCase())
+            }));
+          } else {
+            this.projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
           }
-        } catch {}
-
-        this.notify();
-        const statusEl = document.getElementById('system-status-text');
-        if (statusEl) {
-          statusEl.textContent = 'Tempo Connected • Node.js/Express Backend Active';
+          this.saveProjects();
         }
+      } catch (projErr) {
+        console.warn('[StateManager] Backend projects sync error:', projErr.message);
+      }
+
+      this.notify();
+      const statusEl = document.getElementById('system-status-text');
+      if (statusEl) {
+        statusEl.textContent = 'Tempo Connected • Node.js/Express Backend Active';
       }
     } catch (e) {
       console.log('[StateManager] Running in standalone/offline mode:', e.message);
@@ -144,7 +181,8 @@ class StateManager {
   loadProjects() {
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        const saved = window.localStorage.getItem(PROJECTS_STORAGE_KEY);
+        const key = getProjectsStorageKey(this.currentUser?.id);
+        const saved = window.localStorage.getItem(key);
         if (saved) {
           const parsed = JSON.parse(saved);
           if (Array.isArray(parsed) && parsed.length > 0) {
@@ -163,7 +201,8 @@ class StateManager {
   saveProjects() {
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.setItem(PROJECTS_STORAGE_KEY, JSON.stringify(this.projects));
+        const key = getProjectsStorageKey(this.currentUser?.id);
+        window.localStorage.setItem(key, JSON.stringify(this.projects));
       }
     } catch (e) {
       console.warn('[StateManager] LocalStorage save projects failed:', e);
@@ -213,14 +252,11 @@ class StateManager {
   loadFromStorage() {
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        let saved = window.localStorage.getItem(STORAGE_KEY);
-        if (!saved) {
-          // Fallback to legacy key to preserve existing tasks
-          saved = window.localStorage.getItem(LEGACY_STORAGE_KEY);
-        }
+        const key = getTasksStorageKey(this.currentUser?.id);
+        const saved = window.localStorage.getItem(key);
         if (saved) {
           const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
+          if (Array.isArray(parsed)) {
             this.tasks = parsed;
             return;
           }
@@ -229,14 +265,21 @@ class StateManager {
     } catch (e) {
       console.warn('[StateManager] LocalStorage read failed:', e);
     }
-    this.tasks = JSON.parse(JSON.stringify(INITIAL_TASKS));
-    this.saveToStorage();
+    // If authenticated user has no saved tasks, initialize as empty [] (no stale/demo tasks)
+    if (this.currentUser && this.currentUser.id) {
+      this.tasks = [];
+      this.saveToStorage();
+    } else {
+      this.tasks = JSON.parse(JSON.stringify(INITIAL_TASKS));
+      this.saveToStorage();
+    }
   }
 
   saveToStorage() {
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.tasks));
+        const key = getTasksStorageKey(this.currentUser?.id);
+        window.localStorage.setItem(key, JSON.stringify(this.tasks));
       }
     } catch (e) {
       console.warn('[StateManager] LocalStorage save failed:', e);

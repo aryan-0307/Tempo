@@ -9,7 +9,13 @@ export const projectsController = {
   // GET /api/projects
   async getProjects(req, res, next) {
     try {
-      const userId = req.user ? req.user.id : 1;
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          error: 'Authentication required. User not identified.'
+        });
+      }
       const projects = await projectsRepository.findAll(userId);
       res.json({
         success: true,
@@ -24,7 +30,13 @@ export const projectsController = {
   // POST /api/projects
   async createProject(req, res, next) {
     try {
-      const userId = req.user ? req.user.id : 1;
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(401).json({
+          success: false,
+          error: 'Authentication required. User not identified.'
+        });
+      }
       const { name, color } = req.body;
       if (!name || !name.trim()) {
         return res.status(400).json({

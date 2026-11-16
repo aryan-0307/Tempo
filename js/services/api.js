@@ -23,6 +23,29 @@ function getAuthHeaders(extraHeaders = {}) {
   return headers;
 }
 
+/**
+ * Resilient response parser that safely handles JSON, empty bodies, and non-200 HTTP statuses
+ * without throwing cryptic "Unexpected end of JSON input" errors.
+ */
+async function parseResponse(res, fallbackMessage = 'Request failed') {
+  let json = null;
+  try {
+    const text = await res.text();
+    if (text && text.trim()) {
+      json = JSON.parse(text);
+    }
+  } catch {}
+
+  if (!res.ok) {
+    const errorMsg = json?.error || (res.status === 404
+      ? 'Endpoint not found. Ensure the Node.js/Express backend server is running.'
+      : `${fallbackMessage} (Status ${res.status})`);
+    throw new Error(errorMsg);
+  }
+
+  return json?.data !== undefined ? json.data : (json || {});
+}
+
 export const api = {
   // Token Management
   getToken() {
@@ -57,31 +80,39 @@ export const api = {
 
   // Authentication endpoints
   async register({ username, email, password, fullName }) {
-    const res = await fetch(`${API_BASE}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, email, password, fullName })
-    });
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.error || 'Registration failed');
-    if (json.data && json.data.token) {
-      this.setToken(json.data.token);
+    let res;
+    try {
+      res = await fetch(`${API_BASE}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password, fullName })
+      });
+    } catch (netErr) {
+      throw new Error('Unable to reach Tempo server. Ensure the backend server is running.');
     }
-    return json.data;
+    const data = await parseResponse(res, 'Registration failed');
+    if (data && data.token) {
+      this.setToken(data.token);
+    }
+    return data;
   },
 
   async login({ email, password }) {
-    const res = await fetch(`${API_BASE}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password })
-    });
-    const json = await res.json();
-    if (!res.ok) throw new Error(json.error || 'Login failed');
-    if (json.data && json.data.token) {
-      this.setToken(json.data.token);
+    let res;
+    try {
+      res = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+    } catch (netErr) {
+      throw new Error('Unable to reach Tempo server. Ensure the backend server is running.');
     }
-    return json.data;
+    const data = await parseResponse(res, 'Login failed');
+    if (data && data.token) {
+      this.setToken(data.token);
+    }
+    return data;
   },
 
   async getMe() {
@@ -90,8 +121,7 @@ export const api = {
         headers: getAuthHeaders()
       });
       if (!res.ok) return null;
-      const json = await res.json();
-      return json.data;
+      return await parseResponse(res, 'Failed to fetch user profile');
     } catch {
       return null;
     }
@@ -120,9 +150,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/tasks${queryString}`, {
       headers: getAuthHeaders()
     });
-    if (!res.ok) throw new Error(`HTTP Error ${res.status}: Failed to fetch tasks`);
-    const json = await res.json();
-    return json.data;
+    return await parseResponse(res, 'Failed to fetch tasks');
   },
 
   // 2. GET /api/tasks/:id
@@ -130,9 +158,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/tasks/${encodeURIComponent(id)}`, {
       headers: getAuthHeaders()
     });
-    if (!res.ok) throw new Error(`HTTP Error ${res.status}: Task not found`);
-    const json = await res.json();
-    return json.data;
+    return await parseResponse(res, 'Task not found');
   },
 
   // 3. POST /api/tasks
@@ -142,12 +168,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(taskData)
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || `HTTP Error ${res.status}: Failed to create task`);
-    }
-    const json = await res.json();
-    return json.data;
+    return await parseResponse(res, 'Failed to create task');
   },
 
   // 4. PUT /api/tasks/:id
@@ -157,12 +178,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(updates)
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || `HTTP Error ${res.status}: Failed to update task`);
-    }
-    const json = await res.json();
-    return json.data;
+    return await parseResponse(res, 'Failed to update task');
   },
 
   // 5. PATCH /api/tasks/:id/toggle
@@ -171,9 +187,7 @@ export const api = {
       method: 'PATCH',
       headers: getAuthHeaders()
     });
-    if (!res.ok) throw new Error(`HTTP Error ${res.status}: Failed to toggle task`);
-    const json = await res.json();
-    return json.data;
+    return await parseResponse(res, 'Failed to toggle task');
   },
 
   // 6. DELETE /api/tasks/:id
@@ -182,9 +196,7 @@ export const api = {
       method: 'DELETE',
       headers: getAuthHeaders()
     });
-    if (!res.ok) throw new Error(`HTTP Error ${res.status}: Failed to delete task`);
-    const json = await res.json();
-    return json.data;
+    return await parseResponse(res, 'Failed to delete task');
   },
 
   // 7. POST /api/tasks/reorder
@@ -194,9 +206,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify({ sourceId, targetId, position })
     });
-    if (!res.ok) throw new Error(`HTTP Error ${res.status}: Failed to reorder tasks`);
-    const json = await res.json();
-    return json.data;
+    return await parseResponse(res, 'Failed to reorder tasks');
   },
 
   // 8. GET /api/projects
@@ -204,9 +214,7 @@ export const api = {
     const res = await fetch(`${API_BASE}/projects`, {
       headers: getAuthHeaders()
     });
-    if (!res.ok) throw new Error(`HTTP Error ${res.status}: Failed to fetch projects`);
-    const json = await res.json();
-    return json.data;
+    return await parseResponse(res, 'Failed to fetch projects');
   },
 
   // 9. POST /api/projects
@@ -216,12 +224,7 @@ export const api = {
       headers: getAuthHeaders(),
       body: JSON.stringify(projectData)
     });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(err.error || `HTTP Error ${res.status}: Failed to create project`);
-    }
-    const json = await res.json();
-    return json.data;
+    return await parseResponse(res, 'Failed to create project');
   },
 
   // 10. GET /api/stats
@@ -229,8 +232,6 @@ export const api = {
     const res = await fetch(`${API_BASE}/stats`, {
       headers: getAuthHeaders()
     });
-    if (!res.ok) throw new Error(`HTTP Error ${res.status}: Failed to fetch stats`);
-    const json = await res.json();
-    return json.data;
+    return await parseResponse(res, 'Failed to fetch stats');
   }
 };

@@ -194,32 +194,47 @@ export class Settings {
   }
 
   loadProfile() {
-    let profile = null;
-    try {
-      const saved = localStorage.getItem('tempo_user_profile');
-      if (saved) profile = JSON.parse(saved);
-    } catch {}
-
-    if (!profile) {
-      profile = {
-        fullName: 'Alex Morgan',
-        username: 'alexmorgan',
-        email: 'alex@tempo.dev',
-        title: 'Product Designer',
-        bio: 'Focusing on minimal productivity interfaces and design systems.'
-      };
-    }
-
-    this.setProfileInputs(profile);
-
     api.getMe().then(user => {
       if (user) {
-        profile.fullName = user.fullName || profile.fullName;
-        profile.username = user.username || profile.username;
-        profile.email = user.email || profile.email;
+        const userKey = `tempo_user_profile_${user.id}`;
+        let profile = null;
+        try {
+          const saved = localStorage.getItem(userKey);
+          if (saved) profile = JSON.parse(saved);
+        } catch {}
+
+        if (!profile) {
+          profile = {
+            fullName: user.fullName || user.username || 'Tempo User',
+            username: user.username || '',
+            email: user.email || '',
+            title: 'Tempo Member',
+            bio: ''
+          };
+        } else {
+          profile.fullName = user.fullName || profile.fullName;
+          profile.username = user.username || profile.username;
+          profile.email = user.email || profile.email;
+        }
         this.setProfileInputs(profile);
+      } else {
+        this.setProfileInputs({
+          fullName: 'Guest User',
+          username: 'guest',
+          email: '',
+          title: '',
+          bio: ''
+        });
       }
-    }).catch(() => {});
+    }).catch(() => {
+      this.setProfileInputs({
+        fullName: 'Guest User',
+        username: 'guest',
+        email: '',
+        title: '',
+        bio: ''
+      });
+    });
   }
 
   setProfileInputs(profile) {
@@ -243,17 +258,20 @@ export class Settings {
   }
 
   saveProfile() {
-    const fullName = this.fullNameInput?.value.trim() || 'Alex Morgan';
-    const username = this.usernameInput?.value.trim() || 'alexmorgan';
-    const email = this.emailInput?.value.trim() || 'alex@tempo.dev';
-    const title = this.titleInput?.value.trim() || 'Product Designer';
+    const fullName = this.fullNameInput?.value.trim() || 'User';
+    const username = this.usernameInput?.value.trim() || '';
+    const email = this.emailInput?.value.trim() || '';
+    const title = this.titleInput?.value.trim() || '';
     const bio = this.bioInput?.value.trim() || '';
 
     const profile = { fullName, username, email, title, bio };
 
-    try {
-      localStorage.setItem('tempo_user_profile', JSON.stringify(profile));
-    } catch {}
+    api.getMe().then(user => {
+      const userKey = user && user.id ? `tempo_user_profile_${user.id}` : 'tempo_user_profile_guest';
+      try {
+        localStorage.setItem(userKey, JSON.stringify(profile));
+      } catch {}
+    }).catch(() => {});
 
     // Update sidebar user presentation
     const sidebarName = $('#sidebar-user-name');

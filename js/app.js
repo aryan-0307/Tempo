@@ -67,15 +67,31 @@ class TempoApp {
     // 6. Global Keyboard Shortcuts
     this.bindGlobalShortcuts();
 
-    // 7. Sync with Node.js/Express Backend if online
-    this.state.syncWithBackend();
-
-    // 8. Hydrate user profile from backend session if available
-    api.getMe().then(user => {
-      if (user && this.authModal) {
-        this.authModal.updateSidebarUser(user);
-      }
-    }).catch(() => {});
+    // 7. Hydrate user profile and session from backend if authenticated
+    const token = api.getToken();
+    if (token) {
+      api.getMe().then(user => {
+        if (user) {
+          if (this.authModal) {
+            this.authModal.cachedUser = user;
+            this.authModal.updateSidebarUser(user);
+          }
+          this.state.switchUser(user);
+          this.state.syncWithBackend();
+        } else {
+          api.clearToken();
+          this.state.clearUserData();
+          if (this.authModal) this.authModal.updateSidebarUser(null);
+        }
+      }).catch(() => {
+        api.clearToken();
+        this.state.clearUserData();
+        if (this.authModal) this.authModal.updateSidebarUser(null);
+      });
+    } else {
+      if (this.authModal) this.authModal.updateSidebarUser(null);
+      this.state.switchUser(null);
+    }
 
     this.updateStatus();
     console.log('[Tempo] Phase 3 Frontend-Backend integration active.');

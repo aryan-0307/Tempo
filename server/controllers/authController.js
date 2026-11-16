@@ -61,7 +61,7 @@ export const authController = {
         });
       }
 
-      // 3. Hash Password & Create User
+      // 3. Hash Password & Create User (automatically seeds user's default projects)
       const passwordHash = await hashPassword(password);
       const newUser = await usersRepository.create({
         username,

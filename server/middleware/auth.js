@@ -44,13 +44,14 @@ export async function authenticate(req, res, next) {
   }
 
   // If no token provided:
-  if (process.env.NODE_ENV !== 'production') {
-    // Graceful development mode: attach default development user
+  // Strictly require authentication in all environments to prevent cross-account leakage.
+  // Legacy bypass is permitted ONLY when explicitly instructed via ALLOW_DEV_AUTH_BYPASS
+  if (process.env.ALLOW_DEV_AUTH_BYPASS === 'true') {
     req.user = DEV_USER;
     return next();
   }
 
-  // In production, require explicit authentication token
+  // Require explicit authentication token
   return res.status(401).json({
     success: false,
     error: 'Authentication required. Missing Bearer token.'
