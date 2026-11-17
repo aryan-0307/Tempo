@@ -2,20 +2,18 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('tempo_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } catch (e) {}
+    })();
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Tempo - Modern, clean, minimal productivity application">
   <title>Tempo - Minimal Productivity Workspace</title>
   <link rel="stylesheet" href="css/main.css">
-  <script>
-    (function() {
-      try {
-        var savedTheme = localStorage.getItem('tempo_theme');
-        if (savedTheme) {
-          document.documentElement.setAttribute('data-theme', savedTheme);
-        }
-      } catch (e) {}
-    })();
-  </script>
 </head>
 <body>
   <!-- 3D Book Page Flip & Gust of Wind Transition Overlay -->

@@ -267,10 +267,12 @@ export class Settings {
     const profile = { fullName, username, email, title, bio };
 
     api.getMe().then(user => {
-      const userKey = user && user.id ? `tempo_user_profile_${user.id}` : 'tempo_user_profile_guest';
-      try {
-        localStorage.setItem(userKey, JSON.stringify(profile));
-      } catch {}
+      if (user && user.id) {
+        const userKey = `tempo_user_profile_${user.id}`;
+        try {
+          localStorage.setItem(userKey, JSON.stringify(profile));
+        } catch {}
+      }
     }).catch(() => {});
 
     // Update sidebar user presentation

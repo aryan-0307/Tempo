@@ -51,6 +51,22 @@
   --color-sidebar-active-text: #111111;
   --color-bg-app: #F7F7F5;
   --color-bg-surface: #FFFFFF;
+  --book-overlay-bg: rgba(17, 17, 17, 0.45);
+  --book-cover-bg: #C6F55A;
+  --book-cover-text: #111111;
+  --book-cover-text-shadow: #FFFFFF;
+  --book-cover-badge-bg: #FA779C;
+  --book-cover-badge-text: #FFFFFF;
+  --book-cover-emblem: #8051F5;
+  --book-spine-bg: #8051F5;
+  --book-page-bg: #FFFFFF;
+  --book-base-bg: #F7F7F5;
+  --book-border: #111111;
+  --book-shadow-color: #111111;
+  --book-ruled-line: #E5E5E0;
+  --book-ruled-accent-1: #C6F55A;
+  --book-ruled-accent-2: #FA779C;
+  --book-header-mark: #111111;
 }
 
 /* ==========================================================================
@@ -97,6 +113,22 @@
   --color-sidebar-active-text: #111111;
   --color-bg-app: #111111;
   --color-bg-surface: #222226;
+  --book-overlay-bg: rgba(0, 0, 0, 0.7);
+  --book-cover-bg: #18181B;
+  --book-cover-text: #FFFFFF;
+  --book-cover-text-shadow: #111111;
+  --book-cover-badge-bg: #C6F55A;
+  --book-cover-badge-text: #111111;
+  --book-cover-emblem: #8051F5;
+  --book-spine-bg: #8051F5;
+  --book-page-bg: #222226;
+  --book-base-bg: #222226;
+  --book-border: #FFFFFF;
+  --book-shadow-color: #111111;
+  --book-ruled-line: #383840;
+  --book-ruled-accent-1: #C6F55A;
+  --book-ruled-accent-2: #FA779C;
+  --book-header-mark: #FFFFFF;
 }
 
 /* ==========================================================================
@@ -127,6 +159,22 @@
   --stat-pending-bg: #514638;
   --stat-overdue-color: #D98B83;
   --stat-overdue-bg: #513A39;
+  --book-overlay-bg: rgba(21, 23, 25, 0.7);
+  --book-cover-bg: #202426;
+  --book-cover-text: #E7EAE9;
+  --book-cover-text-shadow: #14211E;
+  --book-cover-badge-bg: #6BAFA4;
+  --book-cover-badge-text: #14211E;
+  --book-cover-emblem: #A2D2C9;
+  --book-spine-bg: #344A46;
+  --book-page-bg: #303739;
+  --book-base-bg: #202426;
+  --book-border: #6BAFA4;
+  --book-shadow-color: #151719;
+  --book-ruled-line: #3B4444;
+  --book-ruled-accent-1: #6BAFA4;
+  --book-ruled-accent-2: #A2D2C9;
+  --book-header-mark: #A2D2C9;
 }
 
 /* ==========================================================================
@@ -157,6 +205,22 @@
   --stat-pending-bg: #233157;
   --stat-overdue-color: #0EA5E9;
   --stat-overdue-bg: #2E3E64;
+  --book-overlay-bg: rgba(0, 0, 0, 0.7);
+  --book-cover-bg: #1C2541;
+  --book-cover-text: #E0E7FF;
+  --book-cover-text-shadow: #082F49;
+  --book-cover-badge-bg: #38BDF8;
+  --book-cover-badge-text: #082F49;
+  --book-cover-emblem: #7DD3FC;
+  --book-spine-bg: #1E3A5F;
+  --book-page-bg: #222E50;
+  --book-base-bg: #1C2541;
+  --book-border: #38BDF8;
+  --book-shadow-color: #0B132B;
+  --book-ruled-line: #2E3E64;
+  --book-ruled-accent-1: #38BDF8;
+  --book-ruled-accent-2: #7DD3FC;
+  --book-header-mark: #7DD3FC;
 }
 
 /* ==========================================================================
@@ -187,6 +251,22 @@
   --stat-pending-bg: #282830;
   --stat-overdue-color: #D97706;
   --stat-overdue-bg: #33333D;
+  --book-overlay-bg: rgba(0, 0, 0, 0.7);
+  --book-cover-bg: #1A1A1E;
+  --book-cover-text: #F4F4F5;
+  --book-cover-text-shadow: #451A03;
+  --book-cover-badge-bg: #F59E0B;
+  --book-cover-badge-text: #451A03;
+  --book-cover-emblem: #FCD34D;
+  --book-spine-bg: #452D12;
+  --book-page-bg: #24242A;
+  --book-base-bg: #1A1A1E;
+  --book-border: #F59E0B;
+  --book-shadow-color: #121214;
+  --book-ruled-line: #33333D;
+  --book-ruled-accent-1: #F59E0B;
+  --book-ruled-accent-2: #FCD34D;
+  --book-header-mark: #FCD34D;
 }
 
 /* ==========================================================================
@@ -217,6 +297,22 @@
   --stat-pending-bg: #223B33;
   --stat-overdue-color: #059669;
   --stat-overdue-bg: #2A483E;
+  --book-overlay-bg: rgba(0, 0, 0, 0.7);
+  --book-cover-bg: #162621;
+  --book-cover-text: #ECFDF5;
+  --book-cover-text-shadow: #064E3B;
+  --book-cover-badge-bg: #10B981;
+  --book-cover-badge-text: #064E3B;
+  --book-cover-emblem: #34D399;
+  --book-spine-bg: #133D30;
+  --book-page-bg: #1E332D;
+  --book-base-bg: #162621;
+  --book-border: #10B981;
+  --book-shadow-color: #0E1A16;
+  --book-ruled-line: #2A483E;
+  --book-ruled-accent-1: #10B981;
+  --book-ruled-accent-2: #34D399;
+  --book-header-mark: #34D399;
 }
 
 /* ==========================================================================
@@ -247,6 +343,22 @@
   --stat-pending-bg: #24343F;
   --stat-overdue-color: #3B82F6;
   --stat-overdue-bg: #2F414E;
+  --book-overlay-bg: rgba(0, 0, 0, 0.7);
+  --book-cover-bg: #182228;
+  --book-cover-text: #F1F5F9;
+  --book-cover-text-shadow: #0F172A;
+  --book-cover-badge-bg: #60A5FA;
+  --book-cover-badge-text: #0F172A;
+  --book-cover-emblem: #93C5FD;
+  --book-spine-bg: #1E334D;
+  --book-page-bg: #202D36;
+  --book-base-bg: #182228;
+  --book-border: #60A5FA;
+  --book-shadow-color: #10161A;
+  --book-ruled-line: #2F414E;
+  --book-ruled-accent-1: #60A5FA;
+  --book-ruled-accent-2: #93C5FD;
+  --book-header-mark: #93C5FD;
 }
 
 /* ==========================================================================
@@ -277,6 +389,22 @@
   --stat-pending-bg: #372833;
   --stat-overdue-color: #F43F5E;
   --stat-overdue-bg: #473241;
+  --book-overlay-bg: rgba(0, 0, 0, 0.7);
+  --book-cover-bg: #241A21;
+  --book-cover-text: #FDF2F8;
+  --book-cover-text-shadow: #4C0519;
+  --book-cover-badge-bg: #FB7185;
+  --book-cover-badge-text: #4C0519;
+  --book-cover-emblem: #FDA4AF;
+  --book-spine-bg: #4C1D32;
+  --book-page-bg: #31232D;
+  --book-base-bg: #241A21;
+  --book-border: #FB7185;
+  --book-shadow-color: #181116;
+  --book-ruled-line: #473241;
+  --book-ruled-accent-1: #FB7185;
+  --book-ruled-accent-2: #FDA4AF;
+  --book-header-mark: #FDA4AF;
 }
 
 /* ==========================================================================
@@ -307,6 +435,22 @@
   --stat-pending-bg: #2C2842;
   --stat-overdue-color: #9333EA;
   --stat-overdue-bg: #3D365A;
+  --book-overlay-bg: rgba(0, 0, 0, 0.7);
+  --book-cover-bg: #1C1929;
+  --book-cover-text: #F5F3FF;
+  --book-cover-text-shadow: #2E1065;
+  --book-cover-badge-bg: #A855F7;
+  --book-cover-badge-text: #2E1065;
+  --book-cover-emblem: #C084FC;
+  --book-spine-bg: #3B2063;
+  --book-page-bg: #27233A;
+  --book-base-bg: #1C1929;
+  --book-border: #A855F7;
+  --book-shadow-color: #13111C;
+  --book-ruled-line: #3D365A;
+  --book-ruled-accent-1: #A855F7;
+  --book-ruled-accent-2: #C084FC;
+  --book-header-mark: #C084FC;
 }
 
 /* ==========================================================================
@@ -337,6 +481,22 @@
   --stat-pending-bg: #282830;
   --stat-overdue-color: #A1A1AA;
   --stat-overdue-bg: #18181B;
+  --book-overlay-bg: rgba(0, 0, 0, 0.7);
+  --book-cover-bg: #222226;
+  --book-cover-text: #FAFAFA;
+  --book-cover-text-shadow: #18181B;
+  --book-cover-badge-bg: #E4E4E7;
+  --book-cover-badge-text: #18181B;
+  --book-cover-emblem: #FFFFFF;
+  --book-spine-bg: #3F3F46;
+  --book-page-bg: #2C2C32;
+  --book-base-bg: #222226;
+  --book-border: #E4E4E7;
+  --book-shadow-color: #18181B;
+  --book-ruled-line: #43434C;
+  --book-ruled-accent-1: #E4E4E7;
+  --book-ruled-accent-2: #FFFFFF;
+  --book-header-mark: #FAFAFA;
 }
 
 /* ==========================================================================
@@ -367,6 +527,22 @@
   --stat-pending-bg: #3B322D;
   --stat-overdue-color: #B45309;
   --stat-overdue-bg: #4A3F39;
+  --book-overlay-bg: rgba(0, 0, 0, 0.7);
+  --book-cover-bg: #26201D;
+  --book-cover-text: #FBF8F5;
+  --book-cover-text-shadow: #2A1706;
+  --book-cover-badge-bg: #D97706;
+  --book-cover-badge-text: #2A1706;
+  --book-cover-emblem: #FBBF24;
+  --book-spine-bg: #4A3525;
+  --book-page-bg: #342C28;
+  --book-base-bg: #26201D;
+  --book-border: #D97706;
+  --book-shadow-color: #1A1614;
+  --book-ruled-line: #4A3F39;
+  --book-ruled-accent-1: #D97706;
+  --book-ruled-accent-2: #FBBF24;
+  --book-header-mark: #FBBF24;
 }
 
 /* ==========================================================================
@@ -397,6 +573,22 @@
   --stat-pending-bg: #E2E8F0;
   --stat-overdue-color: #0369A1;
   --stat-overdue-bg: #F8FAFC;
+  --book-overlay-bg: rgba(17, 17, 17, 0.45);
+  --book-cover-bg: #FFFFFF;
+  --book-cover-text: #0F172A;
+  --book-cover-text-shadow: #E0F2FE;
+  --book-cover-badge-bg: #0EA5E9;
+  --book-cover-badge-text: #FFFFFF;
+  --book-cover-emblem: #0284C7;
+  --book-spine-bg: #E0F2FE;
+  --book-page-bg: #FFFFFF;
+  --book-base-bg: #F8FAFC;
+  --book-border: #0EA5E9;
+  --book-shadow-color: #CBD5E1;
+  --book-ruled-line: #CBD5E1;
+  --book-ruled-accent-1: #0EA5E9;
+  --book-ruled-accent-2: #0284C7;
+  --book-header-mark: #0F172A;
 }
 
 /* ==========================================================================

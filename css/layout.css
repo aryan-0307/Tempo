@@ -1805,7 +1805,7 @@
   justify-content: center;
   pointer-events: none;
   overflow: hidden;
-  background-color: rgba(17, 17, 17, 0.45);
+  background-color: var(--book-overlay-bg, rgba(17, 17, 17, 0.45));
   backdrop-filter: blur(4px);
   perspective: 1600px;
   opacity: 1;
@@ -1846,7 +1846,7 @@
   left: 10%;
   width: 80%;
   height: 28px;
-  background-color: #111111;
+  background-color: var(--book-shadow-color, #111111);
   border-radius: 50%;
   will-change: transform, opacity;
   animation: shadowGravityPulse 1050ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -1975,9 +1975,9 @@
   top: 0;
   bottom: 0;
   width: 8px;
-  background-color: #8051F5;
-  border-top: 3px solid #111111;
-  border-bottom: 3px solid #111111;
+  background-color: var(--book-spine-bg, #8051F5);
+  border-top: 3px solid var(--book-border, #111111);
+  border-bottom: 3px solid var(--book-border, #111111);
   z-index: 30;
   box-shadow: 0 0 4px rgba(17, 17, 17, 0.5);
 }
@@ -1989,10 +1989,10 @@
   top: 0;
   width: 180px;
   height: 240px;
-  background-color: #F7F7F5;
-  border: 3.5px solid #111111;
+  background-color: var(--book-base-bg, #F7F7F5);
+  border: 3.5px solid var(--book-border, #111111);
   border-left: none;
-  box-shadow: 4px 4px 0px #111111;
+  box-shadow: 4px 4px 0px var(--book-border, #111111);
   box-sizing: border-box;
   padding: 22px 18px;
   display: flex;
@@ -2003,7 +2003,7 @@
 .page-header-mark {
   font-size: 15px;
   font-weight: 900;
-  color: #111111;
+  color: var(--book-header-mark, #111111);
   letter-spacing: 1.5px;
   text-transform: uppercase;
 }
@@ -2017,7 +2017,7 @@
 
 .ruled-line {
   height: 3px;
-  background-color: #E5E5E0;
+  background-color: var(--book-ruled-line, #E5E5E0);
   border-radius: 1px;
 }
 
@@ -2026,12 +2026,12 @@
 }
 
 .ruled-line.lime-accent {
-  background-color: #C6F55A;
+  background-color: var(--book-ruled-accent-1, #C6F55A);
   width: 80%;
 }
 
 .ruled-line.pink-accent {
-  background-color: #FA779C;
+  background-color: var(--book-ruled-accent-2, #FA779C);
   width: 45%;
 }
 
@@ -2064,9 +2064,9 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  background-color: #C6F55A;
-  border: 3.5px solid #111111;
-  box-shadow: 5px 5px 0px #111111;
+  background-color: var(--book-cover-bg, #C6F55A);
+  border: 3.5px solid var(--book-border, #111111);
+  box-shadow: 5px 5px 0px var(--book-border, #111111);
   box-sizing: border-box;
   padding: 24px 16px;
   display: flex;
@@ -2084,9 +2084,9 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  background-color: #FFFFFF;
-  border: 3.5px solid #111111;
-  box-shadow: -4px 4px 0px #111111;
+  background-color: var(--book-page-bg, #FFFFFF);
+  border: 3.5px solid var(--book-border, #111111);
+  box-shadow: -4px 4px 0px var(--book-border, #111111);
   box-sizing: border-box;
   padding: 22px 18px;
   display: flex;
@@ -2099,29 +2099,29 @@
 .cover-title {
   font-size: 28px;
   font-weight: 900;
-  color: #111111;
+  color: var(--book-cover-text, #111111);
   letter-spacing: 2px;
   text-align: center;
-  text-shadow: 1.5px 1.5px 0px #FFFFFF;
+  text-shadow: 1.5px 1.5px 0px var(--book-cover-text-shadow, #FFFFFF);
 }
 
 .cover-badge {
-  background-color: #FA779C;
-  color: #FFFFFF;
+  background-color: var(--book-cover-badge-bg, #FA779C);
+  color: var(--book-cover-badge-text, #FFFFFF);
   font-size: 11px;
   font-weight: 800;
   padding: 4px 10px;
-  border: 2px solid #111111;
-  box-shadow: 2px 2px 0px #111111;
+  border: 2px solid var(--book-border, #111111);
+  box-shadow: 2px 2px 0px var(--book-border, #111111);
   letter-spacing: 1px;
 }
 
 .cover-emblem {
   width: 32px;
   height: 32px;
-  background-color: #8051F5;
-  border: 2px solid #111111;
-  box-shadow: 2px 2px 0px #111111;
+  background-color: var(--book-cover-emblem, #8051F5);
+  border: 2px solid var(--book-border, #111111);
+  box-shadow: 2px 2px 0px var(--book-border, #111111);
   transform: rotate(45deg);
   margin-bottom: 4px;
 }
@@ -2133,8 +2133,8 @@
   top: 4px;
   width: 174px;
   height: 232px;
-  background-color: #FFFFFF;
-  border: 2.5px solid #111111;
+  background-color: var(--book-page-bg, #FFFFFF);
+  border: 2.5px solid var(--book-border, #111111);
   border-left: none;
   box-sizing: border-box;
   padding: 16px 14px;
@@ -2211,9 +2211,9 @@
 .wind-line {
   position: absolute;
   height: 3px;
-  background-color: #FFFFFF;
-  border: 1px solid #111111;
-  box-shadow: 1.5px 1.5px 0px #111111;
+  background-color: var(--book-page-bg, #FFFFFF);
+  border: 1px solid var(--book-border, #111111);
+  box-shadow: 1.5px 1.5px 0px var(--book-border, #111111);
   border-radius: 2px;
   opacity: 0;
   animation: windRush 460ms cubic-bezier(0.12, 0.8, 0.24, 1) forwards;
@@ -2240,13 +2240,6 @@
   animation-delay: 640ms;
 }
 
-.wind-bot {
-  top: 190px;
-  right: 40px;
-  width: 110px;
-  animation-delay: 380ms;
-}
-
 @keyframes windRush {
   0% {
     transform: translate3d(80px, 15px, 0) scaleX(0.2);
@@ -2262,7 +2255,40 @@
   }
 }
 
-/* Dark Theme Adjustments for Book */
+/* ==========================================================================
+   Book Transition Multi-Theme Explicit Overrides
+   ========================================================================== */
+
+/* Dark Theme (High-Contrast Charcoal & White) */
+[data-theme="dark"] .cover-face-front {
+  background-color: #18181B;
+  border-color: #FFFFFF;
+  box-shadow: 5px 5px 0px #FFFFFF;
+}
+
+[data-theme="dark"] .cover-title {
+  color: #FFFFFF;
+  text-shadow: 1.5px 1.5px 0px #111111;
+}
+
+[data-theme="dark"] .cover-badge {
+  background-color: #C6F55A;
+  color: #111111;
+  border-color: #FFFFFF;
+  box-shadow: 2px 2px 0px #FFFFFF;
+}
+
+[data-theme="dark"] .cover-emblem {
+  background-color: #8051F5;
+  border-color: #FFFFFF;
+  box-shadow: 2px 2px 0px #FFFFFF;
+}
+
+[data-theme="dark"] .book-spine {
+  background-color: #8051F5;
+  border-color: #FFFFFF;
+}
+
 [data-theme="dark"] .book-base-right {
   background-color: #222226;
   border-color: #FFFFFF;
@@ -2292,23 +2318,429 @@
   border-color: #FFFFFF;
 }
 
-[data-theme="dark"] .cover-face-front {
-  border-color: #FFFFFF;
-  box-shadow: 5px 5px 0px #FFFFFF;
+[data-theme="dark"] .wind-line {
+  background-color: #FFFFFF;
+  border-color: #111111;
 }
 
-[data-theme="dark"] .cover-badge {
-  border-color: #FFFFFF;
-  box-shadow: 2px 2px 0px #FFFFFF;
+/* 1. Carbon & Sage Teal */
+[data-theme="carbon-teal"] .cover-face-front {
+  background-color: #202426;
+  border-color: #6BAFA4;
+  box-shadow: 5px 5px 0px #6BAFA4;
+}
+[data-theme="carbon-teal"] .cover-title {
+  color: #E7EAE9;
+  text-shadow: 1.5px 1.5px 0px #14211E;
+}
+[data-theme="carbon-teal"] .cover-badge {
+  background-color: #6BAFA4;
+  color: #14211E;
+  border-color: #6BAFA4;
+  box-shadow: 2px 2px 0px #344A46;
+}
+[data-theme="carbon-teal"] .cover-emblem {
+  background-color: #A2D2C9;
+  border-color: #6BAFA4;
+}
+[data-theme="carbon-teal"] .book-spine {
+  background-color: #344A46;
+  border-color: #6BAFA4;
+}
+[data-theme="carbon-teal"] .book-base-right {
+  background-color: #202426;
+  border-color: #6BAFA4;
+  box-shadow: 4px 4px 0px #6BAFA4;
+}
+[data-theme="carbon-teal"] .book-base-right .page-header-mark,
+[data-theme="carbon-teal"] .cover-face-inside .page-header-mark {
+  color: #A2D2C9;
+}
+[data-theme="carbon-teal"] .cover-face-inside,
+[data-theme="carbon-teal"] .wind-page {
+  background-color: #303739;
+  border-color: #6BAFA4;
+}
+[data-theme="carbon-teal"] .ruled-line {
+  background-color: #3B4444;
 }
 
-[data-theme="dark"] .cover-emblem {
-  border-color: #FFFFFF;
-  box-shadow: 2px 2px 0px #FFFFFF;
+/* 2. Midnight Navy */
+[data-theme="midnight-navy"] .cover-face-front {
+  background-color: #1C2541;
+  border-color: #38BDF8;
+  box-shadow: 5px 5px 0px #38BDF8;
+}
+[data-theme="midnight-navy"] .cover-title {
+  color: #E0E7FF;
+  text-shadow: 1.5px 1.5px 0px #082F49;
+}
+[data-theme="midnight-navy"] .cover-badge {
+  background-color: #38BDF8;
+  color: #082F49;
+  border-color: #38BDF8;
+  box-shadow: 2px 2px 0px #1E3A5F;
+}
+[data-theme="midnight-navy"] .cover-emblem {
+  background-color: #7DD3FC;
+  border-color: #38BDF8;
+}
+[data-theme="midnight-navy"] .book-spine {
+  background-color: #1E3A5F;
+  border-color: #38BDF8;
+}
+[data-theme="midnight-navy"] .book-base-right {
+  background-color: #1C2541;
+  border-color: #38BDF8;
+  box-shadow: 4px 4px 0px #38BDF8;
+}
+[data-theme="midnight-navy"] .book-base-right .page-header-mark,
+[data-theme="midnight-navy"] .cover-face-inside .page-header-mark {
+  color: #7DD3FC;
+}
+[data-theme="midnight-navy"] .cover-face-inside,
+[data-theme="midnight-navy"] .wind-page {
+  background-color: #222E50;
+  border-color: #38BDF8;
+}
+[data-theme="midnight-navy"] .ruled-line {
+  background-color: #2E3E64;
 }
 
-[data-theme="dark"] .book-spine {
-  border-color: #FFFFFF;
+/* 3. Obsidian Amber */
+[data-theme="obsidian-amber"] .cover-face-front {
+  background-color: #1A1A1E;
+  border-color: #F59E0B;
+  box-shadow: 5px 5px 0px #F59E0B;
+}
+[data-theme="obsidian-amber"] .cover-title {
+  color: #F4F4F5;
+  text-shadow: 1.5px 1.5px 0px #451A03;
+}
+[data-theme="obsidian-amber"] .cover-badge {
+  background-color: #F59E0B;
+  color: #451A03;
+  border-color: #F59E0B;
+  box-shadow: 2px 2px 0px #452D12;
+}
+[data-theme="obsidian-amber"] .cover-emblem {
+  background-color: #FCD34D;
+  border-color: #F59E0B;
+}
+[data-theme="obsidian-amber"] .book-spine {
+  background-color: #452D12;
+  border-color: #F59E0B;
+}
+[data-theme="obsidian-amber"] .book-base-right {
+  background-color: #1A1A1E;
+  border-color: #F59E0B;
+  box-shadow: 4px 4px 0px #F59E0B;
+}
+[data-theme="obsidian-amber"] .book-base-right .page-header-mark,
+[data-theme="obsidian-amber"] .cover-face-inside .page-header-mark {
+  color: #FCD34D;
+}
+[data-theme="obsidian-amber"] .cover-face-inside,
+[data-theme="obsidian-amber"] .wind-page {
+  background-color: #24242A;
+  border-color: #F59E0B;
+}
+[data-theme="obsidian-amber"] .ruled-line {
+  background-color: #33333D;
+}
+
+/* 4. Forest Emerald */
+[data-theme="forest-emerald"] .cover-face-front {
+  background-color: #162621;
+  border-color: #10B981;
+  box-shadow: 5px 5px 0px #10B981;
+}
+[data-theme="forest-emerald"] .cover-title {
+  color: #ECFDF5;
+  text-shadow: 1.5px 1.5px 0px #064E3B;
+}
+[data-theme="forest-emerald"] .cover-badge {
+  background-color: #10B981;
+  color: #064E3B;
+  border-color: #10B981;
+  box-shadow: 2px 2px 0px #133D30;
+}
+[data-theme="forest-emerald"] .cover-emblem {
+  background-color: #34D399;
+  border-color: #10B981;
+}
+[data-theme="forest-emerald"] .book-spine {
+  background-color: #133D30;
+  border-color: #10B981;
+}
+[data-theme="forest-emerald"] .book-base-right {
+  background-color: #162621;
+  border-color: #10B981;
+  box-shadow: 4px 4px 0px #10B981;
+}
+[data-theme="forest-emerald"] .book-base-right .page-header-mark,
+[data-theme="forest-emerald"] .cover-face-inside .page-header-mark {
+  color: #34D399;
+}
+[data-theme="forest-emerald"] .cover-face-inside,
+[data-theme="forest-emerald"] .wind-page {
+  background-color: #1E332D;
+  border-color: #10B981;
+}
+[data-theme="forest-emerald"] .ruled-line {
+  background-color: #2A483E;
+}
+
+/* 5. Nordic Frost */
+[data-theme="nordic-frost"] .cover-face-front {
+  background-color: #182228;
+  border-color: #60A5FA;
+  box-shadow: 5px 5px 0px #60A5FA;
+}
+[data-theme="nordic-frost"] .cover-title {
+  color: #F1F5F9;
+  text-shadow: 1.5px 1.5px 0px #0F172A;
+}
+[data-theme="nordic-frost"] .cover-badge {
+  background-color: #60A5FA;
+  color: #0F172A;
+  border-color: #60A5FA;
+  box-shadow: 2px 2px 0px #1E334D;
+}
+[data-theme="nordic-frost"] .cover-emblem {
+  background-color: #93C5FD;
+  border-color: #60A5FA;
+}
+[data-theme="nordic-frost"] .book-spine {
+  background-color: #1E334D;
+  border-color: #60A5FA;
+}
+[data-theme="nordic-frost"] .book-base-right {
+  background-color: #182228;
+  border-color: #60A5FA;
+  box-shadow: 4px 4px 0px #60A5FA;
+}
+[data-theme="nordic-frost"] .book-base-right .page-header-mark,
+[data-theme="nordic-frost"] .cover-face-inside .page-header-mark {
+  color: #93C5FD;
+}
+[data-theme="nordic-frost"] .cover-face-inside,
+[data-theme="nordic-frost"] .wind-page {
+  background-color: #202D36;
+  border-color: #60A5FA;
+}
+[data-theme="nordic-frost"] .ruled-line {
+  background-color: #2F414E;
+}
+
+/* 6. Sunset Crimson */
+[data-theme="sunset-crimson"] .cover-face-front {
+  background-color: #241A21;
+  border-color: #FB7185;
+  box-shadow: 5px 5px 0px #FB7185;
+}
+[data-theme="sunset-crimson"] .cover-title {
+  color: #FDF2F8;
+  text-shadow: 1.5px 1.5px 0px #4C0519;
+}
+[data-theme="sunset-crimson"] .cover-badge {
+  background-color: #FB7185;
+  color: #4C0519;
+  border-color: #FB7185;
+  box-shadow: 2px 2px 0px #4C1D32;
+}
+[data-theme="sunset-crimson"] .cover-emblem {
+  background-color: #FDA4AF;
+  border-color: #FB7185;
+}
+[data-theme="sunset-crimson"] .book-spine {
+  background-color: #4C1D32;
+  border-color: #FB7185;
+}
+[data-theme="sunset-crimson"] .book-base-right {
+  background-color: #241A21;
+  border-color: #FB7185;
+  box-shadow: 4px 4px 0px #FB7185;
+}
+[data-theme="sunset-crimson"] .book-base-right .page-header-mark,
+[data-theme="sunset-crimson"] .cover-face-inside .page-header-mark {
+  color: #FDA4AF;
+}
+[data-theme="sunset-crimson"] .cover-face-inside,
+[data-theme="sunset-crimson"] .wind-page {
+  background-color: #31232D;
+  border-color: #FB7185;
+}
+[data-theme="sunset-crimson"] .ruled-line {
+  background-color: #473241;
+}
+
+/* 7. Cyberpunk Violet */
+[data-theme="cyberpunk-violet"] .cover-face-front {
+  background-color: #1C1929;
+  border-color: #A855F7;
+  box-shadow: 5px 5px 0px #A855F7;
+}
+[data-theme="cyberpunk-violet"] .cover-title {
+  color: #F5F3FF;
+  text-shadow: 1.5px 1.5px 0px #2E1065;
+}
+[data-theme="cyberpunk-violet"] .cover-badge {
+  background-color: #A855F7;
+  color: #2E1065;
+  border-color: #A855F7;
+  box-shadow: 2px 2px 0px #3B2063;
+}
+[data-theme="cyberpunk-violet"] .cover-emblem {
+  background-color: #C084FC;
+  border-color: #A855F7;
+}
+[data-theme="cyberpunk-violet"] .book-spine {
+  background-color: #3B2063;
+  border-color: #A855F7;
+}
+[data-theme="cyberpunk-violet"] .book-base-right {
+  background-color: #1C1929;
+  border-color: #A855F7;
+  box-shadow: 4px 4px 0px #A855F7;
+}
+[data-theme="cyberpunk-violet"] .book-base-right .page-header-mark,
+[data-theme="cyberpunk-violet"] .cover-face-inside .page-header-mark {
+  color: #C084FC;
+}
+[data-theme="cyberpunk-violet"] .cover-face-inside,
+[data-theme="cyberpunk-violet"] .wind-page {
+  background-color: #27233A;
+  border-color: #A855F7;
+}
+[data-theme="cyberpunk-violet"] .ruled-line {
+  background-color: #3D365A;
+}
+
+/* 8. Monochrome Slate */
+[data-theme="monochrome-slate"] .cover-face-front {
+  background-color: #222226;
+  border-color: #E4E4E7;
+  box-shadow: 5px 5px 0px #E4E4E7;
+}
+[data-theme="monochrome-slate"] .cover-title {
+  color: #FAFAFA;
+  text-shadow: 1.5px 1.5px 0px #18181B;
+}
+[data-theme="monochrome-slate"] .cover-badge {
+  background-color: #E4E4E7;
+  color: #18181B;
+  border-color: #E4E4E7;
+  box-shadow: 2px 2px 0px #3F3F46;
+}
+[data-theme="monochrome-slate"] .cover-emblem {
+  background-color: #FFFFFF;
+  border-color: #E4E4E7;
+}
+[data-theme="monochrome-slate"] .book-spine {
+  background-color: #3F3F46;
+  border-color: #E4E4E7;
+}
+[data-theme="monochrome-slate"] .book-base-right {
+  background-color: #222226;
+  border-color: #E4E4E7;
+  box-shadow: 4px 4px 0px #E4E4E7;
+}
+[data-theme="monochrome-slate"] .book-base-right .page-header-mark,
+[data-theme="monochrome-slate"] .cover-face-inside .page-header-mark {
+  color: #FAFAFA;
+}
+[data-theme="monochrome-slate"] .cover-face-inside,
+[data-theme="monochrome-slate"] .wind-page {
+  background-color: #2C2C32;
+  border-color: #E4E4E7;
+}
+[data-theme="monochrome-slate"] .ruled-line {
+  background-color: #43434C;
+}
+
+/* 9. Warm Sepia */
+[data-theme="warm-sepia"] .cover-face-front {
+  background-color: #26201D;
+  border-color: #D97706;
+  box-shadow: 5px 5px 0px #D97706;
+}
+[data-theme="warm-sepia"] .cover-title {
+  color: #FBF8F5;
+  text-shadow: 1.5px 1.5px 0px #2A1706;
+}
+[data-theme="warm-sepia"] .cover-badge {
+  background-color: #D97706;
+  color: #2A1706;
+  border-color: #D97706;
+  box-shadow: 2px 2px 0px #4A3525;
+}
+[data-theme="warm-sepia"] .cover-emblem {
+  background-color: #FBBF24;
+  border-color: #D97706;
+}
+[data-theme="warm-sepia"] .book-spine {
+  background-color: #4A3525;
+  border-color: #D97706;
+}
+[data-theme="warm-sepia"] .book-base-right {
+  background-color: #26201D;
+  border-color: #D97706;
+  box-shadow: 4px 4px 0px #D97706;
+}
+[data-theme="warm-sepia"] .book-base-right .page-header-mark,
+[data-theme="warm-sepia"] .cover-face-inside .page-header-mark {
+  color: #FBBF24;
+}
+[data-theme="warm-sepia"] .cover-face-inside,
+[data-theme="warm-sepia"] .wind-page {
+  background-color: #342C28;
+  border-color: #D97706;
+}
+[data-theme="warm-sepia"] .ruled-line {
+  background-color: #4A3F39;
+}
+
+/* 10. Paper Light */
+[data-theme="paper-light"] .cover-face-front {
+  background-color: #FFFFFF;
+  border-color: #0EA5E9;
+  box-shadow: 5px 5px 0px #CBD5E1;
+}
+[data-theme="paper-light"] .cover-title {
+  color: #0F172A;
+  text-shadow: 1.5px 1.5px 0px #E0F2FE;
+}
+[data-theme="paper-light"] .cover-badge {
+  background-color: #0EA5E9;
+  color: #FFFFFF;
+  border-color: #0EA5E9;
+  box-shadow: 2px 2px 0px #CBD5E1;
+}
+[data-theme="paper-light"] .cover-emblem {
+  background-color: #0284C7;
+  border-color: #0EA5E9;
+}
+[data-theme="paper-light"] .book-spine {
+  background-color: #E0F2FE;
+  border-color: #0EA5E9;
+}
+[data-theme="paper-light"] .book-base-right {
+  background-color: #F8FAFC;
+  border-color: #CBD5E1;
+  box-shadow: 4px 4px 0px #CBD5E1;
+}
+[data-theme="paper-light"] .book-base-right .page-header-mark,
+[data-theme="paper-light"] .cover-face-inside .page-header-mark {
+  color: #0F172A;
+}
+[data-theme="paper-light"] .cover-face-inside,
+[data-theme="paper-light"] .wind-page {
+  background-color: #FFFFFF;
+  border-color: #CBD5E1;
+}
+[data-theme="paper-light"] .ruled-line {
+  background-color: #CBD5E1;
 }
 
 /* Floating Navbar Icons (Continuous 60 FPS GPU-accelerated levitation) */

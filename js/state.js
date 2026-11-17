@@ -17,6 +17,18 @@ function getProjectsStorageKey(userId) {
   return userId ? `tempo_projects_user_${userId}` : 'tempo_projects_guest';
 }
 
+function clearGuestStorage() {
+  try {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      window.localStorage.removeItem('tempo_tasks_guest');
+      window.localStorage.removeItem('tempo_projects_guest');
+      window.localStorage.removeItem('tempo_user_profile_guest');
+      window.localStorage.removeItem(STORAGE_KEY);
+      window.localStorage.removeItem(PROJECTS_STORAGE_KEY);
+    }
+  } catch {}
+}
+
 const DEFAULT_PROJECTS = [
   { id: 'work', name: 'Work', color: '#C6F55A', dotClass: 'dot-work' },
   { id: 'personal', name: 'Personal', color: '#FA779C', dotClass: 'dot-personal' },
@@ -89,7 +101,7 @@ const INITIAL_TASKS = [
   }
 ];
 
-class StateManager {
+export class StateManager {
   constructor() {
     this.currentUser = null;
     this.tasks = [];
@@ -122,6 +134,7 @@ class StateManager {
 
   clearUserData() {
     this.currentUser = null;
+    clearGuestStorage();
     this.tasks = [];
     this.projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
     this.loadFromStorage();
@@ -179,29 +192,38 @@ class StateManager {
   }
 
   loadProjects() {
-    try {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        const key = getProjectsStorageKey(this.currentUser?.id);
-        const saved = window.localStorage.getItem(key);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed) && parsed.length > 0) {
-            this.projects = parsed;
-            return;
+    if (this.currentUser && this.currentUser.id) {
+      try {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const key = getProjectsStorageKey(this.currentUser.id);
+          const saved = window.localStorage.getItem(key);
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed) && parsed.length > 0) {
+              this.projects = parsed;
+              return;
+            }
           }
         }
+      } catch (e) {
+        console.warn('[StateManager] LocalStorage read projects failed:', e);
       }
-    } catch (e) {
-      console.warn('[StateManager] LocalStorage read projects failed:', e);
     }
+    // Guest account or uninitialized: start with fresh DEFAULT_PROJECTS (in-memory only for guests)
     this.projects = JSON.parse(JSON.stringify(DEFAULT_PROJECTS));
-    this.saveProjects();
+    if (this.currentUser && this.currentUser.id) {
+      this.saveProjects();
+    }
   }
 
   saveProjects() {
+    // Only store data permanently when user is logged in (guest account is temporary until refresh)
+    if (!this.currentUser || !this.currentUser.id) {
+      return;
+    }
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        const key = getProjectsStorageKey(this.currentUser?.id);
+        const key = getProjectsStorageKey(this.currentUser.id);
         window.localStorage.setItem(key, JSON.stringify(this.projects));
       }
     } catch (e) {
@@ -237,7 +259,8 @@ class StateManager {
     this.projects.push(newProject);
     this.saveProjects();
 
-    if (this.isBackendOnline) {
+    // Async Backend Sync: ONLY when user is authenticated
+    if (this.isBackendOnline && this.currentUser?.id && api.getToken()) {
       try {
         await api.createProject({ name: trimmedName, color: chosenColor });
       } catch (e) {
@@ -250,35 +273,40 @@ class StateManager {
   }
 
   loadFromStorage() {
-    try {
-      if (typeof window !== 'undefined' && window.localStorage) {
-        const key = getTasksStorageKey(this.currentUser?.id);
-        const saved = window.localStorage.getItem(key);
-        if (saved) {
-          const parsed = JSON.parse(saved);
-          if (Array.isArray(parsed)) {
-            this.tasks = parsed;
-            return;
+    if (this.currentUser && this.currentUser.id) {
+      try {
+        if (typeof window !== 'undefined' && window.localStorage) {
+          const key = getTasksStorageKey(this.currentUser.id);
+          const saved = window.localStorage.getItem(key);
+          if (saved) {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed)) {
+              this.tasks = parsed;
+              return;
+            }
           }
         }
+      } catch (e) {
+        console.warn('[StateManager] LocalStorage read failed:', e);
       }
-    } catch (e) {
-      console.warn('[StateManager] LocalStorage read failed:', e);
-    }
-    // If authenticated user has no saved tasks, initialize as empty [] (no stale/demo tasks)
-    if (this.currentUser && this.currentUser.id) {
+      // If authenticated user has no saved tasks, initialize as empty [] (no stale/demo tasks)
       this.tasks = [];
       this.saveToStorage();
     } else {
+      // Guest account: temporary in-memory store until refresh, never load permanent guest mutations
+      clearGuestStorage();
       this.tasks = JSON.parse(JSON.stringify(INITIAL_TASKS));
-      this.saveToStorage();
     }
   }
 
   saveToStorage() {
+    // Only store data permanently when user is logged in (guest account is temporary until refresh)
+    if (!this.currentUser || !this.currentUser.id) {
+      return;
+    }
     try {
       if (typeof window !== 'undefined' && window.localStorage) {
-        const key = getTasksStorageKey(this.currentUser?.id);
+        const key = getTasksStorageKey(this.currentUser.id);
         window.localStorage.setItem(key, JSON.stringify(this.tasks));
       }
     } catch (e) {
@@ -331,8 +359,8 @@ class StateManager {
     this.tasks.unshift(newTask);
     this.notify();
 
-    // Async Backend Sync
-    if (this.isBackendOnline) {
+    // Async Backend Sync: ONLY when user is authenticated
+    if (this.isBackendOnline && this.currentUser?.id && api.getToken()) {
       api.createTask(newTask).catch(err => {
         console.warn('[StateManager] API createTask error:', err.message);
       });
@@ -365,8 +393,8 @@ class StateManager {
 
     this.notify();
 
-    // Async Backend Sync
-    if (this.isBackendOnline) {
+    // Async Backend Sync: ONLY when user is authenticated
+    if (this.isBackendOnline && this.currentUser?.id && api.getToken()) {
       api.updateTask(id, updates).catch(err => {
         console.warn('[StateManager] API updateTask error:', err.message);
       });
@@ -381,8 +409,8 @@ class StateManager {
       task.completed = !task.completed;
       this.notify();
 
-      // Async Backend Sync
-      if (this.isBackendOnline) {
+      // Async Backend Sync: ONLY when user is authenticated
+      if (this.isBackendOnline && this.currentUser?.id && api.getToken()) {
         api.toggleTask(id).catch(err => {
           console.warn('[StateManager] API toggleTask error:', err.message);
         });
@@ -402,8 +430,8 @@ class StateManager {
       this.tasks.splice(index, 1);
       this.notify();
 
-      // Async Backend Sync
-      if (this.isBackendOnline) {
+      // Async Backend Sync: ONLY when user is authenticated
+      if (this.isBackendOnline && this.currentUser?.id && api.getToken()) {
         api.deleteTask(id).catch(err => {
           console.warn('[StateManager] API deleteTask error:', err.message);
         });
@@ -424,8 +452,8 @@ class StateManager {
     this.lastDeletedIndex = -1;
     this.notify();
 
-    // Async Backend Sync
-    if (this.isBackendOnline) {
+    // Async Backend Sync: ONLY when user is authenticated
+    if (this.isBackendOnline && this.currentUser?.id && api.getToken()) {
       api.createTask(taskToRestore).catch(err => {
         console.warn('[StateManager] API restoreTask error:', err.message);
       });
@@ -483,8 +511,8 @@ class StateManager {
     this.tasks.splice(insertIndex, 0, movedTask);
     this.notify();
 
-    // Async Backend Sync
-    if (this.isBackendOnline) {
+    // Async Backend Sync: ONLY when user is authenticated
+    if (this.isBackendOnline && this.currentUser?.id && api.getToken()) {
       api.reorderTasks(sourceId, targetId, position).catch(err => {
         console.warn('[StateManager] API reorderTasks error:', err.message);
       });
