@@ -1,0 +1,26 @@
+# Tempo Productivity Workspace
+
+> Modern, minimal, high-performance task management application featuring a Neo-Brutalist and Carbon & Sage Teal design language, Express REST backend, and Neon PostgreSQL database.
+
+## System Overview
+- **Application Name**: Tempo
+- **Production URL**: https://tempo-ofxg.onrender.com
+- **Repository Context**: Minimal productivity application with structured task tracking, project categorization, and real-time statistics.
+- **Architecture**:
+  - Frontend: Vanilla JavaScript (ES2022+ modular architecture), CSS custom properties, responsive Neo-Brutalist design system.
+  - Backend: Node.js with Express 4, Helmet security headers, compression, and rate limiting.
+  - Database: Neon Serverless PostgreSQL with pg-pool and structured relational schemas.
+  - Authentication: JWT tokens with bcrypt (10 rounds) password hashing.
+
+## Public Resources
+- [Homepage & Workspace](https://tempo-ofxg.onrender.com/): Interactive productivity application and task dashboard.
+- [Privacy Policy](https://tempo-ofxg.onrender.com/privacy): Data privacy principles, storage practices, and user rights.
+- [Terms of Service](https://tempo-ofxg.onrender.com/terms): Service terms, usage policies, and liability terms.
+- [Security Policy](https://tempo-ofxg.onrender.com/.well-known/security.txt): RFC 9116 security vulnerability reporting instructions.
+- [Sitemap](https://tempo-ofxg.onrender.com/sitemap.xml): XML sitemap of all public-facing pages.
+
+## Key Capabilities & Privacy Boundaries
+- **Ephemeral Guest Mode**: Unauthenticated sessions execute strictly in memory without permanent persistence or database storage. All guest data resets upon browser refresh.
+- **Authenticated Workspaces**: Registered accounts receive encrypted PostgreSQL persistence, custom project labels, and secure cross-device task sync.
+- **Strict Data Isolation**: Zero cross-account data leakage; row-level tenant enforcement on all CRUD operations.
+- **Handcrafted Themes**: High-contrast Neo-Brutalist Light, Dark, Carbon & Sage Teal, and 9 additional multi-theme presets.

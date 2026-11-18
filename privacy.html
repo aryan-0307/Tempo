@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('tempo_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Tempo Privacy Policy - Transparent data practices, multi-tenant isolation, and privacy principles for Tempo.">
+  <title>Privacy Policy - Tempo Minimal Productivity Workspace</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="doc-page-layout">
+    <!-- Top Navigation Bar -->
+    <header class="doc-topbar">
+      <a href="/" class="doc-topbar-brand" aria-label="Tempo Home">
+        <img src="assets/images/tempo-emblem.png" alt="Tempo Emblem" class="brand-logo">
+        <span class="brand-name">TEMPO</span>
+      </a>
+      <nav class="doc-topbar-nav" aria-label="Document Navigation">
+        <a href="/terms" class="btn btn-secondary">Terms of Service</a>
+        <a href="/" class="btn btn-primary">Workspace</a>
+      </nav>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="doc-main">
+      <div class="doc-container">
+        <article class="doc-card">
+          <span class="doc-badge">DOCUMENT // PRIVACY &amp; SECURITY</span>
+          <h1 class="doc-title">Privacy Policy</h1>
+          <div class="doc-meta">
+            <span>Effective Date: November 18, 2026</span> &bull; 
+            <span>Version: 1.0.0</span> &bull; 
+            <span>Classification: Public Policy</span>
+          </div>
+
+          <!-- Pending Approval Notice -->
+          <div class="doc-approval-notice">
+            <strong>Notice &bull; Details Requiring Owner Verification:</strong>
+            Legal entity and designated contact placeholders in this policy require review:
+            <code>[COMPANY_NAME_REQUIRING_USER_APPROVAL: Tempo Workspace Inc.]</code> and 
+            <code>[EMAIL_ADDRESS_REQUIRING_USER_APPROVAL: privacy@tempo.dev]</code>.
+          </div>
+
+          <section class="doc-section">
+            <h2 class="doc-section-title">1. Introduction &amp; Commitment</h2>
+            <p>
+              Tempo (&ldquo;we,&rdquo; &ldquo;our,&rdquo; or &ldquo;the Application&rdquo;) is an engineering-driven productivity workspace committed to radical transparency and data minimization. This Privacy Policy details how we handle user data across our web application (<a href="https://tempo-ofxg.onrender.com">https://tempo-ofxg.onrender.com</a>) and APIs.
+            </p>
+            <p>
+              We do not sell, rent, monetize, or broker personal information. Our business model is focused strictly on delivering focused, high-performance task management tools.
+            </p>
+          </section>
+
+          <section class="doc-section">
+            <h2 class="doc-section-title">2. Information We Collect</h2>
+            <p>We collect only the minimum data required to provide task organization services:</p>
+            <ul>
+              <li><strong>Account Credentials:</strong> When creating a registered account, we collect your full name, username, email address, and a cryptographically salted password (hashed using bcrypt with 10 salt rounds). Plaintext passwords are never stored or logged.</li>
+              <li><strong>Task &amp; Project Data:</strong> Content created within the workspace, including task titles, priority levels (low, medium, high), due dates, completion statuses, and project categorizations.</li>
+              <li><strong>Technical Metadata:</strong> Standard HTTP request logs (IP address, user agent, response times) strictly utilized for DDoS mitigation, rate limiting, and server diagnostic logs.</li>
+            </ul>
+          </section>
+
+          <section class="doc-section">
+            <h2 class="doc-section-title">3. Ephemeral Guest Mode (Unauthenticated)</h2>
+            <p>
+              Tempo offers an unauthenticated Guest Mode allowing immediate task management without creating an account:
+            </p>
+            <ul>
+              <li>Guest operations exist strictly in client-side volatile browser memory.</li>
+              <li>Guest tasks and custom projects are <em>never</em> written to our Neon PostgreSQL database or permanent server storage.</li>
+              <li>Refreshing the browser or clearing the tab automatically resets guest data, ensuring complete zero-residue privacy.</li>
+            </ul>
+          </section>
+
+          <section class="doc-section">
+            <h2 class="doc-section-title">4. Multi-Tenant Data Isolation</h2>
+            <p>
+              For registered accounts, Tempo enforces strict row-level multi-tenant database isolation. Every database query, API transaction, and cache operation is scoped exclusively to the authenticated user ID extracted from a validated JSON Web Token (JWT).
+            </p>
+            <p>
+              Cross-account data leakage, foreign resource enumeration, and unauthorized cross-tenant modifications are actively tested and blocked by automated regression test suites.
+            </p>
+          </section>
+
+          <section class="doc-section">
+            <h2 class="doc-section-title">5. Data Storage &amp; Infrastructure</h2>
+            <p>
+              Our application infrastructure is hosted with trusted cloud partners maintaining high compliance standards:
+            </p>
+            <ul>
+              <li><strong>Database:</strong> Serverless PostgreSQL hosted with Neon, featuring encryption at rest and encrypted TLS 1.3 connections in transit.</li>
+              <li><strong>Application Hosting:</strong> Express.js container hosted on Render with reverse-proxy TLS termination and automated DDoS filtering.</li>
+            </ul>
+          </section>
+
+          <section class="doc-section">
+            <h2 class="doc-section-title">6. Cookies &amp; Local Storage</h2>
+            <p>
+              Tempo does not use third-party analytics, behavioral tracking, cross-site trackers, or advertising cookies:
+            </p>
+            <ul>
+              <li><code>tempo_auth_token</code>: Scoped JWT token enabling authenticated API interactions.</li>
+              <li><code>tempo_theme</code>: Stores your chosen color palette (e.g., Carbon &amp; Sage Teal, Neo-Brutalist Light, Dark).</li>
+              <li><code>tempo_sidebar_collapsed</code>: Preserves your layout preference for sidebar width.</li>
+            </ul>
+          </section>
+
+          <section class="doc-section">
+            <h2 class="doc-section-title">7. Data Retention &amp; User Rights</h2>
+            <p>
+              You maintain full ownership of your productivity content:
+            </p>
+            <ul>
+              <li><strong>Right to Deletion:</strong> You may delete individual tasks, projects, or discard unsaved changes at any time.</li>
+              <li><strong>Right to Correction:</strong> Profile details can be updated directly from the Settings &amp; Preferences screen.</li>
+              <li><strong>Account Purge:</strong> Requests to permanently expunge account records may be submitted to our privacy contact.</li>
+            </ul>
+          </section>
+
+          <section class="doc-section">
+            <h2 class="doc-section-title">8. Vulnerability Reporting</h2>
+            <p>
+              Security researchers and users may review our coordinated vulnerability disclosure policy at <a href="/.well-known/security.txt">/.well-known/security.txt</a>.
+            </p>
+          </section>
+
+          <section class="doc-section">
+            <h2 class="doc-section-title">9. Contact Information</h2>
+            <p>
+              For questions regarding this policy or data processing practices, please contact:
+            </p>
+            <p>
+              <strong>Tempo Privacy Officer</strong><br>
+              Email: <code>[EMAIL_ADDRESS_REQUIRING_USER_APPROVAL: privacy@tempo.dev]</code><br>
+              Entity: <code>[COMPANY_NAME_REQUIRING_USER_APPROVAL: Tempo Workspace Inc.]</code>
+            </p>
+          </section>
+        </article>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="doc-footer">
+      <div>
+        <span>&copy; 2026 Tempo. Minimal Productivity Workspace.</span>
+      </div>
+      <div class="doc-footer-links">
+        <a href="/">Workspace</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/.well-known/security.txt">security.txt</a>
+        <a href="/llms.txt">llms.txt</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

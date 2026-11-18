@@ -13,6 +13,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Tempo - Modern, clean, minimal productivity application">
   <title>Tempo - Minimal Productivity Workspace</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="manifest" href="/site.webmanifest">
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -538,6 +540,39 @@
                   <!-- Dynamically populated by settings.js -->
                 </div>
               </div>
+
+              <!-- Legal & Compliance Information Card -->
+              <div class="settings-card">
+                <div class="settings-card-header">
+                  <div class="settings-card-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="settings-card-title">Legal &amp; Security</h3>
+                    <p class="settings-card-desc">Privacy guidelines, operating terms, and vulnerability reporting</p>
+                  </div>
+                </div>
+                <div class="settings-legal-list">
+                  <a href="/privacy" class="settings-legal-item">
+                    <span class="settings-legal-title">Privacy Policy</span>
+                    <span class="settings-legal-meta">Data protection, multi-tenant isolation, and zero-tracking disclosure &rarr;</span>
+                  </a>
+                  <a href="/terms" class="settings-legal-item">
+                    <span class="settings-legal-title">Terms of Service</span>
+                    <span class="settings-legal-meta">Service availability, account security, and operating rules &rarr;</span>
+                  </a>
+                  <a href="/.well-known/security.txt" class="settings-legal-item">
+                    <span class="settings-legal-title">Security Policy (security.txt)</span>
+                    <span class="settings-legal-meta">RFC 9116 coordinated vulnerability disclosure instructions &rarr;</span>
+                  </a>
+                  <a href="/llms.txt" class="settings-legal-item">
+                    <span class="settings-legal-title">LLM Directory (llms.txt)</span>
+                    <span class="settings-legal-meta">Structured platform documentation for AI agents &rarr;</span>
+                  </a>
+                </div>
+              </div>
             </div>
           </section>
         </div>
@@ -549,7 +584,11 @@
           <span class="status-dot"></span>
           <span id="system-status-text">Tempo Ready &bull; In-Memory Store Active</span>
         </div>
-        <div>
+        <div class="statusbar-links">
+          <a href="/privacy" class="statusbar-link">Privacy</a>
+          <span class="statusbar-sep">&bull;</span>
+          <a href="/terms" class="statusbar-link">Terms</a>
+          <span class="statusbar-sep">&bull;</span>
           <span>Tempo v1.0.0 &bull; Production Ready</span>
         </div>
       </footer>
@@ -772,6 +811,9 @@
                 </button>
               </div>
             </div>
+            <p class="auth-legal-disclaimer">
+              By creating an account, you agree to our <a href="/terms" target="_blank" rel="noopener">Terms of Service</a> and <a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a>.
+            </p>
             <div class="modal-actions">
               <button type="button" id="auth-register-cancel-btn" class="btn btn-secondary">Cancel</button>
               <button type="submit" id="auth-register-submit-btn" class="btn btn-primary">Create Account</button>

@@ -36,8 +36,20 @@ TEST_SUITES = [
         'file': 'tests/test_backend_api.py'
     },
     {
+        'name': 'Public Metadata, SEO, Legal & 404 Pages',
+        'file': 'tests/test_public_meta_routes.py'
+    },
+    {
+        'name': 'Guest Ephemeral Storage & Account Isolation',
+        'file': 'tests/test_guest_ephemeral_storage.py'
+    },
+    {
         'name': 'Carbon & Sage Teal Palette Compliance',
         'file': 'tests/test_color_palette.py'
+    },
+    {
+        'name': '3D Book Theme Styles & FOUC Prevention',
+        'file': 'tests/test_book_theme_styles.py'
     },
     {
         'name': 'Frontend Shell Linkage & ES Import Resolution',

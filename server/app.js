@@ -102,10 +102,58 @@ app.use((req, res, next) => {
   next();
 });
 
+// Public Document & Metadata Routes
+app.get(['/.well-known/security.txt', '/security.txt'], (req, res) => {
+  res.type('text/plain; charset=utf-8');
+  res.sendFile(path.join(projectRoot, '.well-known', 'security.txt'));
+});
+
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain; charset=utf-8');
+  res.sendFile(path.join(projectRoot, 'robots.txt'));
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml; charset=utf-8');
+  res.sendFile(path.join(projectRoot, 'sitemap.xml'));
+});
+
+app.get('/llms.txt', (req, res) => {
+  res.type('text/plain; charset=utf-8');
+  res.sendFile(path.join(projectRoot, 'llms.txt'));
+});
+
+app.get('/site.webmanifest', (req, res) => {
+  res.type('application/manifest+json; charset=utf-8');
+  res.sendFile(path.join(projectRoot, 'site.webmanifest'));
+});
+
+app.get('/favicon.ico', (req, res) => {
+  res.type('image/x-icon');
+  res.sendFile(path.join(projectRoot, 'favicon.ico'));
+});
+
+app.get('/privacy', (req, res) => {
+  res.type('text/html; charset=utf-8');
+  res.sendFile(path.join(projectRoot, 'privacy.html'));
+});
+
+app.get('/terms', (req, res) => {
+  res.type('text/html; charset=utf-8');
+  res.sendFile(path.join(projectRoot, 'terms.html'));
+});
+
+// Primary SPA Application View Routes
+const knownAppRoutes = ['/', '/index.html', '/dashboard', '/my-tasks', '/upcoming', '/completed', '/settings'];
+app.get(knownAppRoutes, (req, res) => {
+  res.type('text/html; charset=utf-8');
+  res.sendFile(path.join(projectRoot, 'index.html'));
+});
+
 // Serve Frontend Static Files
 app.use(express.static(projectRoot, {
   dotfiles: 'deny',
-  index: 'index.html',
+  index: false,
   setHeaders: (res, filePath) => {
     // Avoid caching HTML or JS modules in browser so deployments take effect immediately
     if (filePath.endsWith('.html') || filePath.endsWith('.js')) {
@@ -116,12 +164,12 @@ app.use(express.static(projectRoot, {
   }
 }));
 
-// Fallback to index.html for SPA view navigation
-app.get('*', (req, res, next) => {
+// Custom Animated 404 Handler for Unrecognized Web Routes
+app.use((req, res, next) => {
   if (req.path.startsWith('/api')) {
     return next();
   }
-  res.sendFile(path.join(projectRoot, 'index.html'));
+  res.status(404).type('text/html; charset=utf-8').sendFile(path.join(projectRoot, '404.html'));
 });
 
 // Error Handlers

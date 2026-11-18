@@ -1,0 +1,23 @@
+{
+  "name": "Tempo - Minimal Productivity Workspace",
+  "short_name": "Tempo",
+  "description": "Modern, minimal task management workspace with Neo-Brutalist and Carbon & Sage Teal design.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#151719",
+  "theme_color": "#C6F55A",
+  "icons": [
+    {
+      "src": "/assets/images/tempo-emblem.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/assets/images/tempo-logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

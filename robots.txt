@@ -1,0 +1,26 @@
+# robots.txt for Tempo (https://tempo-ofxg.onrender.com)
+User-agent: *
+
+# Allow public informational pages and crawlable meta resources
+Allow: /
+Allow: /privacy
+Allow: /terms
+Allow: /llms.txt
+Allow: /site.webmanifest
+Allow: /favicon.ico
+Allow: /assets/
+Allow: /css/
+Allow: /js/
+
+# Disallow private user data, authenticated APIs, and backend server paths
+Disallow: /api/
+Disallow: /api/auth/
+Disallow: /api/tasks/
+Disallow: /api/projects/
+Disallow: /api/stats/
+Disallow: /.well-known/
+Disallow: /server/
+Disallow: /tests/
+
+# Sitemap location
+Sitemap: https://tempo-ofxg.onrender.com/sitemap.xml

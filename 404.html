@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    (function() {
+      try {
+        var savedTheme = localStorage.getItem('tempo_theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="404 Page Not Found - The requested page could not be found in the Tempo workspace.">
+  <title>404 - Page Not Found | Tempo</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+  <div class="doc-page-layout">
+    <!-- Top Navigation Bar -->
+    <header class="doc-topbar">
+      <a href="/" class="doc-topbar-brand" aria-label="Tempo Home">
+        <img src="assets/images/tempo-emblem.png" alt="Tempo Emblem" class="brand-logo">
+        <span class="brand-name">TEMPO</span>
+      </a>
+      <nav class="doc-topbar-nav" aria-label="Quick Links">
+        <a href="/" class="btn btn-primary">Workspace</a>
+      </nav>
+    </header>
+
+    <!-- 404 Centered Stage -->
+    <main class="doc-main">
+      <div class="error-404-container">
+        <div class="error-404-stage">
+          <div class="error-404-emblem" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="square" stroke-linejoin="miter">
+              <circle cx="12" cy="12" r="10"></circle>
+              <line x1="12" y1="8" x2="12" y2="12"></line>
+              <line x1="12" y1="16" x2="12.01" y2="16"></line>
+            </svg>
+          </div>
+          <div class="error-404-badge">STATUS CODE // 404 NOT FOUND</div>
+          <h1 class="error-404-digits">404</h1>
+          <p class="error-404-desc">
+            The workspace route or resource you requested cannot be located. It may have been moved, deleted, or typed incorrectly.
+          </p>
+          <div class="error-404-actions">
+            <a href="/" class="btn btn-primary">Return to Workspace</a>
+            <a href="/privacy" class="btn btn-secondary">Privacy Policy</a>
+            <a href="/terms" class="btn btn-secondary">Terms of Service</a>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="doc-footer">
+      <div>
+        <span>&copy; 2026 Tempo. Minimal Productivity Workspace.</span>
+      </div>
+      <div class="doc-footer-links">
+        <a href="/">Workspace</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/terms">Terms of Service</a>
+        <a href="/.well-known/security.txt">security.txt</a>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>

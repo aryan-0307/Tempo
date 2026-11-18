@@ -1,0 +1,18 @@
+# security.txt for Tempo (RFC 9116)
+# https://tempo-ofxg.onrender.com/.well-known/security.txt
+
+# Security Contact
+# [REQUIRING_USER_APPROVAL: Please verify or replace security@tempo.dev with your designated contact email]
+Contact: mailto:security@tempo.dev
+
+# Policy and Guidelines
+Policy: https://tempo-ofxg.onrender.com/privacy
+
+# Canonical URL
+Canonical: https://tempo-ofxg.onrender.com/.well-known/security.txt
+
+# Preferred Languages
+Preferred-Languages: en
+
+# Expiration Date (RFC 9116 requires a valid future date)
+Expires: 2027-11-18T00:00:00.000Z
