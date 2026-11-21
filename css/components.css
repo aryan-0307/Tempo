@@ -1531,10 +1531,19 @@
   gap: 4px;
 }
 
+.settings-section .settings-grid,
 .settings-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  display: grid !important;
+  grid-template-columns: 1fr !important;
   gap: var(--spacing-6);
+  width: 100%;
+}
+
+.settings-section .form-row {
+  display: grid !important;
+  grid-template-columns: 1fr !important;
+  gap: var(--spacing-4);
+  width: 100%;
 }
 
 .settings-card {

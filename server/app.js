@@ -155,8 +155,8 @@ app.use(express.static(projectRoot, {
   dotfiles: 'deny',
   index: false,
   setHeaders: (res, filePath) => {
-    // Avoid caching HTML or JS modules in browser so deployments take effect immediately
-    if (filePath.endsWith('.html') || filePath.endsWith('.js')) {
+    // Avoid caching HTML, JS, or CSS modules in browser so updates take effect immediately
+    if (filePath.endsWith('.html') || filePath.endsWith('.js') || filePath.endsWith('.css')) {
       res.setHeader('Cache-Control', 'no-cache, must-revalidate');
     } else {
       res.setHeader('Cache-Control', 'public, max-age=86400');
